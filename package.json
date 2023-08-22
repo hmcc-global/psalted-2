@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "typescript": "^5.1.6",
     "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.0.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.2"
+  },
+  "scripts": {
+    "lint": "eslint --ignore-path .eslintignore \"**/*.+(js|jsx|ts|tsx)\"",
+    "lint:fix": "eslint --ignore-path .eslintignore --fix \"**/*.+(js|jsx|ts|tsx)\"",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|json|md|css)\" --config .prettierrc.json"
   }
 }

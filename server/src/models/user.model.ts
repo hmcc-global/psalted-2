@@ -5,8 +5,8 @@ interface IUser {
   email: string;
   password: string;
   accessType: string;
-  groupIds: Types.Array<Schema.Types.ObjectId>;
-  setlistIds: Types.Array<Schema.Types.ObjectId>;
+  groupIds: Types.Array<Types.ObjectId>;
+  setlistIds: Types.Array<Types.ObjectId>;
 }
 
 const userSchema = new Schema<IUser>({

@@ -5,7 +5,7 @@ const sendResponse = (res: Response, statusCode: number, payload: any) => {
   return res.status(statusCode).json(payload);
 };
 
-export const createUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const createUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
   const { ...toCreate } = req.body;
 
   if (Object.keys(toCreate).length > 0) {
@@ -25,7 +25,7 @@ export const createUser: RequestHandler = async (req: Request, res: Response): P
   }
 };
 
-export const getUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const getUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
   console.log(req.params);
   const { id: userId } = req.params;
 
@@ -46,7 +46,7 @@ export const getUser: RequestHandler = async (req: Request, res: Response): Prom
   }
 };
 
-export const updateUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const updateUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
   const { id: userId, ...toUpdate } = req.body;
 
   if (userId && Object.keys(toUpdate).length > 0) {
@@ -66,7 +66,7 @@ export const updateUser: RequestHandler = async (req: Request, res: Response): P
   }
 };
 
-export const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
   const { id: userId } = req.params;
 
   if (userId) {
@@ -85,3 +85,5 @@ export const deleteUser: RequestHandler = async (req: Request, res: Response): P
     sendResponse(res, 400, { error: 'Missing required fields' });
   }
 };
+
+export { createUser, getUser, updateUser, deleteUser };

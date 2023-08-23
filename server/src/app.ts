@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { connectToDB } from './mongoose';
-import userRouter from './routes/user.routes';
+import { getRoutes } from './routes';
 
 const app = express();
 const dev_port: number = 1337;
@@ -12,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(express.json());
 
-app.use('/api/users', userRouter);
+app.use('/api', getRoutes());
 
 // Starts the server after connecting to the database
 connectToDB()

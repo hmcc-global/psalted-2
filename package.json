@@ -4,16 +4,28 @@
     "yarn": "^1.22.19"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "eslint": "^8.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "^3.0.2"
   },
   "scripts": {
     "lint": "eslint --ignore-path .eslintignore \"**/*.+(js|jsx|ts|tsx)\"",
     "lint:fix": "eslint --ignore-path .eslintignore --fix \"**/*.+(js|jsx|ts|tsx)\"",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|json|md|css)\" --config .prettierrc.json"
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|json|md|css)\" --config .prettierrc.json",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint"
+    ],
+    "**/*.{json,md,css}": "prettier --write"
   }
 }

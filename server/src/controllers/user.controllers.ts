@@ -26,7 +26,6 @@ const createUser: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const getUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
-  console.log(req.params);
   const { id: userId } = req.params;
 
   if (userId) {
@@ -42,7 +41,17 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<any
       sendResponse(res, 500, { error: error.message });
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    try {
+      const data = await User.find().exec();
+
+      if (data) {
+        sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, { error: 'Users not found' });
+      }
+    } catch (error: any) {
+      sendResponse(res, 500, { error: error.message });
+    }
   }
 };
 

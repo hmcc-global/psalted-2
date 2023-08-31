@@ -60,7 +60,10 @@ const updateUser: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (userId && Object.keys(toUpdate).length > 0) {
     try {
-      const updatedUser = await User.findOneAndUpdate({ _id: userId }, toUpdate, { upsert: true });
+      const updatedUser = await User.findOneAndUpdate({ _id: userId }, toUpdate, {
+        upsert: true,
+        new: true,
+      });
 
       if (updatedUser) {
         sendResponse(res, 200, updatedUser);

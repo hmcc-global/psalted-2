@@ -27,7 +27,7 @@ const createSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
 const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<any> => {
   const { id: setlistId } = req.params;
-  console.log(req)
+  
   if (setlistId) {
     try {
       const data = await Setlist.findOne({ _id: setlistId }).exec();

@@ -1,12 +1,16 @@
 import { Request, RequestHandler, Response } from 'express';
-import Setlist from '../models/setlist.model';
+import { Setlist, ISetlist } from '../models/setlist.model';
 
-const sendResponse = (res: Response, statusCode: number, payload: any) => {
+const sendResponse = (
+  res: Response,
+  statusCode: number,
+  payload: ISetlist[] | ISetlist | string
+) => {
   return res.status(statusCode).json(payload);
 };
 
-const createSetlist: RequestHandler = async (req: Request, res: Response): Promise<any> => {
-  const { ...toCreate } = req.body;
+const createSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { ...toCreate }: ISetlist = req.body;
 
   if (Object.keys(toCreate).length > 0) {
     try {
@@ -15,47 +19,47 @@ const createSetlist: RequestHandler = async (req: Request, res: Response): Promi
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Setlist not created' });
+        sendResponse(res, 404, 'Setlist not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
   }
 };
 
-const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: setlistId } = req.params;
-  
+
   if (setlistId) {
     try {
-      const data = await Setlist.findOne({ _id: setlistId }).exec();
+      const data: ISetlist = await Setlist.findOne({ _id: setlistId }).exec();
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Setlist not found' });
+        sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   } else {
     try {
-      const data = await Setlist.find().exec();
+      const data: ISetlist[] = await Setlist.find().exec();
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Setlists not found' });
+        sendResponse(res, 404, 'Setlists not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   }
 };
 
-const updateSetlist: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const updateSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: setlistId, ...toUpdate } = req.body;
 
   if (setlistId && Object.keys(toUpdate).length > 0) {
@@ -68,17 +72,17 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
       if (updatedSetlist) {
         sendResponse(res, 200, updatedSetlist);
       } else {
-        sendResponse(res, 404, { error: 'Setlist not found' });
+        sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
   }
 };
 
-const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: setlistId } = req.params;
 
   if (setlistId) {
@@ -88,13 +92,13 @@ const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promi
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Setlist not found' });
+        sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
   }
 };
 

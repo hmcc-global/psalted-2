@@ -17,9 +17,9 @@ const groupSchema = new Schema<IGroup>({
   setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],
   createdBy: { type: String },
   lastUpdatedBy: { type: String },
-  createdAt: { type: Date },
-  lastUpdatedAt: { type: Date },
   isDeleted: { type: Boolean, default: false },
+}, {
+  timestamps: true,
 })
 
 const Group = models.Group || model<IGroup>('Group', groupSchema);

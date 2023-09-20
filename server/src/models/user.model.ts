@@ -16,6 +16,8 @@ const userSchema = new Schema<IUser>({
   accessType: { type: String },
   groupIds: [{ type: Types.ObjectId, ref: 'Group' }],
   setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],
+}, {
+  timestamps: true,
 });
 
 const User = models.User || model<IUser>('User', userSchema);

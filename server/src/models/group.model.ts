@@ -11,16 +11,19 @@ interface IGroup {
   isDeleted: boolean;
 }
 
-const groupSchema = new Schema<IGroup>({
-  groupName: { type: String, required: true },
-  userIds: [{ type: Types.ObjectId, ref: 'User' }],
-  setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],
-  createdBy: { type: String },
-  lastUpdatedBy: { type: String },
-  isDeleted: { type: Boolean, default: false },
-}, {
-  timestamps: true,
-})
+const groupSchema = new Schema<IGroup>(
+  {
+    groupName: { type: String, required: true },
+    userIds: [{ type: Types.ObjectId, ref: 'User' }],
+    setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],
+    createdBy: { type: String },
+    lastUpdatedBy: { type: String },
+    isDeleted: { type: Boolean, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const Group = models.Group || model<IGroup>('Group', groupSchema);
 

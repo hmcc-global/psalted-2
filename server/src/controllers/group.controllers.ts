@@ -1,6 +1,9 @@
 import { Request, RequestHandler, Response } from 'express';
-import Group from '../models/group.model';
-import { sendResponse } from '../helpers/utils';
+import { Group, IGroup } from '../models/group.model';
+
+const sendResponse = (res: Response, statusCode: number, payload: IGroup[] | IGroup | string) => {
+  return res.status(statusCode).json(payload);
+};
 
 const createGroup: RequestHandler = async (req: Request, res: Response) => {
   const { ...toCreate } = req.body;
@@ -12,20 +15,20 @@ const createGroup: RequestHandler = async (req: Request, res: Response) => {
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Group not created' });
+        sendResponse(res, 404, 'Group not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
   }
-}
+};
 
-const getGroup: RequestHandler = async (req: Request, res: Response) => {}
+const getGroup: RequestHandler = async (req: Request, res: Response) => {};
 
-const updateGroup: RequestHandler = async (req: Request, res: Response) => {}
+const updateGroup: RequestHandler = async (req: Request, res: Response) => {};
 
-const deleteGroup: RequestHandler = async (req: Request, res: Response) => {}
+const deleteGroup: RequestHandler = async (req: Request, res: Response) => {};
 
 export { createGroup, getGroup, updateGroup, deleteGroup };

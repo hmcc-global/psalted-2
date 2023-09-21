@@ -6,6 +6,6 @@ const userRouter = Router();
 userRouter.post('/create', createUser);
 userRouter.get('/get', getUser);
 userRouter.put('/update', updateUser);
-userRouter.delete('/delete', deleteUser);
+userRouter.put('/delete', deleteUser);
 
 export default userRouter;

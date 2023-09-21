@@ -25,7 +25,7 @@ const createGroup: RequestHandler = async (req: Request, res: Response) => {
         sendResponse(res, 404, 'Group not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   }
   sendResponse(res, 400, 'Missing required fields');
@@ -48,7 +48,7 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
         sendResponse(res, 404, 'Group not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   }
   // If no id, get all groups
@@ -61,7 +61,7 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
       sendResponse(res, 404, 'Users not found');
     }
   } catch (error: any) {
-    sendResponse(res, 500, error.message);
+    sendResponse(res, 500, error?.message);
   }
 };
 
@@ -82,7 +82,7 @@ const updateGroup: RequestHandler = async (req: Request, res: Response) => {
         sendResponse(res, 404, 'Group not updated');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   }
   sendResponse(res, 400, 'Missing required fields');
@@ -98,7 +98,7 @@ const deleteGroup: RequestHandler = async (req: Request, res: Response) => {
 
       sendResponse(res, 200, 'Group deleted');
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   }
   sendResponse(res, 400, 'Missing required fields');

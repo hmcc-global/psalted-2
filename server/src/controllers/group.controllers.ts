@@ -1,11 +1,11 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Group } from '../models/group.model';
-import { GroupModel } from '../models/group.model';
+import { GroupMongoResponse } from '../types/group.types';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: GroupModel[] | GroupModel | string
+  payload: GroupMongoResponse[] | GroupMongoResponse | string | null
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -17,7 +17,7 @@ const createGroup: RequestHandler = async (req: Request, res: Response) => {
   // if no fields are present or if a required field is missing
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data = await Group.create(toCreate);
+      const data: GroupMongoResponse = await Group.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
@@ -37,7 +37,10 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
   // Get group by id
   if (groupId) {
     try {
-      const data = await Group.findOne({ _id: groupId, isDeleted: false });
+      const data: GroupMongoResponse | null = await Group.findOne({
+        _id: groupId,
+        isDeleted: false,
+      });
 
       if (data) {
         sendResponse(res, 200, data);
@@ -50,7 +53,7 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
   }
   // If no id, get all groups
   try {
-    const data = await Group.find({ isDeleted: false });
+    const data: GroupMongoResponse[] = await Group.find({ isDeleted: false });
 
     if (data) {
       sendResponse(res, 200, data);

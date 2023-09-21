@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { MongoInjectedFields } from './mongo.types';
 
 type GroupModel = {
   groupName: string;
@@ -11,4 +12,12 @@ type GroupModel = {
   isDeleted: boolean;
 };
 
-export type { GroupModel };
+type GroupList = {
+  _id: string;
+  groupName: string;
+  userIds?: Types.Array<Types.ObjectId>;
+};
+
+type GroupMongoResponse = GroupModel & MongoInjectedFields;
+
+export { GroupModel, GroupList, GroupMongoResponse };

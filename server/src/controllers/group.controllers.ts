@@ -37,7 +37,7 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
   // Get group by id
   if (groupId) {
     try {
-      const data = await Group.findOne({ _id: groupId });
+      const data = await Group.findOne({ _id: groupId, isDeleted: false });
 
       if (data) {
         sendResponse(res, 200, data);
@@ -50,7 +50,7 @@ const getGroup: RequestHandler = async (req: Request, res: Response) => {
   }
   // If no id, get all groups
   try {
-    const data = await Group.find();
+    const data = await Group.find({ isDeleted: false });
 
     if (data) {
       sendResponse(res, 200, data);
@@ -68,7 +68,10 @@ const updateGroup: RequestHandler = async (req: Request, res: Response) => {
   // Update group by id with fields to update
   if (groupId && Object.keys(toUpdate).length > 0) {
     try {
-      const updatedGroup = await Group.updateOne({ _id: groupId }, { $set: toUpdate });
+      const updatedGroup = await Group.updateOne(
+        { _id: groupId, isDeleted: false },
+        { $set: toUpdate }
+      );
 
       if (updatedGroup) {
         sendResponse(res, 200, 'Group updated');
@@ -88,7 +91,7 @@ const deleteGroup: RequestHandler = async (req: Request, res: Response) => {
   // Soft delete group by id
   if (groupId) {
     try {
-      await Group.updateOne({ _id: groupId }, { $set: { isDeleted: true } });
+      await Group.updateOne({ _id: groupId, isDeleted: false }, { $set: { isDeleted: true } });
 
       sendResponse(res, 200, 'Group deleted');
     } catch (error: any) {

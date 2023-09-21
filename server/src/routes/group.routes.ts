@@ -6,6 +6,6 @@ const groupRouter = Router();
 groupRouter.post('/create', createGroup);
 groupRouter.get('/get', getGroup);
 groupRouter.put('/update', updateGroup);
-groupRouter.delete('/delete', deleteGroup);
+groupRouter.put('/delete', deleteGroup);
 
 export default groupRouter;

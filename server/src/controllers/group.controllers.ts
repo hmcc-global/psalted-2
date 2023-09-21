@@ -1,7 +1,12 @@
 import { Request, RequestHandler, Response } from 'express';
-import { Group, IGroup } from '../models/group.model';
+import { Group } from '../models/group.model';
+import { GroupModel } from '../models/group.model';
 
-const sendResponse = (res: Response, statusCode: number, payload: IGroup[] | IGroup | string) => {
+const sendResponse = (
+  res: Response,
+  statusCode: number,
+  payload: GroupModel[] | GroupModel | string
+) => {
   return res.status(statusCode).json(payload);
 };
 

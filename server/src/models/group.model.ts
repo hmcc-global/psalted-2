@@ -1,17 +1,7 @@
 import { Schema, model, models, Types } from 'mongoose';
+import { GroupModel } from '../types/group.types';
 
-interface IGroup {
-  groupName: string;
-  userIds: Types.Array<Types.ObjectId>;
-  setlistIds: Types.Array<Types.ObjectId>;
-  createdBy: string;
-  lastUpdatedBy: string;
-  createdAt: Date;
-  lastUpdatedAt: Date;
-  isDeleted: boolean;
-}
-
-const groupSchema = new Schema<IGroup>(
+const groupSchema = new Schema<GroupModel>(
   {
     groupName: { type: String, required: true },
     userIds: [{ type: Types.ObjectId, ref: 'User' }],
@@ -25,6 +15,6 @@ const groupSchema = new Schema<IGroup>(
   }
 );
 
-const Group = models.Group || model<IGroup>('Group', groupSchema);
+const Group = models.Group || model<GroupModel>('Group', groupSchema);
 
-export { Group, IGroup };
+export { Group, GroupModel };

@@ -4,7 +4,7 @@ An [Express](https://expressjs.com/) application
 
 ## Installation
 
-1. Check out the first README at root if you haven't yet
+1. Check out the first README at root directory if you haven't yet
 2. Run `yarn install` at `./server`
 
 ## Usage

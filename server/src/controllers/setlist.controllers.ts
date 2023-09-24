@@ -1,20 +1,21 @@
 import { Request, RequestHandler, Response } from 'express';
-import { Setlist, ISetlist } from '../models/setlist.model';
+import { Setlist } from '../models/setlist.model';
+import { SetlistMongoSchema } from '../types/setlist.types';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: ISetlist[] | ISetlist | string
+  payload: SetlistMongoSchema[] | SetlistMongoSchema | string
 ) => {
   return res.status(statusCode).json(payload);
 };
 
 const createSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { ...toCreate }: ISetlist = req.body;
+  const { ...toCreate } = req.body;
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data = await Setlist.create(toCreate);
+      const data: SetlistMongoSchema = await Setlist.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
@@ -22,7 +23,7 @@ const createSetlist: RequestHandler = async (req: Request, res: Response): Promi
         sendResponse(res, 404, 'Setlist not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     sendResponse(res, 400, 'Missing required fields');
@@ -34,7 +35,10 @@ const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (setlistId) {
     try {
-      const data: ISetlist = await Setlist.findOne({ _id: setlistId }).exec();
+      const data: SetlistMongoSchema = await Setlist.findOne({
+        _id: setlistId,
+        isDeleted: false,
+      }).exec();
 
       if (data) {
         sendResponse(res, 200, data);
@@ -42,11 +46,11 @@ const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<
         sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     try {
-      const data: ISetlist[] = await Setlist.find().exec();
+      const data: SetlistMongoSchema[] = await Setlist.find({ isDeleted: false }).exec();
 
       if (data) {
         sendResponse(res, 200, data);
@@ -54,7 +58,7 @@ const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<
         sendResponse(res, 404, 'Setlists not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   }
 };
@@ -64,10 +68,14 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
   if (setlistId && Object.keys(toUpdate).length > 0) {
     try {
-      const updatedSetlist = await Setlist.findOneAndUpdate({ _id: setlistId }, toUpdate, {
-        upsert: true,
-        new: true,
-      });
+      const updatedSetlist: SetlistMongoSchema = await Setlist.findOneAndUpdate(
+        { _id: setlistId, isDeleted: false },
+        toUpdate,
+        {
+          upsert: true,
+          new: true,
+        }
+      );
 
       if (updatedSetlist) {
         sendResponse(res, 200, updatedSetlist);
@@ -75,7 +83,7 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
         sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     sendResponse(res, 400, 'Missing required fields');
@@ -87,7 +95,11 @@ const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
   if (setlistId) {
     try {
-      const data = await Setlist.findOneAndDelete({ _id: setlistId });
+      const data: SetlistMongoSchema | null = await Setlist.findOneAndUpdate(
+        { _id: setlistId, isDeleted: false },
+        { isDeleted: true },
+        { new: true }
+      );
 
       if (data) {
         sendResponse(res, 200, data);
@@ -95,7 +107,7 @@ const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promi
         sendResponse(res, 404, 'Setlist not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     sendResponse(res, 400, 'Missing required fields');

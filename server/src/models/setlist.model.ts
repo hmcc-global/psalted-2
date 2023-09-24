@@ -1,30 +1,22 @@
 import { Schema, model, models, Types } from 'mongoose';
+import { SetlistSchema } from '../types/setlist.types';
 
-interface ISetlist {
-  name: string;
-  date: string;
-  createdBy: Types.ObjectId;
-  songs: Types.Array<Types.ObjectId>;
-  lastUpdatedBy: Types.ObjectId;
-  publicLink: string;
-  groupIds: Types.Array<Types.ObjectId>;
-}
-
-const setlistSchema = new Schema<ISetlist>(
+const setlistSchema = new Schema<SetlistSchema>(
   {
     name: { type: String, required: true },
-    date: { type: String, required: true },
-    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    date: { type: Date },
+    createdBy: { type: Types.ObjectId, ref: 'User' },
     songs: [{ type: Types.ObjectId, ref: 'Song' }],
-    lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    lastUpdatedBy: { type: Types.ObjectId, ref: 'User' },
     publicLink: { type: String, required: true, unique: true },
     groupIds: [{ type: Types.ObjectId, ref: 'Group' }],
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
   }
 );
 
-const Setlist = models.Setlist || model<ISetlist>('Setlist', setlistSchema);
+const Setlist = models.Setlist || model<SetlistSchema>('Setlist', setlistSchema);
 
-export { Setlist, ISetlist };
+export { Setlist };

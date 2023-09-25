@@ -11,11 +11,21 @@ const sendResponse = (
 };
 
 const createSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { ...toCreate } = req.body;
-
+  const { ...toCreate }: SetlistMongoSchema = req.body;
+  const defaultUrl: string = req.protocol + '://' + req.get('host') + '/setlist/';
+  console.log(defaultUrl);
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data: SetlistMongoSchema = await Setlist.create(toCreate);
+      const tempData: SetlistMongoSchema = await Setlist.create(toCreate);
+      const tempId = tempData._id.toString();
+
+      const data: SetlistMongoSchema | null = await Setlist.findOneAndUpdate(
+        { _id: tempId, isDeleted: false },
+        {
+          ...toCreate,
+          publicLink: toCreate.publicLink ? defaultUrl + toCreate.publicLink : defaultUrl + tempId,
+        }
+      );
 
       if (data) {
         sendResponse(res, 200, data);

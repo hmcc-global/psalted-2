@@ -1,7 +1,7 @@
 import { Schema, model, models, Types } from 'mongoose';
-import { GroupModel } from '../types/group.types';
+import { GroupSchema } from '../types/group.types';
 
-const groupSchema = new Schema<GroupModel>(
+const groupSchema = new Schema<GroupSchema>(
   {
     groupName: { type: String, required: true },
     userIds: [{ type: Types.ObjectId, ref: 'User' }],
@@ -15,6 +15,6 @@ const groupSchema = new Schema<GroupModel>(
   }
 );
 
-const Group = models.Group || model<GroupModel>('Group', groupSchema);
+const Group = models.Group || model<GroupSchema>('Group', groupSchema);
 
-export { Group, GroupModel };
+export { Group };

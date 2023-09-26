@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { MongoInjectedFields } from './mongo.types';
 
-type GroupModel = {
+type GroupSchema = {
   groupName: string;
   userIds: Types.Array<Types.ObjectId>;
   setlistIds: Types.Array<Types.ObjectId>;
@@ -12,12 +12,6 @@ type GroupModel = {
   isDeleted: boolean;
 };
 
-type GroupList = {
-  _id: string;
-  groupName: string;
-  userIds?: Types.Array<Types.ObjectId>;
-};
+type GroupDocument = GroupSchema & MongoInjectedFields;
 
-type GroupMongoResponse = GroupModel & MongoInjectedFields;
-
-export { GroupModel, GroupList, GroupMongoResponse };
+export { GroupSchema, GroupDocument };

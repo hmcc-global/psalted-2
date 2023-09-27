@@ -61,7 +61,6 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<Son
 
 const updateSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType | string> => {
     const { id: songId, ...toUpdate } = req.body;
-    console.log("song id", songId);
 
     if (songId && Object.keys(toUpdate).length > 0) {
       try {
@@ -84,7 +83,6 @@ const updateSong: RequestHandler = async (req: Request, res: Response): Promise<
 
 const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType | string> => {
   const { id: songId } = req.params;
-  console.log("song id delete", songId);
 
   if (songId) {
     try {

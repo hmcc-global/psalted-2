@@ -1,21 +1,7 @@
 import { Schema, model, models, Types } from 'mongoose';
+import { SongType } from '../types/song.types';
 
-interface ISong {
-  title: string;
-  tempo: Types.Array<string>;
-  originalKey: string;
-  tags: Types.Array<string>;
-  artist: string;
-  firstLine: string;
-  id: Types.ObjectId;
-  createdBy: Types.ObjectId; 
-  lastUpdatedBy: Types.ObjectId; 
-  isVerified: boolean; 
-  chordLyric: string; 
-  isDeleted: boolean; 
-}
-
-const songSchema = new Schema<ISong>({
+const songSchema = new Schema<SongType>({
   title: { type: String, required: true },
   tempo: [{ type: String, required: true }],
   originalKey: { type: String, required: true },
@@ -32,6 +18,6 @@ const songSchema = new Schema<ISong>({
   timestamps: true,
 });
 
-const Song = models.Song || model<ISong>('Song', songSchema);
+const Song = models.Song || model<SongType>('Song', songSchema);
 
-export { Song, ISong };
+export { Song };

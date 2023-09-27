@@ -1,11 +1,12 @@
 import { Request, RequestHandler, Response } from 'express';
-import { Song, ISong }  from '../models/song.model';
+import { Song }  from '../models/song.model';
+import { SongMongoType } from '../types/song.types';
 
-const sendResponse = (res: Response, statusCode: number, payload: ISong[] | ISong | string ) => {
+const sendResponse = (res: Response, statusCode: number, payload: SongMongoType[] | SongMongoType | string ) => {
   return res.status(statusCode).json(payload);
 };
 
-const createSong: RequestHandler = async (req: Request, res: Response): Promise<ISong | string> => {
+const createSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType | string> => {
   const { ...toCreate } = req.body;
 
   if (Object.keys(toCreate).length > 0) {
@@ -26,7 +27,7 @@ const createSong: RequestHandler = async (req: Request, res: Response): Promise<
   return '';
 };
 
-const getSong: RequestHandler = async (req: Request, res: Response): Promise<ISong[] | ISong | string> => {
+const getSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType[] | SongMongoType | string> => {
     const { id: songId } = req.params;
 
     if (songId) {
@@ -58,7 +59,7 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<ISo
     return ''
 };
 
-const updateSong: RequestHandler = async (req: Request, res: Response): Promise<ISong | string> => {
+const updateSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType | string> => {
     const { id: songId, ...toUpdate } = req.body;
     console.log("song id", songId);
 
@@ -81,7 +82,7 @@ const updateSong: RequestHandler = async (req: Request, res: Response): Promise<
     return ''
 };
 
-const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<ISong | string> => {
+const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<SongMongoType | string> => {
   const { id: songId } = req.params;
   console.log("song id delete", songId);
 

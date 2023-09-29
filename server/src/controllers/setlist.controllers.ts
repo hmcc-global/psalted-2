@@ -1,34 +1,39 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Setlist } from '../models/setlist.model';
-import { SetlistMongoSchema } from '../types/setlist.types';
+import { SetlistDocument } from '../types/setlist.types';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: SetlistMongoSchema[] | SetlistMongoSchema | string
+  payload: SetlistDocument[] | SetlistDocument | string
 ) => {
   return res.status(statusCode).json(payload);
 };
 
 const createSetlist: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { ...toCreate }: SetlistMongoSchema = req.body;
+  const { ...toCreate }: SetlistDocument = req.body;
   const defaultUrl: string = req.protocol + '://' + req.get('host') + '/setlist/';
-  console.log(defaultUrl);
+
   if (Object.keys(toCreate).length > 0) {
     try {
-      const tempData: SetlistMongoSchema = await Setlist.create(toCreate);
+      const tempData: SetlistDocument = await Setlist.create(toCreate);
       const tempId = tempData._id.toString();
 
-      const data: SetlistMongoSchema | null = await Setlist.findOneAndUpdate(
+      // this is to set the default url of the public link to setlist/:id,
+      // and to setlist/custom-name if the user define a custom link name
+      const setlistUrl = toCreate.publicLink
+        ? defaultUrl + toCreate.publicLink
+        : defaultUrl + tempId;
+      const data = await Setlist.updateOne(
         { _id: tempId, isDeleted: false },
         {
           ...toCreate,
-          publicLink: toCreate.publicLink ? defaultUrl + toCreate.publicLink : defaultUrl + tempId,
+          publicLink: setlistUrl,
         }
       );
 
       if (data) {
-        sendResponse(res, 200, data);
+        sendResponse(res, 200, 'Setlist created');
       } else {
         sendResponse(res, 404, 'Setlist not created');
       }
@@ -45,7 +50,7 @@ const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (setlistId) {
     try {
-      const data: SetlistMongoSchema = await Setlist.findOne({
+      const data: SetlistDocument = await Setlist.findOne({
         _id: setlistId,
         isDeleted: false,
       }).exec();
@@ -60,7 +65,7 @@ const getSetlist: RequestHandler = async (req: Request, res: Response): Promise<
     }
   } else {
     try {
-      const data: SetlistMongoSchema[] = await Setlist.find({ isDeleted: false }).exec();
+      const data: SetlistDocument[] = await Setlist.find({ isDeleted: false }).exec();
 
       if (data) {
         sendResponse(res, 200, data);
@@ -78,7 +83,7 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
   if (setlistId && Object.keys(toUpdate).length > 0) {
     try {
-      const updatedSetlist: SetlistMongoSchema = await Setlist.findOneAndUpdate(
+      const updatedSetlist = await Setlist.updateOne(
         { _id: setlistId, isDeleted: false },
         toUpdate,
         {
@@ -88,7 +93,7 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
       );
 
       if (updatedSetlist) {
-        sendResponse(res, 200, updatedSetlist);
+        sendResponse(res, 200, 'Setlist Updated');
       } else {
         sendResponse(res, 404, 'Setlist not found');
       }
@@ -105,14 +110,14 @@ const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
   if (setlistId) {
     try {
-      const data: SetlistMongoSchema | null = await Setlist.findOneAndUpdate(
+      const data = await Setlist.updateOne(
         { _id: setlistId, isDeleted: false },
         { isDeleted: true },
         { new: true }
       );
 
       if (data) {
-        sendResponse(res, 200, data);
+        sendResponse(res, 200, 'Setlist deleted');
       } else {
         sendResponse(res, 404, 'Setlist not found');
       }

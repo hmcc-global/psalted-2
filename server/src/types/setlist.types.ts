@@ -12,6 +12,6 @@ type SetlistSchema = {
   isDeleted: boolean;
 };
 
-type SetlistMongoSchema = SetlistSchema & MongoInjectedFields;
+type SetlistDocument = SetlistSchema & MongoInjectedFields;
 
-export { SetlistSchema, SetlistMongoSchema };
+export { SetlistSchema, SetlistDocument };

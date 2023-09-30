@@ -1,21 +1,23 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
-import { UserMongoType } from '../types/user.types';
+import { UserDocument } from '../types/user.types';
+import { hashPassword } from '../utils/password.utils';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserMongoType[] | UserMongoType | string
+  payload: UserDocument[] | UserDocument | string
 ) => {
   return res.status(statusCode).json(payload);
 };
 
 const createUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { ...toCreate }: UserMongoType = req.body;
+  const { ...toCreate }: UserDocument = req.body;
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data: UserMongoType = await User.create(toCreate);
+      toCreate.password = await hashPassword(toCreate.password);
+      const data: UserDocument = await User.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
@@ -35,7 +37,7 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
 
   if (userId) {
     try {
-      const data: UserMongoType = await User.findOne({ _id: userId, isDeleted: false }).exec();
+      const data: UserDocument | null = await User.findOne({ _id: userId, isDeleted: false });
 
       if (data) {
         sendResponse(res, 200, data);
@@ -47,7 +49,7 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
     }
   } else {
     try {
-      const data: UserMongoType[] = await User.find({ isDeleted: false }).exec();
+      const data: UserDocument[] = await User.find({ isDeleted: false });
 
       if (data) {
         sendResponse(res, 200, data);
@@ -65,9 +67,9 @@ const updateUser: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (userId && Object.keys(toUpdate).length > 0) {
     try {
-      const data: UserMongoType = await User.findOneAndUpdate(
+      const data: UserDocument = await User.findOneAndUpdate(
         { _id: userId, isDeleted: false },
-        toUpdate,
+        { $set: toUpdate },
         {
           upsert: true,
           new: true,
@@ -88,18 +90,17 @@ const updateUser: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { id: userId } = req.body;
+  const { id: userId } = req.params;
 
   if (userId) {
     try {
-      const data: UserMongoType | null = await User.findOneAndUpdate(
+      const data = await User.findOneAndUpdate(
         { _id: userId, isDeleted: false },
-        { isDeleted: true },
-        { new: true }
+        { $set: { isDeleted: true } }
       );
 
       if (data) {
-        sendResponse(res, 200, data);
+        sendResponse(res, 200, 'User successfully deleted');
       } else {
         sendResponse(res, 404, 'User not found');
       }

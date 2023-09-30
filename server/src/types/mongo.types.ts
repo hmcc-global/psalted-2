@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
 
-type MongoInjectedType = {
+type MongoInjectedFields = {
   _id: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
   __v: number;
 };
 
-export { MongoInjectedType };
+export { MongoInjectedFields };

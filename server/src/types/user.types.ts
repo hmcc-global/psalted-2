@@ -1,16 +1,16 @@
 import { Types } from 'mongoose';
-import { MongoInjectedType } from './mongo.types';
+import { MongoInjectedFields } from './mongo.types';
 
-type UserType = {
+type UserSchema = {
   fullName: string;
   email: string;
   password: string;
   accessType: string;
-  groupIds: Types.Array<Types.ObjectId>;
-  setlistIds: Types.Array<Types.ObjectId>;
+  groupIds?: Types.Array<Types.ObjectId>;
+  setlistIds?: Types.Array<Types.ObjectId>;
   isDeleted: boolean;
 };
 
-type UserMongoType = UserType & MongoInjectedType;
+type UserDocument = UserSchema & MongoInjectedFields;
 
-export { UserType, UserMongoType };
+export { UserSchema, UserDocument };

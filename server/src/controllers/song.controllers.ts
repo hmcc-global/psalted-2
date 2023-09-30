@@ -6,7 +6,7 @@ const sendResponse = (res: Response, statusCode: number, payload: SongDocument[]
   return res.status(statusCode).json(payload);
 };
 
-const createSong: RequestHandler = async (req: Request, res: Response): Promise<SongDocument | string> => {
+const createSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { ...toCreate } = req.body;
 
   if (Object.keys(toCreate).length > 0) {
@@ -19,20 +19,19 @@ const createSong: RequestHandler = async (req: Request, res: Response): Promise<
         sendResponse(res, 404, 'Song not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     sendResponse(res, 400, 'Missing required fields' );
   }
-  return '';
 };
 
-const getSong: RequestHandler = async (req: Request, res: Response): Promise<SongDocument[] | SongDocument | string> => {
+const getSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     const { id: songId } = req.params;
 
     if (songId) {
       try {
-        const data = await Song.findOne({ _id: songId }).exec();
+        const data: SongDocument = await Song.findOne({ _id: songId, isDeleted: false }).exec();
   
         if (data) {
           sendResponse(res, 200, data);
@@ -40,11 +39,11 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<Son
           sendResponse(res, 404, 'Song not found');
         }
       } catch (error: any) {
-        sendResponse(res, 500, error.message );
+        sendResponse(res, 500, error?.message );
       }
     } else {
       try {
-        const data = await Song.find().exec();
+        const data = await Song.find({ isDeleted: false }).exec();
   
         if (data) {
           sendResponse(res, 200, data);
@@ -52,36 +51,32 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<Son
           sendResponse(res, 404, 'Songs not found');
         }
       } catch (error: any) {
-        sendResponse(res, 500, error.message);
+        sendResponse(res, 500, error?.message);
       }
     }
-
-    return '';
 };
 
-const updateSong: RequestHandler = async (req: Request, res: Response): Promise<SongDocument | string> => {
+const updateSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     const { id: songId, ...toUpdate } = req.body;
 
     if (songId && Object.keys(toUpdate).length > 0) {
       try {
-        const updatedGroup = await Song.updateOne({ _id: songId }, { $set: toUpdate });
+        const updatedSong = await Song.updateOne({ _id: songId, isDeleted: false }, { $set: toUpdate });
   
-        if (updatedGroup) {
-          sendResponse(res, 200, 'Group updated');
+        if (updatedSong) {
+          sendResponse(res, 200, 'Song updated');
         } else {
-          sendResponse(res, 404, 'Group not updated');
+          sendResponse(res, 404, 'Song not updated');
         }
       } catch (error: any) {
-        sendResponse(res, 500, error.message);
+        sendResponse(res, 500, error?.message);
       }
     } else {
       sendResponse(res, 400, 'Missing required fields');
     }
-
-    return '';
 };
 
-const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<SongDocument | string> => {
+const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: songId } = req.params;
 
   if (songId) {
@@ -89,18 +84,16 @@ const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<
       const data = await Song.findOneAndDelete({ _id: songId }, { $set: { isDeleted: true } });
 
       if (data) {
-        sendResponse(res, 200, data);
+        sendResponse(res, 200, 'Song successfully deleted');
       } else {
-        sendResponse(res, 404, 'Setlist not found');
+        sendResponse(res, 404, 'Song not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, error.message);
+      sendResponse(res, 500, error?.message);
     }
   } else {
     sendResponse(res, 400, 'Missing required fields');
   }
-
-  return '';
 };
 
 export { createSong, getSong, updateSong, deleteSong };

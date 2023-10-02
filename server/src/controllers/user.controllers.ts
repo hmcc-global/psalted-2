@@ -21,15 +21,15 @@ const createUser: RequestHandler = async (req: Request, res: Response): Promise<
 
       if (data) {
         sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, 'User not created');
       }
-
-      sendResponse(res, 404, 'User not created');
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
-
-  sendResponse(res, 400, 'Missing required fields');
 };
 
 const getUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
@@ -41,9 +41,9 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
 
       if (data) {
         sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, 'User not found');
       }
-
-      sendResponse(res, 404, 'User not found');
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
@@ -78,15 +78,15 @@ const updateUser: RequestHandler = async (req: Request, res: Response): Promise<
 
       if (data) {
         sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, 'User not found');
       }
-
-      sendResponse(res, 404, 'User not found');
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
-
-  sendResponse(res, 400, 'Missing required fields');
 };
 
 const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
@@ -99,9 +99,9 @@ const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
-
-  sendResponse(res, 400, 'Missing required fields');
 };
 
 export { createUser, getUser, updateUser, deleteUser };

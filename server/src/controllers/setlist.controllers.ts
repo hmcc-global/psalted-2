@@ -112,8 +112,7 @@ const deleteSetlist: RequestHandler = async (req: Request, res: Response): Promi
     try {
       const data = await Setlist.updateOne(
         { _id: setlistId, isDeleted: false },
-        { isDeleted: true },
-        { new: true }
+        { isDeleted: true }
       );
 
       if (data) {

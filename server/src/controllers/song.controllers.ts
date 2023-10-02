@@ -81,7 +81,7 @@ const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (songId) {
     try {
-      const data = await Song.findOneAndDelete({ _id: songId }, { $set: { isDeleted: true } });
+      const data = await Song.updateOne({ _id: songId, isDeleted: false }, { $set: { isDeleted: true } });
 
       if (data) {
         sendResponse(res, 200, 'Song successfully deleted');

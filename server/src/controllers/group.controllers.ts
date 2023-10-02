@@ -5,7 +5,7 @@ import { GroupDocument } from '../types/group.types';
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: GroupDocument[] | GroupDocument | string | null
+  payload: GroupDocument[] | GroupDocument | string
 ) => {
   return res.status(statusCode).json(payload);
 };

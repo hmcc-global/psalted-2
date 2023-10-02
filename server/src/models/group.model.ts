@@ -6,8 +6,8 @@ const groupSchema = new Schema<GroupSchema>(
     groupName: { type: String, required: true },
     userIds: [{ type: Types.ObjectId, ref: 'User' }],
     setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],
-    createdBy: { type: String },
-    lastUpdatedBy: { type: String },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     isDeleted: { type: Boolean, default: false },
   },
   {

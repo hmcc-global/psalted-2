@@ -5,9 +5,9 @@ const setlistSchema = new Schema<SetlistSchema>(
   {
     name: { type: String, required: true },
     date: { type: Date },
-    createdBy: { type: Types.ObjectId, ref: 'User' },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     songs: [{ type: Types.ObjectId, ref: 'Song' }],
-    lastUpdatedBy: { type: Types.ObjectId, ref: 'User' },
+    lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     publicLink: { type: String, required: true, unique: true },
     groupIds: [{ type: Types.ObjectId, ref: 'Group' }],
     isDeleted: { type: Boolean, default: false },

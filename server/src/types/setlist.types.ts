@@ -1,12 +1,12 @@
-import { ObjectId, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { MongoInjectedFields } from './mongo.types';
 
 type SetlistSchema = {
   name: string;
   date: Date;
-  createdBy: ObjectId;
+  createdBy: Types.ObjectId;
   songs: Types.Array<Types.ObjectId>;
-  lastUpdatedBy: ObjectId;
+  lastUpdatedBy: Types.ObjectId;
   publicLink: string;
   groupIds: Types.Array<Types.ObjectId>;
   isDeleted: boolean;

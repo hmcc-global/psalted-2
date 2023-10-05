@@ -93,7 +93,7 @@ const updateSetlist: RequestHandler = async (req: Request, res: Response): Promi
       );
 
       if (updatedSetlist) {
-        sendResponse(res, 200, 'Setlist Updated');
+        sendResponse(res, 200, 'Setlist updated');
       } else {
         sendResponse(res, 404, 'Setlist not found');
       }

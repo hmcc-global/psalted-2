@@ -1,6 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 import { SongSchema } from '../types/song.types';
 
+
 const songSchema = new Schema<SongSchema>({
   title: { type: String, required: true },
   tempo: [{ type: String, required: true }],

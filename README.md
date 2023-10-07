@@ -37,14 +37,18 @@ A repo built on ExpressJS and React with TypeScript
 
 ## Commit Practices
 
-1. Use the _command line_ for commits
+1. Run `yarn format` in the root directory
+2. Use the _command line_ for commits
    - e.g. `git commit -m "GH-8: Some commit message"`
    - doing so will run the git hooks that we have set-up (i.e. pre-commit formatting & linting, commit message format validation)
    - remember to use `git add` to stage your changes
-2. Attach Issue number to the commit message
+3. Attach Issue number to the commit message
    - e.g. Issue number = #8
    - commit message: "GH-8: Some commit message"
    - note that issue number must be prefixed with 'GH-' in order to properly connect commit messages with issues
+3. When opening a PR, attach the same issue number to the PR title
+   - e.g. PR title: "GH-8: Some PR title"
+   - the PR title should summarize what the purpose of the changes made are in a clear and concise manner
 
 ### Contributors
 

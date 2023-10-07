@@ -11,7 +11,7 @@ const createSong: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data = await Song.create(toCreate);
+      const data: SongDocument = await Song.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
@@ -31,7 +31,7 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<voi
 
     if (songId) {
       try {
-        const data: SongDocument = await Song.findOne({ _id: songId, isDeleted: false }).exec();
+        const data: SongDocument | null = await Song.findOne({ _id: songId, isDeleted: false }).exec();
   
         if (data) {
           sendResponse(res, 200, data);
@@ -43,7 +43,7 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<voi
       }
     } else {
       try {
-        const data = await Song.find({ isDeleted: false }).exec();
+        const data: SongDocument[] = await Song.find({ isDeleted: false }).exec();
   
         if (data) {
           sendResponse(res, 200, data);
@@ -81,13 +81,8 @@ const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (songId) {
     try {
-      const data = await Song.updateOne({ _id: songId, isDeleted: false }, { $set: { isDeleted: true } });
-
-      if (data) {
-        sendResponse(res, 200, 'Song successfully deleted');
-      } else {
-        sendResponse(res, 404, 'Song not found');
-      }
+      await Song.updateOne({ _id: songId, isDeleted: false }, { $set: { isDeleted: true } });
+      sendResponse(res, 200, 'Song successfully deleted');
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }

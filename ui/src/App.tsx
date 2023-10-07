@@ -9,15 +9,15 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        light: '#63b8ff',
-        main: '#0989e3',
-        dark: '#005db0',
+        light: '#717CFF',
+        main: '#717CFF',
+        dark: '#717CFF',
         contrastText: '#000',
       },
       secondary: {
-        main: '#4db6ac',
-        light: '#82e9de',
-        dark: '#00867d',
+        main: '#717CFF',
+        light: '#717CFF',
+        dark: '#717CFF',
         contrastText: '#000',
       },
     },

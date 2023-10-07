@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { MongoInjectedType } from './mongo.types';
+import { MongoInjectedFields } from './mongo.types';
 
 type SongSchema = {
   title: string;
@@ -15,6 +15,6 @@ type SongSchema = {
   isDeleted: boolean; 
 };
 
-type SongDocument = SongSchema & MongoInjectedType;
+type SongDocument = SongSchema & MongoInjectedFields;
 
 export { SongSchema, SongDocument };

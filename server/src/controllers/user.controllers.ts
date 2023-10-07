@@ -1,100 +1,106 @@
 import { Request, RequestHandler, Response } from 'express';
-import User from '../models/user.model';
+import { User } from '../models/user.model';
+import { UserDocument } from '../types/user.types';
+import { hashPassword } from '../utils/password.utils';
 
-const sendResponse = (res: Response, statusCode: number, payload: any) => {
+const sendResponse = (
+  res: Response,
+  statusCode: number,
+  payload: UserDocument[] | UserDocument | string
+) => {
   return res.status(statusCode).json(payload);
 };
 
-const createUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
-  const { ...toCreate } = req.body;
+const createUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { ...toCreate }: UserDocument = req.body;
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      const data = await User.create(toCreate);
+      toCreate.password = await hashPassword(toCreate.password);
+      const data: UserDocument = await User.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'User not created' });
+        sendResponse(res, 404, 'User not created');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error?.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
   }
 };
 
-const getUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const getUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: userId } = req.params;
 
   if (userId) {
     try {
-      const data = await User.findOne({ _id: userId }).exec();
+      const data: UserDocument | null = await User.findOne({ _id: userId, isDeleted: false });
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'User not found' });
+        sendResponse(res, 404, 'User not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error?.message);
     }
   } else {
     try {
-      const data = await User.find().exec();
+      const data: UserDocument[] = await User.find({ isDeleted: false });
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'Users not found' });
+        sendResponse(res, 404, 'Users not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error?.message);
     }
   }
 };
 
-const updateUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
+const updateUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: userId, ...toUpdate } = req.body;
 
   if (userId && Object.keys(toUpdate).length > 0) {
     try {
-      const updatedUser = await User.findOneAndUpdate({ _id: userId }, toUpdate, {
-        upsert: true,
-        new: true,
-      });
-
-      if (updatedUser) {
-        sendResponse(res, 200, updatedUser);
-      } else {
-        sendResponse(res, 404, { error: 'User not found' });
-      }
-    } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
-    }
-  } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
-  }
-};
-
-const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<any> => {
-  const { id: userId } = req.params;
-
-  if (userId) {
-    try {
-      const data = await User.findOneAndDelete({ _id: userId });
+      const data: UserDocument = await User.findOneAndUpdate(
+        { _id: userId, isDeleted: false },
+        { $set: toUpdate },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, { error: 'User not found' });
+        sendResponse(res, 404, 'User not found');
       }
     } catch (error: any) {
-      sendResponse(res, 500, { error: error.message });
+      sendResponse(res, 500, error?.message);
     }
   } else {
-    sendResponse(res, 400, { error: 'Missing required fields' });
+    sendResponse(res, 400, 'Missing required fields');
+  }
+};
+
+const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { id: userId } = req.params;
+
+  if (userId) {
+    try {
+      await User.updateOne({ _id: userId, isDeleted: false }, { $set: { isDeleted: true } });
+      sendResponse(res, 404, 'User successfully deleted');
+    } catch (error: any) {
+      sendResponse(res, 500, error?.message);
+    }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
 };
 

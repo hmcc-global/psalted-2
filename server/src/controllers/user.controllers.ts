@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
 import { UserDocument } from '../types/user.types';
-import { hashPassword } from '../utils/password.utils';
+import { hashPassword } from '../utils/auth.utils';
 
 const sendResponse = (
   res: Response,

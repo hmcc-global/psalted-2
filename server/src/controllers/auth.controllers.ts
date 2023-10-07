@@ -13,7 +13,7 @@ import { OAuth2Client } from 'google-auth-library';
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserDocument[] | UserDocument | GooglePayloadSchema | string
+  payload: UserDocument | GooglePayloadSchema | string
 ) => {
   return res.status(statusCode).json(payload);
 };

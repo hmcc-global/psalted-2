@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const hashPassword = async function (password: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);

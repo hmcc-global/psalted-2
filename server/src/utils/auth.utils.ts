@@ -1,7 +1,6 @@
 import { Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { Secret } from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
 import dotenv from 'dotenv';
 

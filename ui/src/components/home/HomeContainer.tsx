@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/material';
 import { FC, ReactElement } from 'react';
 
-const HomeContainer: FC<any> = (): ReactElement => {
+const HomeContainer: FC = (): ReactElement => {
   return (
     <Box
       sx={{
-        backgroundImage: `url(${process.env.PUBLIC_URL}/psalted_bg.png)`,
+        backgroundImage: `url(${process.env.PUBLIC_URL}/images/psalted_bg.png)`,
         flexGrow: 1,
         display: 'flex',
         justifyContent: 'center',

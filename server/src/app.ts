@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Response } from 'express';
 import { connectToDB } from './mongoose';
 import { getRoutes } from './routes';
 
@@ -6,7 +6,7 @@ const app = express();
 const dev_port: number = 1337;
 
 // TODO-YY: Remove
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (res: Response) => {
   res.send('Hello World!');
 });
 

@@ -4,6 +4,7 @@ import LoginContainer from './components/auth/LoginContainer';
 import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
+import SongEditor from './components/songs/SongEditor';
 
 // interface
 interface Route {
@@ -49,5 +50,12 @@ export const routes: Array<Route> = [
     path: '/password/new',
     enabled: true,
     component: ResetPasswordContainer,
+  },
+  {
+    key: 'song-editor-oute',
+    title: 'Song Editor',
+    path: '/song/editor',
+    enabled: true,
+    component: SongEditor,
   },
 ];

@@ -1,3 +1,5 @@
+import { MongoInjectedFields } from './mongo.types';
+
 type CredentialsSchema = {
   email: string;
   password: string;
@@ -8,4 +10,13 @@ type GooglePayloadSchema = {
   fullName: string;
 };
 
-export { CredentialsSchema, GooglePayloadSchema };
+type ResetPwdTokenSchema = {
+  email: string;
+  token: string;
+  expiresAt: number;
+  isUsed?: boolean;
+};
+
+type ResetPwdTokenDocument = ResetPwdTokenSchema & MongoInjectedFields;
+
+export { CredentialsSchema, GooglePayloadSchema, ResetPwdTokenSchema, ResetPwdTokenDocument };

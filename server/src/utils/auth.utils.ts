@@ -1,30 +1,35 @@
 import { Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import jwt, { Secret } from 'jsonwebtoken';
+import crypto from 'crypto';
+import * as jwt from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const hashPassword = async function (password: string): Promise<string> {
+const hashInput = async function (input: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
+  return await bcrypt.hash(input, salt);
 };
 
-const validatePassword = function (password: string, hashedPassword: string): Promise<boolean> {
-  return bcrypt.compare(password, hashedPassword);
+const validateInput = function (input: string, hashedInput: string): Promise<boolean> {
+  return bcrypt.compare(input, hashedInput);
+};
+
+const generateRandomToken = (length: number): string => {
+  return crypto.randomBytes(length || 32).toString('hex');
 };
 
 const generateJwtToken = (userId: Types.ObjectId, email: string, accessType: string): string => {
   try {
-    const maxAge = 24 * 60 * 60 * 7 * 8; //token stays for 2 month (1 sec increment)
+    const maxAge = 24 * 60 * 60 * 7 * 8; // token stays for 2 month (1 sec increment)
     return jwt.sign(
       {
         id: userId,
         emailAddress: email,
         accessType: accessType,
       },
-      process.env.JWT_KEY as Secret,
+      process.env.JWT_KEY as jwt.Secret,
       { expiresIn: maxAge }
     );
   } catch (error: any) {
@@ -51,4 +56,4 @@ const verifyGoogleToken = async (client: OAuth2Client, token: string): Promise<T
   }
 };
 
-export { hashPassword, validatePassword, generateJwtToken, verifyGoogleToken };
+export { hashInput, validateInput, generateRandomToken, generateJwtToken, verifyGoogleToken };

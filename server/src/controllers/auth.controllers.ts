@@ -1,14 +1,22 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
+import { ResetPwdToken } from '../models/auth.model';
 import { UserSchema, UserDocument } from '../types/user.types';
 import {
-  hashPassword,
-  validatePassword,
+  hashInput,
+  validateInput,
+  generateRandomToken,
   generateJwtToken,
   verifyGoogleToken,
 } from '../utils/auth.utils';
-import { CredentialsSchema, GooglePayloadSchema } from '#/types/auth.types';
+import {
+  CredentialsSchema,
+  GooglePayloadSchema,
+  ResetPwdTokenSchema,
+  ResetPwdTokenDocument,
+} from '../types/auth.types';
 import { OAuth2Client } from 'google-auth-library';
+import { sendTemplateEmail } from '#/utils/email.utils';
 
 const sendResponse = (
   res: Response,
@@ -27,7 +35,7 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
         email: credentials.email.toLowerCase(),
       });
 
-      if (userRecord && (await validatePassword(credentials.password, userRecord.password))) {
+      if (userRecord && (await validateInput(credentials.password, userRecord.password))) {
         const token = await generateJwtToken(
           userRecord._id,
           userRecord.email,
@@ -58,7 +66,7 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
       if (data && data.email && data.name) {
         const { email } = data;
 
-        const userRecord = await User.findOne({ email: email.toLowerCase() });
+        const userRecord: UserDocument = await User.findOne({ email: email.toLowerCase() }).exec();
 
         if (userRecord && userRecord.password !== '') {
           const token = await generateJwtToken(
@@ -86,13 +94,13 @@ const signup: RequestHandler = async (req: Request, res: Response): Promise<void
   if (Object.keys(toCreate).length > 0 && toCreate.password && toCreate.email) {
     try {
       toCreate.email = toCreate.email.toLowerCase();
-      toCreate.password = await hashPassword(toCreate.password);
+      toCreate.password = await hashInput(toCreate.password);
       const data: UserDocument = await User.create(toCreate);
 
       if (data) {
         sendResponse(res, 200, data);
       } else {
-        sendResponse(res, 404, 'New user account was created successfully');
+        sendResponse(res, 404, 'User account was not successfully created');
       }
     } catch (error: any) {
       if (error?.name === 'ValidationError') {
@@ -121,7 +129,7 @@ const signupGoogle: RequestHandler = async (req: Request, res: Response): Promis
         const { email, name: fullName } = data;
         const newEmail = email.toLowerCase();
 
-        const userRecord = await User.findOne({ email: newEmail });
+        const userRecord: UserDocument = await User.findOne({ email: newEmail }).exec();
 
         if (userRecord) {
           sendResponse(res, 409, 'The provided email address is already in use');
@@ -139,4 +147,93 @@ const signupGoogle: RequestHandler = async (req: Request, res: Response): Promis
   }
 };
 
-export { login, loginGoogle, signup, signupGoogle };
+const forgotPassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { email } = req.body;
+
+  if (email) {
+    const newEmail = email.toLowerCase();
+
+    const userRecord: UserDocument = await User.findOne({ email: newEmail }).exec();
+    if (!userRecord) {
+      sendResponse(
+        res,
+        200,
+        'The email address might have matched a user in the database.  (If so, a recovery email was sent.)'
+      );
+    }
+
+    // Delete any existing reset password tokens for the user
+    await ResetPwdToken.findOneAndDelete({ email: newEmail }).exec();
+
+    const resetToken = generateRandomToken(32);
+    const hashedResetToken = await hashInput(resetToken);
+
+    const resetPwdToken: ResetPwdTokenSchema = {
+      email: newEmail,
+      token: hashedResetToken,
+      expiresAt: Date.now() + 60 * 60 * 1000,
+    };
+
+    const data: ResetPwdTokenDocument = await ResetPwdToken.create(resetPwdToken);
+
+    if (!data) {
+      return;
+    }
+
+    const templateData = {
+      fullName: userRecord?.fullName,
+      token: resetToken,
+    };
+
+    try {
+      await sendTemplateEmail(
+        newEmail,
+        'Password Reset Instructions',
+        'email-reset-password',
+        templateData,
+        'layout-email'
+      );
+      sendResponse(res, 200, 'Successfully sent reset password email!');
+    } catch (error: any) {
+      sendResponse(res, 500, 'Failed to process reset password request');
+    }
+  } else {
+    sendResponse(res, 422, 'Missing required fields');
+  }
+};
+
+const resetPassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { token, password } = req.body;
+
+  if (token && password) {
+    try {
+      const hashedToken = await hashInput(token);
+
+      const resetPwdTokenRecord: ResetPwdTokenDocument = await ResetPwdToken.findOne({
+        token: hashedToken,
+      }).exec();
+
+      if (
+        !resetPwdTokenRecord ||
+        resetPwdTokenRecord.isUsed ||
+        resetPwdTokenRecord.expiresAt < Date.now()
+      ) {
+        sendResponse(res, 401, 'Invalid or expired reset password token');
+      }
+
+      await User.updateOne({ email: resetPwdTokenRecord.email }).set({
+        password: await hashInput(password),
+      });
+
+      await ResetPwdToken.updateOne({ token: hashedToken }).set({ isUsed: true });
+
+      sendResponse(res, 200, 'Successfully reset password!');
+    } catch (error: any) {
+      sendResponse(res, 500, 'Failed to process reset password request');
+    }
+  } else {
+    sendResponse(res, 422, 'Missing required fields');
+  }
+};
+
+export { login, loginGoogle, signup, signupGoogle, forgotPassword, resetPassword };

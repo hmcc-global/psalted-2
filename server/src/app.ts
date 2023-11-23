@@ -1,6 +1,7 @@
 import express, { Response } from 'express';
 import { connectToDB } from './mongoose';
 import { getRoutes } from './routes';
+import * as path from 'path';
 
 const app = express();
 const dev_port: number = 1337;
@@ -9,6 +10,10 @@ const dev_port: number = 1337;
 app.get('/', (res: Response) => {
   res.send('Hello World!');
 });
+
+// Use EJS as the template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
 

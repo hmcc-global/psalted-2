@@ -7,12 +7,12 @@ type SongSchema = {
   originalKey: string;
   themes: Types.Array<string>;
   artist: string;
-  firstLine: string;
-  createdBy: Types.ObjectId; 
-  lastUpdatedBy: Types.ObjectId; 
-  isVerified: boolean; 
-  chordLyrics: string; 
-  isDeleted: boolean; 
+  lyricsPreview: string;
+  createdBy: Types.ObjectId;
+  lastUpdatedBy: Types.ObjectId;
+  isVerified: boolean;
+  chordLyrics: string;
+  isDeleted: boolean;
 };
 
 type SongDocument = SongSchema & MongoInjectedFields;

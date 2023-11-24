@@ -13,7 +13,7 @@ type GooglePayloadSchema = {
 type ResetPwdTokenSchema = {
   email: string;
   token: string;
-  expiresAt: number;
+  expireAt?: Date;
   isUsed?: boolean;
 };
 

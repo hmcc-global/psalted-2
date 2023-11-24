@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
 import { UserDocument } from '../types/user.types';
-import { hashPassword } from '../utils/auth.utils';
+import { hashInput } from '../utils/auth.utils';
 
 const sendResponse = (
   res: Response,
@@ -16,7 +16,7 @@ const createUser: RequestHandler = async (req: Request, res: Response): Promise<
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      toCreate.password = await hashPassword(toCreate.password);
+      toCreate.password = await hashInput(toCreate.password);
       const data: UserDocument = await User.create(toCreate);
 
       if (data) {

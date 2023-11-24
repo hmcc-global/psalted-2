@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { JWT_MAX_AGE } from '#/constants';
+import { User } from '#/models/user.model';
+import { UserAuthSchema } from '#/types/user.types';
 
 const hashInput = async function (input: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);
@@ -20,9 +20,8 @@ const generateRandomToken = (length: number): string => {
   return crypto.randomBytes(length || 32).toString('hex');
 };
 
-const generateJwtToken = (userId: Types.ObjectId, email: string, accessType: string): string => {
+const generateJwt = (userId: Types.ObjectId, email: string, accessType: string): string => {
   try {
-    const maxAge = 24 * 60 * 60 * 7 * 8; // token stays for 2 month (1 sec increment)
     return jwt.sign(
       {
         id: userId,
@@ -30,10 +29,39 @@ const generateJwtToken = (userId: Types.ObjectId, email: string, accessType: str
         accessType: accessType,
       },
       process.env.JWT_KEY as jwt.Secret,
-      { expiresIn: maxAge }
+      { expiresIn: JWT_MAX_AGE }
     );
   } catch (error: any) {
     throw new Error('Invalid token or no authentication present');
+  }
+};
+
+const verifyJwt = async (token: string): Promise<UserAuthSchema> => {
+  if (token == null || token === '') {
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    const valid: jwt.JwtPayload = jwt.verify(
+      token,
+      process.env.JWT_KEY as jwt.Secret
+    ) as jwt.JwtPayload;
+    if (valid == null) throw new Error('Forbidden');
+
+    // at this point should return a user object
+    // with id, email and accessType
+    const userObj: UserAuthSchema | null = await User.findOne({ _id: valid.id })
+      .select('-createdAt -updatedAt -password')
+      .exec();
+
+    if (!userObj) throw new Error('Unauthorized');
+
+    return userObj;
+  } catch (error: any) {
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new Error('Token expired');
+    }
+    throw new Error('Invalid token');
   }
 };
 
@@ -56,4 +84,4 @@ const verifyGoogleToken = async (client: OAuth2Client, token: string): Promise<T
   }
 };
 
-export { hashInput, validateInput, generateRandomToken, generateJwtToken, verifyGoogleToken };
+export { hashInput, validateInput, generateRandomToken, generateJwt, verifyJwt, verifyGoogleToken };

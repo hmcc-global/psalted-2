@@ -1,15 +1,13 @@
-import express, { Response } from 'express';
+import express from 'express';
 import { connectToDB } from './mongoose';
 import { getRoutes } from './routes';
 import * as path from 'path';
+import dotenv from 'dotenv';
 
 const app = express();
 const dev_port: number = 1337;
 
-// TODO-YY: Remove
-app.get('/', (res: Response) => {
-  res.send('Hello World!');
-});
+dotenv.config();
 
 // Use EJS as the template engine
 app.set('view engine', 'ejs');

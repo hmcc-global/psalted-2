@@ -1,13 +1,14 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
 import { ResetPwdToken } from '../models/auth.model';
-import { UserSchema, UserDocument } from '../types/user.types';
+import { UserSchema, UserDocument, UserAuthSchema } from '../types/user.types';
 import {
   hashInput,
   validateInput,
   generateRandomToken,
-  generateJwtToken,
+  generateJwt,
   verifyGoogleToken,
+  verifyJwt,
 } from '../utils/auth.utils';
 import {
   CredentialsSchema,
@@ -17,11 +18,12 @@ import {
 } from '../types/auth.types';
 import { OAuth2Client } from 'google-auth-library';
 import { sendTemplateEmail } from '#/utils/email.utils';
+import { PWD_RESET_TOKEN_TTL } from '#/constants';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserDocument | GooglePayloadSchema | string
+  payload: UserDocument | GooglePayloadSchema | UserAuthSchema | string
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -36,11 +38,7 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
       });
 
       if (userRecord && (await validateInput(credentials.password, userRecord.password))) {
-        const token = await generateJwtToken(
-          userRecord._id,
-          userRecord.email,
-          userRecord.accessType
-        );
+        const token = await generateJwt(userRecord._id, userRecord.email, userRecord.accessType);
 
         sendResponse(res, 200, token);
       } else {
@@ -69,11 +67,7 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
         const userRecord: UserDocument = await User.findOne({ email: email.toLowerCase() }).exec();
 
         if (userRecord && userRecord.password !== '') {
-          const token = await generateJwtToken(
-            userRecord._id,
-            userRecord.email,
-            userRecord.accessType
-          );
+          const token = await generateJwt(userRecord._id, userRecord.email, userRecord.accessType);
 
           sendResponse(res, 200, token);
         } else {
@@ -162,16 +156,13 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response): Prom
       );
     }
 
-    // Delete any existing reset password tokens for the user
-    await ResetPwdToken.findOneAndDelete({ email: newEmail }).exec();
-
     const resetToken = generateRandomToken(32);
     const hashedResetToken = await hashInput(resetToken);
 
     const resetPwdToken: ResetPwdTokenSchema = {
       email: newEmail,
       token: hashedResetToken,
-      expiresAt: Date.now() + 60 * 60 * 1000,
+      expireAt: new Date(Date.now() + PWD_RESET_TOKEN_TTL), // expires 24 hours from time of token creation
     };
 
     const data: ResetPwdTokenDocument = await ResetPwdToken.create(resetPwdToken);
@@ -209,25 +200,27 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
     try {
       const hashedToken = await hashInput(token);
 
-      const resetPwdTokenRecord: ResetPwdTokenDocument = await ResetPwdToken.findOne({
+      const resetPwdTokenRecord: ResetPwdTokenDocument | null = await ResetPwdToken.findOne({
         token: hashedToken,
-      }).exec();
-
-      if (
-        !resetPwdTokenRecord ||
-        resetPwdTokenRecord.isUsed ||
-        resetPwdTokenRecord.expiresAt < Date.now()
-      ) {
-        sendResponse(res, 401, 'Invalid or expired reset password token');
-      }
-
-      await User.updateOne({ email: resetPwdTokenRecord.email }).set({
-        password: await hashInput(password),
       });
 
-      await ResetPwdToken.updateOne({ token: hashedToken }).set({ isUsed: true });
+      // Token may have been used but not expired yet
+      if (
+        resetPwdTokenRecord &&
+        !resetPwdTokenRecord.isUsed &&
+        resetPwdTokenRecord.expireAt &&
+        resetPwdTokenRecord.expireAt >= new Date()
+      ) {
+        await User.updateOne({ email: resetPwdTokenRecord.email }).set({
+          password: await hashInput(password),
+        });
 
-      sendResponse(res, 200, 'Successfully reset password!');
+        await ResetPwdToken.updateOne({ token: hashedToken }).set({ isUsed: true });
+
+        sendResponse(res, 200, 'Successfully reset password!');
+      } else {
+        sendResponse(res, 401, 'Invalid or expired reset password token');
+      }
     } catch (error: any) {
       sendResponse(res, 500, 'Failed to process reset password request');
     }
@@ -236,4 +229,19 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
   }
 };
 
-export { login, loginGoogle, signup, signupGoogle, forgotPassword, resetPassword };
+const verifyToken = async (req: Request, res: Response): Promise<void> => {
+  const { token } = req.body;
+
+  if (token && token !== '') {
+    try {
+      const validUserObject: UserAuthSchema = await verifyJwt(token);
+      sendResponse(res, 200, validUserObject);
+    } catch (error: any) {
+      sendResponse(res, 401, 'Invalid token');
+    }
+  } else {
+    sendResponse(res, 401, 'Unauthorized');
+  }
+};
+
+export { login, loginGoogle, signup, signupGoogle, forgotPassword, resetPassword, verifyToken };

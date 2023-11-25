@@ -2,7 +2,8 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '../../types/song';
 
 const SongCard = (props: SongCardProps) => {
-  const { title, tempo, originalKey, themes, artist, lyricsPreview } = props;
+  const { title, tempo, originalKey, themes, artist, year, lyricsPreview } = props;
+  const fieldData = [themes, tempo, originalKey, year];
   const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
   const titleStyle = {
     color: '#4B50B4',
@@ -20,6 +21,7 @@ const SongCard = (props: SongCardProps) => {
     fontWeight: 400,
     lineHeight: 'normal',
   };
+  console.log(lyricsPreview);
   return (
     <>
       <Container
@@ -39,18 +41,20 @@ const SongCard = (props: SongCardProps) => {
             src={process.env.PUBLIC_URL + '/images/preview.svg'}
           />
         </Stack>
-        <Stack direction="row">
-          <Stack>
-            {CardFields &&
-              CardFields.map((field, i) => {
-                return (
-                  <Typography style={fieldStyle} key={i}>
+        <Stack direction="column">
+          {CardFields &&
+            CardFields.map((field, i) => {
+              return (
+                <Stack direction="row" display="flex">
+                  <Typography style={fieldStyle} key={i} width="40%">
                     {field}
                   </Typography>
-                );
-              })}
-          </Stack>
-          <Stack>test</Stack>
+                  <Typography style={fieldStyle} key={i}>
+                    {fieldData[i]}
+                  </Typography>
+                </Stack>
+              );
+            })}
         </Stack>
       </Container>
     </>

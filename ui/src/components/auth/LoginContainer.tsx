@@ -33,12 +33,12 @@ const LoginContainer: React.FC = () => {
 
   const handleEmailLogin: SubmitHandler<LoginFormFields> = async (data) => {
     console.log(data);
-    console.log(rememberPassword);
 
     try {
       const payload = await axios.post('/api/auth/login', {
         email: data.email,
         password: data.password ? data.password : '',
+        isRememberPassword: rememberPassword,
       });
       dispatch(signin(payload.data));
       setInvalidLogin('');

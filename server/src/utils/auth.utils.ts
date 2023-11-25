@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
-import { JWT_MAX_AGE, JWT_MIN_AGE } from '#/constants';
-import { User } from '#/models/user.model';
-import { UserAuthSchema } from '#/types/user.types';
+import { JWT_MAX_AGE, JWT_MIN_AGE } from '../constants';
+import { User } from '../models/user.model';
+import { UserAuthSchema } from '../types/user.types';
 
 const hashInput = async function (input: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);

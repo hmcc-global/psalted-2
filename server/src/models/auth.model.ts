@@ -1,6 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 import { ResetPwdTokenSchema } from '../types/auth.types';
-import { PWD_RESET_TOKEN_TTL } from '#/constants';
+import { PWD_RESET_TOKEN_TTL } from '../constants';
 
 const resetPwdTokenSchema = new Schema<ResetPwdTokenSchema>({
   email: { type: String, required: true },

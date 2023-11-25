@@ -17,8 +17,8 @@ import {
   ResetPwdTokenDocument,
 } from '../types/auth.types';
 import { OAuth2Client } from 'google-auth-library';
-import { sendTemplateEmail } from '#/utils/email.utils';
-import { PWD_RESET_TOKEN_TTL } from '#/constants';
+import { sendTemplateEmail } from '../utils/email.utils';
+import { PWD_RESET_TOKEN_TTL } from '../constants';
 
 const sendResponse = (
   res: Response,

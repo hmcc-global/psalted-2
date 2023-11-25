@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { OAuth2Client, LoginTicket, TokenPayload } from 'google-auth-library';
-import { JWT_MAX_AGE } from '#/constants';
+import { JWT_MAX_AGE, JWT_MIN_AGE } from '#/constants';
 import { User } from '#/models/user.model';
 import { UserAuthSchema } from '#/types/user.types';
 
@@ -20,7 +20,12 @@ const generateRandomToken = (length: number): string => {
   return crypto.randomBytes(length || 32).toString('hex');
 };
 
-const generateJwt = (userId: Types.ObjectId, email: string, accessType: string): string => {
+const generateJwt = (
+  userId: Types.ObjectId,
+  email: string,
+  accessType: string,
+  isRememberPassword: boolean
+): string => {
   try {
     return jwt.sign(
       {
@@ -29,7 +34,7 @@ const generateJwt = (userId: Types.ObjectId, email: string, accessType: string):
         accessType: accessType,
       },
       process.env.JWT_KEY as jwt.Secret,
-      { expiresIn: JWT_MAX_AGE }
+      { expiresIn: isRememberPassword ? JWT_MAX_AGE : JWT_MIN_AGE }
     );
   } catch (error: any) {
     throw new Error('Invalid token or no authentication present');

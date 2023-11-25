@@ -31,14 +31,24 @@ const sendResponse = (
 const login: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const credentials: CredentialsSchema = req.body;
 
-  if (Object.keys(credentials).length > 0 && credentials.email && credentials.password) {
+  if (
+    Object.keys(credentials).length > 0 &&
+    credentials.email &&
+    credentials.password &&
+    credentials.isRememberPassword
+  ) {
     try {
       const userRecord: UserDocument | null = await User.findOne({
         email: credentials.email.toLowerCase(),
       });
 
       if (userRecord && (await validateInput(credentials.password, userRecord.password))) {
-        const token = await generateJwt(userRecord._id, userRecord.email, userRecord.accessType);
+        const token = await generateJwt(
+          userRecord._id,
+          userRecord.email,
+          userRecord.accessType,
+          credentials.isRememberPassword
+        );
 
         sendResponse(res, 200, token);
       } else {
@@ -67,7 +77,12 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
         const userRecord: UserDocument = await User.findOne({ email: email.toLowerCase() }).exec();
 
         if (userRecord && userRecord.password !== '') {
-          const token = await generateJwt(userRecord._id, userRecord.email, userRecord.accessType);
+          const token = await generateJwt(
+            userRecord._id,
+            userRecord.email,
+            userRecord.accessType,
+            true
+          ); // always remember password for google login
 
           sendResponse(res, 200, token);
         } else {

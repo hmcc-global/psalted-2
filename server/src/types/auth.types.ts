@@ -3,6 +3,7 @@ import { MongoInjectedFields } from './mongo.types';
 type CredentialsSchema = {
   email: string;
   password: string;
+  isRememberPassword: boolean;
 };
 
 type GooglePayloadSchema = {

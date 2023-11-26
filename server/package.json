@@ -29,6 +29,6 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "start": "yarn build && NODE_ENV=production && node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "dev": "set NODE_ENV=test && nodemon src/app.ts"
   }
 }

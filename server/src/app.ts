@@ -5,7 +5,7 @@ import * as path from 'path';
 import dotenv from 'dotenv';
 
 const app = express();
-const dev_port: number = 1337;
+const port: number = process.env.PORT ? parseInt(process.env.PORT) : 1337; // development port is 1337
 
 dotenv.config();
 
@@ -20,8 +20,8 @@ app.use('/api', getRoutes());
 // Starts the server after connecting to the database
 connectToDB()
   .then(() => {
-    app.listen(dev_port, () => {
-      console.log(`Server is running on port ${dev_port}.`);
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}.`);
     });
   })
   .catch(() => {

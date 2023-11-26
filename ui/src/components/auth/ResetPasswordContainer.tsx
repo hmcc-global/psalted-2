@@ -71,8 +71,10 @@ const ResetPasswordContainer: React.FC = (props: any) => {
     setOpen(true);
     try {
       const token = query.get('token');
+      const email = query.get('email');
       const params = {
-        token,
+        email: email,
+        token: token,
         password: data.password ? data.password : '',
       };
 

@@ -46,7 +46,7 @@ export const routes: Array<Route> = [
   {
     key: 'reset-password-route',
     title: 'Reset Password',
-    path: '/password/reset',
+    path: '/password/new',
     enabled: true,
     component: ResetPasswordContainer,
   },

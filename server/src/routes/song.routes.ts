@@ -11,7 +11,7 @@ const songRouter = Router();
 
 songRouter.post('/create', createSong);
 songRouter.get('/get', getSong);
-songRouter.get('/getview', getSongView);
+songRouter.get('/get-view', getSongView);
 songRouter.put('/update', updateSong);
 songRouter.put('/delete', deleteSong);
 

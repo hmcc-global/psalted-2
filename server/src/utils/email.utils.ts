@@ -21,8 +21,8 @@ const compileEmailTemplate = async (
   data: object
 ): Promise<string> => {
   try {
-    const emailTemplatePath = path.join('views/emails', `${templatePath}.ejs`);
-    const layoutTemplatePath = path.join('views/layouts', `${layoutPath}.ejs`);
+    const emailTemplatePath = path.join(__dirname, '..', 'views', 'emails', `${templatePath}.ejs`);
+    const layoutTemplatePath = path.join(__dirname, '..', 'views', 'layouts', `${layoutPath}.ejs`);
 
     const emailContent = await ejs.renderFile(emailTemplatePath, data);
     const layoutContent = await ejs.renderFile(layoutTemplatePath, { body: emailContent });
@@ -46,14 +46,15 @@ const sendTemplateEmail = async (
 
     const htmlEmailContents = await compileEmailTemplate(template, layoutPath, templateData);
 
-    if (process.env.NODE_ENV === 'test') {
+    // Don't send email in test environment
+    if (process.env.NODE_ENV?.trim() === 'test') {
       console.log('Skipped sending email (test environment):');
       console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
       console.log('To:', to);
       console.log('Subject:', subject);
       console.log('Body:', htmlEmailContents);
       console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
-      return; // Stop further execution in test environment
+      return;
     }
 
     const mailOptions = {

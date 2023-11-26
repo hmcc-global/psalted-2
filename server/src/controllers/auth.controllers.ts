@@ -42,7 +42,14 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
         email: credentials.email.toLowerCase(),
       });
 
-      if (userRecord && (await validateInput(credentials.password, userRecord.password))) {
+      if (!userRecord) {
+        sendResponse(res, 401, 'Invalid login credentials');
+        return;
+      }
+
+      const isPasswordValid = await validateInput(credentials.password, userRecord.password);
+
+      if (isPasswordValid) {
         const token = await generateJwt(
           userRecord._id,
           userRecord.email,
@@ -74,7 +81,9 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
       if (data && data.email && data.name) {
         const { email } = data;
 
-        const userRecord: UserDocument = await User.findOne({ email: email.toLowerCase() }).exec();
+        const newEmail = email.toLowerCase();
+
+        const userRecord: UserDocument = await User.findOne({ email: newEmail }).exec();
 
         if (userRecord && userRecord.password !== '') {
           const token = await generateJwt(
@@ -169,7 +178,11 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response): Prom
         200,
         'The email address might have matched a user in the database.  (If so, a recovery email was sent.)'
       );
+      return;
     }
+
+    // Delete any existing reset password tokens for this email to avoid breaking unique constraint
+    ResetPwdToken.findOneAndDelete({ email: newEmail }).exec();
 
     const resetToken = generateRandomToken(32);
     const hashedResetToken = await hashInput(resetToken);
@@ -181,14 +194,18 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response): Prom
     };
 
     const data: ResetPwdTokenDocument = await ResetPwdToken.create(resetPwdToken);
+    console.log(data);
 
     if (!data) {
+      sendResponse(res, 500, 'Failed to create reset password token');
       return;
     }
 
+    const resetPwdUrl = `${process.env.BASE_URL}/password/new?email=${newEmail}&token=${resetToken}`;
+
     const templateData = {
       fullName: userRecord?.fullName,
-      token: resetToken,
+      resetUrl: resetPwdUrl,
     };
 
     try {
@@ -209,19 +226,26 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response): Prom
 };
 
 const resetPassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { token, password } = req.body;
+  const { email, token, password } = req.body;
 
-  if (token && password) {
+  if (email && token && password) {
     try {
-      const hashedToken = await hashInput(token);
-
       const resetPwdTokenRecord: ResetPwdTokenDocument | null = await ResetPwdToken.findOne({
-        token: hashedToken,
+        email: email,
       });
+
+      if (!resetPwdTokenRecord) {
+        sendResponse(res, 401, 'No password reset token found');
+        return;
+      }
+
+      const isTokenValid = await validateInput(token, resetPwdTokenRecord.token);
+
+      console.log('isTokenValid', isTokenValid);
 
       // Token may have been used but not expired yet
       if (
-        resetPwdTokenRecord &&
+        isTokenValid &&
         !resetPwdTokenRecord.isUsed &&
         resetPwdTokenRecord.expireAt &&
         resetPwdTokenRecord.expireAt >= new Date()
@@ -230,7 +254,7 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
           password: await hashInput(password),
         });
 
-        await ResetPwdToken.updateOne({ token: hashedToken }).set({ isUsed: true });
+        await ResetPwdToken.updateOne({ email: email }).set({ isUsed: true });
 
         sendResponse(res, 200, 'Successfully reset password!');
       } else {

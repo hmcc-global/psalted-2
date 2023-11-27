@@ -16,16 +16,13 @@ import { z } from 'zod';
 import { ResetPasswordFields } from './helpers/form.types';
 import { formSpacing, formWidth } from './helpers/constants';
 import { useLocation } from 'react-router-dom';
+import { stringValidator, passwordValidator } from './helpers/zod.validators';
 
 // zod validation
 const resetPwdValidationSchema = z
   .object({
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: 'Password must be at least 6 characters long' })
-      .max(100, { message: 'Password must be at most 100 characters long' }),
-    confirmPassword: z.string().trim(),
+    password: passwordValidator,
+    confirmPassword: stringValidator,
   })
   .refine(
     (values) => {
@@ -72,7 +69,7 @@ const ResetPasswordContainer: React.FC = (props: any) => {
       const payload = await axios.post('/api/auth/reset-password', {
         email: email,
         token: token,
-        password: data.password ? data.password : '',
+        password: data.password ?? '',
       });
 
       if (payload.status === 200) {

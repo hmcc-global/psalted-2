@@ -1,8 +1,3 @@
-type LoginFormFields = {
-  email: string;
-  password: string;
-};
-
 type RegisterFormFields = {
   fullName: string;
   email: string;
@@ -10,13 +5,10 @@ type RegisterFormFields = {
   confirmPassword: string;
 };
 
-type RecoverPasswordFields = {
-  email: string;
-};
+type LoginFormFields = Omit<RegisterFormFields, 'fullName' | 'confirmPassword'>;
 
-type ResetPasswordFields = {
-  password: string;
-  confirmPassword: string;
-};
+type RecoverPasswordFields = Omit<LoginFormFields, 'password'>;
+
+type ResetPasswordFields = Omit<RegisterFormFields, 'fullName' | 'email'>;
 
 export type { LoginFormFields, RegisterFormFields, RecoverPasswordFields, ResetPasswordFields };

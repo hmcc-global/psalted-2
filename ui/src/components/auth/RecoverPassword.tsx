@@ -17,10 +17,11 @@ import { z } from 'zod';
 import { RecoverPasswordFields } from './helpers/form.types';
 import { formSpacing, formWidth } from './helpers/constants';
 import { ArrowBackRounded } from '@mui/icons-material';
+import { emailValidator } from './helpers/zod.validators';
 
 // zod validation
 const recoverPwdValidationSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }).trim(),
+  email: emailValidator,
 });
 
 const RecoverPasswordContainer: React.FC = (props: any) => {

@@ -6,18 +6,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { RegisterFormFields } from './helpers/form.types';
 import { formSpacing, formWidth } from './helpers/constants';
+import {
+  stringValidator,
+  emailValidator,
+  fullNameValidator,
+  passwordValidator,
+} from './helpers/zod.validators';
 
 // zod validation
 const registerValidationSchema = z
   .object({
-    fullName: z.string().trim().min(1, { message: 'Please enter your full name' }).max(100),
-    email: z.string().email({ message: 'Please enter a valid email' }).trim(),
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: 'Password must be at least 6 characters long' })
-      .max(100, { message: 'Password must be at most 100 characters long' }),
-    confirmPassword: z.string().trim(),
+    fullName: fullNameValidator,
+    email: emailValidator,
+    password: passwordValidator,
+    confirmPassword: stringValidator,
   })
   .refine(
     (values) => {

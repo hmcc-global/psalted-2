@@ -8,15 +8,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LoginFormFields } from './helpers/form.types';
 import { formSpacing, formWidth } from './helpers/constants';
+import { emailValidator, passwordValidator } from './helpers/zod.validators';
 
 // zod validation
 const loginValidationSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email' }).trim(),
-  password: z
-    .string()
-    .trim()
-    .min(6, { message: 'Password must be at least 6 characters long' })
-    .max(100, { message: 'Password must be at most 100 characters long' }),
+  email: emailValidator,
+  password: passwordValidator,
 });
 
 const LoginContainer: React.FC = () => {
@@ -65,22 +62,6 @@ const LoginContainer: React.FC = () => {
       >
         <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
           <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
-            {/* <Box
-              component="img"
-              src={`${process.env.PUBLIC_URL}/images/ripple.png`}
-              alt="Logo"
-              height={{ xs: '4.5vh', sm: '5.5vh', md: '6.5vh', lg: '7.5vh', xl: '8.5vh' }}
-              sx={{ filter: 'invert(0.6)' }}
-              alignSelf={'center'}
-            />
-            <Typography
-              variant="subtitle1"
-              color="#656565"
-              textAlign={'center'}
-              fontWeight={'bold'}
-            >
-              Psalted 2.0
-            </Typography> */}
             <Stack spacing={0.5}>
               <Typography variant="h1" color={'primary'} textAlign={'center'} fontWeight={'bold'}>
                 LOGIN

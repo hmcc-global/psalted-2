@@ -64,22 +64,15 @@ const ResetPasswordContainer: React.FC = (props: any) => {
 
   const { errors } = formState;
 
-  const handleSignup: SubmitHandler<ResetPasswordFields> = async (data) => {
-    console.log(data);
-    setStatus('success');
-    setMessage('THIS IS A TEST MESSAGEEEEE');
-    setOpen(true);
+  const handleResetPassword: SubmitHandler<ResetPasswordFields> = async (data) => {
     try {
       const token = query.get('token');
       const email = query.get('email');
-      const params = {
+
+      const payload = await axios.post('/api/auth/reset-password', {
         email: email,
         token: token,
         password: data.password ? data.password : '',
-      };
-
-      const payload = await axios.post('/api/auth/reset-password', {
-        params,
       });
 
       if (payload.status === 200) {
@@ -132,7 +125,7 @@ const ResetPasswordContainer: React.FC = (props: any) => {
                 Create a new password
               </Typography>
             </Stack>
-            <form onSubmit={handleSubmit(handleSignup)}>
+            <form onSubmit={handleSubmit(handleResetPassword)}>
               <Stack spacing={formSpacing}>
                 <Stack spacing={1}>
                   <TextField

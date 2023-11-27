@@ -32,8 +32,6 @@ const LoginContainer: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleEmailLogin: SubmitHandler<LoginFormFields> = async (data) => {
-    console.log(data);
-
     try {
       const payload = await axios.post('/api/auth/login', {
         email: data.email,

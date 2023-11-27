@@ -29,7 +29,7 @@ const registerValidationSchema = z
     }
   );
 
-const LoginContainer: React.FC = (props: any) => {
+const RegisterContainer: React.FC = (props: any) => {
   const { history } = props;
 
   const { register, handleSubmit, formState } = useForm<RegisterFormFields>({
@@ -40,8 +40,7 @@ const LoginContainer: React.FC = (props: any) => {
 
   const [invalidResgistration, setInvalidRegistration] = useState('');
 
-  const handleSignup: SubmitHandler<RegisterFormFields> = async (data) => {
-    console.log(data);
+  const handleRegister: SubmitHandler<RegisterFormFields> = async (data) => {
     try {
       const payload = await axios.post('/api/auth/signup', {
         fullName: data.fullName,
@@ -88,7 +87,7 @@ const LoginContainer: React.FC = (props: any) => {
                 Create a New Account
               </Typography>
             </Stack>
-            <form onSubmit={handleSubmit(handleSignup)}>
+            <form onSubmit={handleSubmit(handleRegister)}>
               <Stack spacing={formSpacing}>
                 <Stack spacing={1}>
                   <TextField
@@ -169,4 +168,4 @@ const LoginContainer: React.FC = (props: any) => {
   );
 };
 
-export default LoginContainer;
+export default RegisterContainer;

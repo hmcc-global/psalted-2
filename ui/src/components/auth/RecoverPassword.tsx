@@ -42,11 +42,7 @@ const RecoverPasswordContainer: React.FC = (props: any) => {
 
   const { errors } = formState;
 
-  const handleSignup: SubmitHandler<RecoverPasswordFields> = async (data) => {
-    console.log(data);
-    setStatus('success');
-    setMessage('THIS IS A TEST MESSAGEEEEE');
-    setOpen(true);
+  const handleRecoverPassword: SubmitHandler<RecoverPasswordFields> = async (data) => {
     try {
       const payload = await axios.post('/api/auth/forgot-password', {
         email: data.email,
@@ -102,7 +98,7 @@ const RecoverPasswordContainer: React.FC = (props: any) => {
                 RECOVER PASSWORD
               </Typography>
             </Stack>
-            <form onSubmit={handleSubmit(handleSignup)}>
+            <form onSubmit={handleSubmit(handleRecoverPassword)}>
               <Stack spacing={formSpacing}>
                 <Stack spacing={1}>
                   <TextField

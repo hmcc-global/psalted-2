@@ -7,6 +7,8 @@ type SongSchema = {
   originalKey: string;
   themes: Types.Array<string>;
   artist: string;
+  year: string;
+  code: string;
   lyricsPreview: string;
   createdBy: Types.ObjectId;
   lastUpdatedBy: Types.ObjectId;

@@ -194,7 +194,6 @@ const forgotPassword: RequestHandler = async (req: Request, res: Response): Prom
     };
 
     const data: ResetPwdTokenDocument = await ResetPwdToken.create(resetPwdToken);
-    console.log(data);
 
     if (!data) {
       sendResponse(res, 500, 'Failed to create reset password token');
@@ -240,8 +239,6 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
       }
 
       const isTokenValid = await validateInput(token, resetPwdTokenRecord.token);
-
-      console.log('isTokenValid', isTokenValid);
 
       // Token may have been used but not expired yet
       if (

@@ -13,4 +13,6 @@ type UserSchema = {
 
 type UserDocument = UserSchema & MongoInjectedFields;
 
-export { UserSchema, UserDocument };
+type UserAuthSchema = Omit<UserDocument, 'password' | 'createdAt' | 'updatedAt'>;
+
+export { UserSchema, UserAuthSchema, UserDocument };

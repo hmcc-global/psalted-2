@@ -1,7 +1,4 @@
 import { connect } from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export const connectToDB = async (): Promise<void> => {
   return new Promise<void>((resolve, reject) => {

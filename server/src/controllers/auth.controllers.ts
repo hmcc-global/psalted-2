@@ -35,7 +35,8 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
     Object.keys(credentials).length > 0 &&
     credentials.email &&
     credentials.password &&
-    credentials.isRememberPassword
+    credentials.isRememberPassword !== undefined &&
+    credentials.isRememberPassword !== null
   ) {
     try {
       const userRecord: UserDocument | null = await User.findOne({
@@ -109,7 +110,12 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
 const signup: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { ...toCreate }: UserSchema = req.body;
 
-  if (Object.keys(toCreate).length > 0 && toCreate.password && toCreate.email) {
+  if (
+    Object.keys(toCreate).length > 0 &&
+    toCreate.password &&
+    toCreate.email &&
+    toCreate.fullName
+  ) {
     try {
       toCreate.email = toCreate.email.toLowerCase();
       toCreate.password = await hashInput(toCreate.password);

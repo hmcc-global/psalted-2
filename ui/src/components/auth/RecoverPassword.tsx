@@ -25,9 +25,9 @@ const recoverPwdValidationSchema = z.object({
 });
 
 const RecoverPasswordContainer: React.FC = (props: any) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<AlertColor | undefined>();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {

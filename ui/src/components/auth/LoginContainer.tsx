@@ -23,8 +23,8 @@ const LoginContainer: React.FC = () => {
 
   const { errors } = formState;
 
-  const [invalidLogin, setInvalidLogin] = useState('');
-  const [rememberPassword, setRememberPassword] = useState(false);
+  const [invalidLogin, setInvalidLogin] = useState<string>('');
+  const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const LoginContainer: React.FC = () => {
     try {
       const payload = await axios.post('/api/auth/login', {
         email: data.email,
-        password: data.password ? data.password : '',
+        password: data.password ?? '',
         isRememberPassword: rememberPassword,
       });
       dispatch(signin(payload.data));

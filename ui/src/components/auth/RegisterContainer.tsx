@@ -40,14 +40,14 @@ const RegisterContainer: React.FC = (props: any) => {
 
   const { errors } = formState;
 
-  const [invalidResgistration, setInvalidRegistration] = useState('');
+  const [invalidRegistration, setInvalidRegistration] = useState<string>('');
 
   const handleRegister: SubmitHandler<RegisterFormFields> = async (data) => {
     try {
       const payload = await axios.post('/api/auth/signup', {
         fullName: data.fullName,
         email: data.email,
-        password: data.password ? data.password : '',
+        password: data.password ?? '',
       });
       if (payload.status === 200) {
         setTimeout(() => {
@@ -150,9 +150,9 @@ const RegisterContainer: React.FC = (props: any) => {
                     </Typography>
                   )}
                 </Stack>
-                {invalidResgistration ? (
+                {invalidRegistration ? (
                   <Typography variant={'body2'} color={'error'}>
-                    {invalidResgistration}
+                    {invalidRegistration}
                   </Typography>
                 ) : null}
                 <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>

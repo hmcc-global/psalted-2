@@ -50,6 +50,10 @@ const customTheme = createTheme({
       fontSize: '1.25rem', // Equivalent to 20px (16 * 1.25)
       fontWeight: 500,
     },
+    h4: {
+      fontSize: '1.125rem', // Equivalent to 18px (16 * 1.125)
+      fontWeight: 700,
+    },
     subtitle1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)
       fontWeight: 400,

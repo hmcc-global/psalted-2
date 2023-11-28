@@ -1,4 +1,4 @@
-export const musicKeys = [
+export const musicKeysOptions = [
   'A',
   'A♯',
   'B',
@@ -16,3 +16,5 @@ export const musicKeys = [
   'D♭',
   'E♭',
 ];
+
+export const tempoOptions = ['Fast', 'Medium', 'Slow'];

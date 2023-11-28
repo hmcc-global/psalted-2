@@ -11,6 +11,7 @@ import {
   Button,
   Divider,
   Toolbar,
+  Chip,
 } from '@mui/material';
 import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
@@ -29,7 +30,7 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
 
-  const themeOptions: string[] = [];
+  const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
 
   // either ADD NEW or EDIT. default is ADD NEW
   const titleEditor = (actionOnEditor: string): ReactElement => {
@@ -114,14 +115,21 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   Song Details
                 </Typography>
 
+                {/* Artist Field */}
                 <TextField
                   id="artist"
                   label="Artist Name"
+                  error={!!errors.artist}
+                  helperText={errors?.artist?.message}
                   {...register('artist', { required: 'Required' })}
                 />
+
+                {/* Song Title Field */}
                 <TextField
                   id="title"
                   label="Song Title"
+                  error={!!errors.title}
+                  helperText={errors?.title?.message}
                   {...register('title', { required: 'Required' })}
                 />
 
@@ -131,13 +139,20 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     multiple
                     id="tags-outlined"
                     options={themeOptions}
-                    getOptionLabel={(option) => option}
+                    freeSolo
                     filterSelectedOptions
+                    renderTags={(value: readonly string[], getTagProps) =>
+                      value.map((option: string, index: number) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         variant="outlined"
                         label="Theme"
+                        error={!!errors.themes}
+                        helperText={errors?.themes?.message}
                         {...register('themes', { required: 'Required' })}
                       />
                     )}
@@ -157,6 +172,8 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                         {...params}
                         variant="outlined"
                         label="Tempo"
+                        error={!!errors.tempo}
+                        helperText={errors?.tempo?.message}
                         {...register('tempo', { required: 'Required' })}
                       />
                     )}
@@ -175,6 +192,8 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                         {...params}
                         variant="outlined"
                         label="Original Key"
+                        error={!!errors.originalKey}
+                        helperText={errors?.originalKey?.message}
                         {...register('originalKey', { required: 'Required' })}
                       />
                     )}
@@ -206,11 +225,19 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   label="Year"
                   type="number"
                   defaultValue={2023}
-                  {...register('year')}
+                  error={!!errors.year}
+                  helperText={errors?.year?.message}
+                  {...register('year', { required: 'Required' })}
                 />
 
                 {/* Code field */}
-                <TextField id="code" label="Code" {...register('code', { required: 'Required' })} />
+                <TextField
+                  id="code"
+                  label="Code"
+                  error={!!errors.code}
+                  helperText={errors?.code?.message}
+                  {...register('code', { required: 'Required' })}
+                />
               </Stack>
             </Box>
 
@@ -225,7 +252,7 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 <TextareaAutosize
                   minRows={10}
                   placeholder="Enter lyrics & chords here"
-                  {...register('chordLyrics')}
+                  {...register('chordLyrics', { required: 'Required' })}
                 />
               </Stack>
             </Box>

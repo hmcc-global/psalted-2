@@ -5,6 +5,7 @@ type SongSchema = {
   title: string;
   tempo: Types.Array<string>;
   originalKey: string;
+  recommendedKeys: Types.Array<string>;
   themes: Types.Array<string>;
   artist: string;
   year: string;

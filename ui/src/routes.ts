@@ -12,7 +12,7 @@ interface Route {
   title: string;
   path: string;
   enabled: boolean;
-  component: FC<{}>;
+  component: FC<any>;
 }
 
 export const routes: Array<Route> = [
@@ -52,9 +52,16 @@ export const routes: Array<Route> = [
     component: ResetPasswordContainer,
   },
   {
-    key: 'song-editor-route',
-    title: 'Song Editor',
-    path: '/song/editor',
+    key: 'song-add-route',
+    title: 'Add New Song',
+    path: '/song/add',
+    enabled: true,
+    component: SongEditor,
+  },
+  {
+    key: 'song-edit-route',
+    title: 'Edit Song',
+    path: '/song/edit/:id',
     enabled: true,
     component: SongEditor,
   },

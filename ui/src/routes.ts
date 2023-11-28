@@ -52,7 +52,7 @@ export const routes: Array<Route> = [
     component: ResetPasswordContainer,
   },
   {
-    key: 'song-editor-oute',
+    key: 'song-editor-route',
     title: 'Song Editor',
     path: '/song/editor',
     enabled: true,

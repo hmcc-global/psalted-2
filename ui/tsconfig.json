@@ -15,8 +15,6 @@
     "strictNullChecks": true /* When type checking, take into account null and undefined. */,
     "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true /* Enable error reporting when local variables aren't read. */,
-    "noUnusedParameters": true /* Report errors on unused parameters. */,
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "module": "esnext",
     "moduleResolution": "node",

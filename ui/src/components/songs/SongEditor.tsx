@@ -1,44 +1,32 @@
-import { FC, ReactElement, useState, Dispatch, SetStateAction } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import {
   Container,
   Box,
   Typography,
   TextField,
-  Select,
-  MenuItem,
-  OutlinedInput,
-  Chip,
-  SelectChangeEvent,
-  InputLabel,
   FormControl,
   Stack,
+  TextareaAutosize,
+  Autocomplete,
 } from '@mui/material';
 import { Info, LibraryMusic } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
-import { musicKeys } from '../../constants';
+import { musicKeysOptions, tempoOptions } from '../../constants';
 
 const SongEditor: FC = (): ReactElement => {
   const [theme, setTheme] = useState<string[]>([]);
   const [tempo, setTempo] = useState<string[]>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
 
-  const handleChange =
-    (setter: Dispatch<SetStateAction<string[]>>) => (event: SelectChangeEvent<string[]>) => {
-      const {
-        target: { value },
-      } = event;
-      setter(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value
-      );
-    };
+  const themeOptions: string[] = [];
 
   return (
     <Container>
       <Stack direction={['row']} spacing={8}>
+        {/* column 1 */}
         <Box width={'30vw'}>
           <Stack direction="column" spacing={2}>
-            <Typography>
+            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }}>
               <Info sx={{ color: '#4B50B4' }} />
               Song Details
             </Typography>
@@ -48,104 +36,66 @@ const SongEditor: FC = (): ReactElement => {
 
             {/* Themes field */}
             <FormControl fullWidth>
-              <InputLabel id="theme-label">Theme</InputLabel>
-              <Select
-                id="theme"
-                labelId="theme-label"
-                label="Theme"
+              <Autocomplete
                 multiple
-                value={theme}
-                onChange={handleChange(setTheme)}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-              >
-                {theme.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+                id="tags-outlined"
+                options={themeOptions}
+                getOptionLabel={(option) => option}
+                filterSelectedOptions
+                renderInput={(params) => <TextField {...params} variant="outlined" label="Theme" />}
+              />
             </FormControl>
 
             {/* Tempo field */}
             <FormControl fullWidth>
-              <InputLabel id="tempo-label">Tempo</InputLabel>
-              <Select
-                id="tempo"
-                labelId="tempo-label"
-                label="Tempo"
+              <Autocomplete
                 multiple
-                value={tempo}
-                onChange={handleChange(setTempo)}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-              >
-                {tempo.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+                id="tags-outlined"
+                options={tempoOptions}
+                getOptionLabel={(option) => option}
+                filterSelectedOptions
+                renderInput={(params) => <TextField {...params} variant="outlined" label="Tempo" />}
+              />
             </FormControl>
 
             {/* Original Key field */}
             <FormControl fullWidth>
-              <InputLabel id="original-key-label">Original Key</InputLabel>
-              <Select id="original-key" labelId="original-key-label" label="Original Key">
-                {musicKeys.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+              <Autocomplete
+                id="original-key"
+                options={musicKeysOptions}
+                getOptionLabel={(option) => option}
+                filterSelectedOptions
+                renderInput={(params) => (
+                  <TextField {...params} variant="outlined" label="Original Key" />
+                )}
+              />
             </FormControl>
 
             {/* Recommended Keys field */}
             <FormControl fullWidth>
-              <InputLabel id="recommended-keys-label">Recommended Keys</InputLabel>
-              <Select
-                id="recommended-keys"
-                labelId="recommended-keys-label"
-                label="Recommended Keys"
+              <Autocomplete
                 multiple
-                value={recommendedKeys}
-                onChange={handleChange(setRecommendedKeys)}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
+                id="recommended-keys"
+                options={musicKeysOptions}
+                getOptionLabel={(option) => option}
+                filterSelectedOptions
+                renderInput={(params) => (
+                  <TextField {...params} variant="outlined" label="Recommended Keys" />
                 )}
-              >
-                {musicKeys.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+              />
             </FormControl>
           </Stack>
         </Box>
-        <Box>
+
+        {/* column 2 */}
+        <Box width="100%">
           <Stack direction="column" spacing={2}>
-            <Typography>
+            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }}>
               <LibraryMusic sx={{ color: PRIMARY_MAIN }} />
               Lyrics & Chords
             </Typography>
+
+            <TextareaAutosize minRows={10} placeholder="Enter lyrics & chords here" />
           </Stack>
         </Box>
       </Stack>

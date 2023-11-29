@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
 import { UserDocument } from '../types/user.types';
-import { hashInput } from '../utils/auth.utils';
+import { hashInput, validateInput } from '../utils/auth.utils';
 
 const sendResponse = (
   res: Response,
@@ -64,7 +64,6 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
 
 const updateUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { id: userId, ...toUpdate } = req.body;
-
   if (userId && Object.keys(toUpdate).length > 0) {
     try {
       const data: UserDocument = await User.findOneAndUpdate(
@@ -104,4 +103,33 @@ const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<
   }
 };
 
-export { createUser, getUser, updateUser, deleteUser };
+const changePassword: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { id, currentPassword, newPassword } = req.body;
+
+  if (id && currentPassword && newPassword) {
+    try {
+      const userRecord = await User.findOne({ _id: id, isDeleted: false });
+      if (!userRecord) {
+        sendResponse(res, 401, 'No userId found');
+        return;
+      }
+
+      const hashedCurr = await hashInput(currentPassword);
+      const isPasswordValid = await validateInput(hashedCurr, userRecord.password);
+      if (isPasswordValid) {
+        await User.updateOne({ _id: id, isDeleted: false }).set({
+          password: await hashInput(newPassword),
+        });
+        sendResponse(res, 200, 'Successfully changed password!');
+      } else {
+        sendResponse(res, 401, 'Invalid Password');
+      }
+    } catch (error: any) {
+      sendResponse(res, 500, 'Failed to process change password request');
+    }
+  } else {
+    sendResponse(res, 422, 'Missing required fields');
+  }
+};
+
+export { createUser, getUser, updateUser, deleteUser, changePassword };

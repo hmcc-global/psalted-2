@@ -12,11 +12,15 @@ import {
   Divider,
   Toolbar,
   Chip,
+  Alert,
+  AlertTitle,
+  Collapse,
+  IconButton,
 } from '@mui/material';
-import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add } from '@mui/icons-material';
+import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add, Close } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
 import { musicKeysOptions, tempoOptions } from '../../constants';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields } from '#/types/song.types';
 import axios from 'axios';
 
@@ -28,9 +32,11 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [themes, setThemes] = useState<string[]>([]);
   const [tempo, setTempo] = useState<string[]>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
+
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
 
-  const { register, handleSubmit, formState, control } = useForm<SongEditorFields>();
+  const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
 
   const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
@@ -58,9 +64,6 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
   const handleSaveSong: SubmitHandler<SongEditorFields> = async (data) => {
     try {
-      console.log('themes', data.themes);
-      console.log('tempo', tempo);
-
       const payload = await axios.post('/api/songs/create', {
         artist: data.artist,
         title: data.title,
@@ -75,15 +78,17 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
       });
 
       if (payload.status === 200) {
-        console.log('Successfully saved song!');
         setInvalidSong('');
+        setSubmitSuccess(true);
         return payload.data;
       }
-      console.log('Error saving song!');
+
+      setSubmitSuccess(false);
       setInvalidSong('Error saving song!');
       return;
     } catch (error: any) {
       setInvalidSong(error.response.data);
+      setSubmitSuccess(false);
       console.log(error);
     }
   };
@@ -113,7 +118,29 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
             </Typography>
           ) : null}
 
-          <Stack direction={['row']} spacing={8}>
+          {/* Success message */}
+          <Collapse in={submitSuccess}>
+            <Alert
+              severity="success"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setSubmitSuccess(false);
+                  }}
+                >
+                  <Close fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              <AlertTitle>Success</AlertTitle>
+              Song successfully saved!
+            </Alert>
+          </Collapse>
+
+          <Stack direction={['row']} spacing={8} mt={2}>
             {/* column 1: Song Details */}
             <Box width={'30vw'}>
               <Stack direction="column" spacing={2}>

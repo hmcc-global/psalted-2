@@ -29,6 +29,7 @@ interface SongEditorProps {
 }
 
 const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
+  // STATES
   const [themes, setThemes] = useState<string[]>([]);
   const [tempo, setTempo] = useState<string[]>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
@@ -39,10 +40,11 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
 
+  // TODO: get theme options from database
   const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
 
-  // either ADD NEW or EDIT. default is ADD NEW
-  const titleEditor = (actionOnEditor: string): ReactElement => {
+  // editor mode is either ADD NEW or EDIT. default is ADD NEW
+  const editorMode = (actionOnEditor: string): ReactElement => {
     return (
       <Typography
         variant="h3"
@@ -80,6 +82,7 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
       if (payload.status === 200) {
         setInvalidSong('');
         setSubmitSuccess(true);
+        // TODO: redirect to song view page after saving
         return payload.data;
       }
 
@@ -98,7 +101,7 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
       <form onSubmit={handleSubmit(handleSaveSong)}>
         <Toolbar>
           <ArrowBackIosNew sx={{ color: PRIMARY_MAIN }} />
-          {titleEditor(actionOnEditor)}
+          {editorMode(actionOnEditor)}
           <Button
             type={'submit'}
             color={'primary'}
@@ -316,6 +319,7 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   InputProps={{
                     inputComponent: TextareaAutosize,
                     inputProps: {
+                      minRows: 20,
                       style: {
                         resize: 'vertical',
                       },

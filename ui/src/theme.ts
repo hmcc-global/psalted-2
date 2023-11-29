@@ -83,6 +83,16 @@ const customTheme = createTheme({
       fontWeight: 400,
     },
   },
+  components: {
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          background: '#fff',
+          border: '1px solid {theme.palette.primary.main}',
+        },
+      },
+    },
+  },
 });
 
 export default customTheme;

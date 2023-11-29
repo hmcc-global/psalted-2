@@ -16,7 +16,7 @@ import {
 import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
 import { musicKeysOptions, tempoOptions } from '../../constants';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { SongEditorFields } from '#/types/song.types';
 import axios from 'axios';
 
@@ -25,9 +25,12 @@ interface SongEditorProps {
 }
 
 const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
+  const [themes, setThemes] = useState<string[]>([]);
+  const [tempo, setTempo] = useState<string[]>([]);
+  const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
   const [invalidSong, setInvalidSong] = useState<string>('');
 
-  const { register, handleSubmit, formState } = useForm<SongEditorFields>();
+  const { register, handleSubmit, formState, control } = useForm<SongEditorFields>();
   const { errors } = formState;
 
   const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
@@ -55,16 +58,20 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
   const handleSaveSong: SubmitHandler<SongEditorFields> = async (data) => {
     try {
+      console.log('themes', data.themes);
+      console.log('tempo', tempo);
+
       const payload = await axios.post('/api/songs/create', {
         artist: data.artist,
         title: data.title,
-        themes: data.themes,
-        tempo: data.tempo,
+        themes: themes,
+        tempo: tempo,
         year: data.year,
         code: data.code,
         originalKey: data.originalKey,
-        recommendedKeys: data.recommendedKeys,
+        recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
+        lyricsPreview: data.chordLyrics,
       });
 
       if (payload.status === 200) {
@@ -137,10 +144,14 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 <FormControl fullWidth>
                   <Autocomplete
                     multiple
-                    id="tags-outlined"
+                    id="themes"
                     options={themeOptions}
                     freeSolo
                     filterSelectedOptions
+                    onChange={(event, newValue) => {
+                      setThemes(newValue);
+                    }}
+                    value={themes}
                     renderTags={(value: readonly string[], getTagProps) =>
                       value.map((option: string, index: number) => (
                         <Chip variant="outlined" label={option} {...getTagProps({ index })} />
@@ -151,9 +162,12 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                         {...params}
                         variant="outlined"
                         label="Theme"
-                        error={!!errors.themes}
-                        helperText={errors?.themes?.message}
-                        {...register('themes', { required: 'Required' })}
+                        {...register('themes')}
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'tempo',
+                          required: themes.length === 0,
+                        }}
                       />
                     )}
                   />
@@ -163,18 +177,25 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 <FormControl fullWidth>
                   <Autocomplete
                     multiple
-                    id="tags-outlined"
+                    id="tempo"
                     options={tempoOptions}
                     getOptionLabel={(option) => option}
                     filterSelectedOptions
+                    onChange={(event, newValue) => {
+                      setTempo(newValue);
+                    }}
+                    value={tempo}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         variant="outlined"
                         label="Tempo"
-                        error={!!errors.tempo}
-                        helperText={errors?.tempo?.message}
-                        {...register('tempo', { required: 'Required' })}
+                        {...register('tempo')}
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'tempo',
+                          required: tempo.length === 0,
+                        }}
                       />
                     )}
                   />
@@ -208,12 +229,21 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     options={musicKeysOptions}
                     getOptionLabel={(option) => option}
                     filterSelectedOptions
+                    onChange={(event, newValue) => {
+                      setRecommendedKeys(newValue);
+                    }}
+                    value={recommendedKeys}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         variant="outlined"
                         label="Recommended Keys"
                         {...register('recommendedKeys')}
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'tempo',
+                          required: recommendedKeys.length === 0,
+                        }}
                       />
                     )}
                   />
@@ -249,10 +279,21 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   Lyrics & Chords
                 </Typography>
 
-                <TextareaAutosize
-                  minRows={10}
+                <TextField
+                  id="chord-lyrics"
                   placeholder="Enter lyrics & chords here"
+                  multiline
+                  error={!!errors.chordLyrics}
+                  helperText={errors?.chordLyrics?.message}
                   {...register('chordLyrics', { required: 'Required' })}
+                  InputProps={{
+                    inputComponent: TextareaAutosize,
+                    inputProps: {
+                      style: {
+                        resize: 'vertical',
+                      },
+                    },
+                  }}
                 />
               </Stack>
             </Box>

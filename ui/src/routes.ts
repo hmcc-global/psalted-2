@@ -11,6 +11,7 @@ import LoginContainer from './components/auth/LoginContainer';
 import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
+import ProfileContainer from './components/home/ProfileContainer';
 
 // interface
 interface Route {
@@ -112,5 +113,12 @@ export const routes: Array<Route> = [
     path: '/password/new',
     enabled: true,
     component: ResetPasswordContainer,
+  },
+  {
+    key: 'profile-route',
+    title: 'Profile',
+    path: '/profile',
+    enabled: true,
+    component: ProfileContainer,
   },
 ];

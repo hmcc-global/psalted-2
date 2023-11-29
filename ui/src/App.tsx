@@ -12,6 +12,7 @@ function App() {
         <CssBaseline />
         <Box height="100vh" display="flex" flexDirection="column">
           <BrowserRouter>
+            <NavContainer />
             <Routes>
               {appRoutes.map((route) => (
                 <Route key={route.key} path={route.path} element={<route.component />} />

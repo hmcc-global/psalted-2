@@ -16,6 +16,7 @@ import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 
 const SongContainer: FC = (): ReactElement => {
+  const [allSongs, setAllSongs] = useState([] as SongCardProps[]);
   const [songView, setSongView] = useState([] as SongCardProps[]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
@@ -27,15 +28,30 @@ const SongContainer: FC = (): ReactElement => {
     try {
       const { data, status } = await axios.get('/api/songs/get');
       if (status === 200) {
+        setAllSongs(data);
         if (filterData) {
-          const filteredSong: SongCardProps[] = data;
+          const songs: SongCardProps[] = data;
           // filter the song based on data
+          const filteredSong = songs.filter(
+            (song) =>
+              ((filterData.search ? song.artist.includes(filterData.search) : true) ||
+                (filterData.search ? song.title.includes(filterData.search) : true) ||
+                (filterData.search ? song.lyricsPreview.includes(filterData.search) : true) ||
+                (filterData.search ? song.themes.includes(filterData.search) : true)) &&
+              (filterData.themes
+                ? filterData.themes.every((theme) => song.themes.includes(theme))
+                : true) &&
+              (filterData.tempo
+                ? filterData.tempo.every((tempo) => song.tempo.includes(tempo))
+                : true)
+          );
+          setSongView(filteredSong);
         } else setSongView(data);
       }
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [filterData]);
 
   const style = {
     position: 'absolute',
@@ -47,8 +63,9 @@ const SongContainer: FC = (): ReactElement => {
 
   useEffect(() => {
     getSongView();
-  }, [getSongView]);
-
+  }, [getSongView, filterData]);
+  console.log(songView);
+  console.log(filterData);
   return (
     <>
       <Container fixed sx={{ padding: '24px' }}>
@@ -86,6 +103,7 @@ const SongContainer: FC = (): ReactElement => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
+              setFilterData({ ...filterData, search: e.target.value });
             }}
           />
           <IconButton
@@ -101,7 +119,7 @@ const SongContainer: FC = (): ReactElement => {
         <Stack direction="column" spacing={3}>
           {songView &&
             songView.map((song, i) => {
-              return <SongCard key={i} {...song} />;
+              return <SongCard key={i} {...song} filterData={filterData} />;
             })}
         </Stack>
       </Container>
@@ -116,7 +134,8 @@ const SongContainer: FC = (): ReactElement => {
             filterData={filterData}
             setFilterData={setFilterData}
             onClose={handleClose}
-            songs={songView}
+            songs={allSongs}
+            setSearch={setSearch}
           />
         </Box>
       </Modal>

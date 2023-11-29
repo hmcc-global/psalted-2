@@ -18,11 +18,11 @@ import { useState, useEffect, useCallback } from 'react';
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
   const prevFilter = props.filterData;
-  const [tempoList, setTempoList] = useState([] as String[]);
-  const [themesList, setThemesList] = useState([] as String[]);
+  const [tempoList, setTempoList] = useState([] as string[]);
+  const [themesList, setThemesList] = useState([] as string[]);
   const [search, setSearch] = useState(prevFilter?.search ?? '');
-  const [tempo, setTempo] = useState(prevFilter?.tempo ?? ([] as String[]));
-  const [themes, setThemes] = useState(prevFilter?.themes ?? ([] as String[]));
+  const [tempo, setTempo] = useState(prevFilter?.tempo ?? ([] as string[]));
+  const [themes, setThemes] = useState(prevFilter?.themes ?? ([] as string[]));
   const [displayResult, setDisplayResult] = useState(
     prevFilter?.display ?? {
       tempo: true,
@@ -34,11 +34,11 @@ const SongSearch = (props: SongSearchProps) => {
     }
   );
 
-  const handleTempoChange = (event: React.ChangeEvent<{}>, value: String[]) => {
+  const handleTempoChange = (event: React.ChangeEvent<{}>, value: string[]) => {
     setTempo(value);
   };
 
-  const handleThemeChange = (event: React.ChangeEvent<{}>, value: String[]) => {
+  const handleThemeChange = (event: React.ChangeEvent<{}>, value: string[]) => {
     setThemes(value);
   };
 
@@ -55,8 +55,8 @@ const SongSearch = (props: SongSearchProps) => {
   };
 
   const getSelectOptions = useCallback(() => {
-    const tempTempo: String[] = [];
-    const tempThemes: String[] = [];
+    const tempTempo: string[] = [];
+    const tempThemes: string[] = [];
     Songs &&
       Songs.map((song) => {
         tempTempo.push(...song.tempo);
@@ -109,6 +109,7 @@ const SongSearch = (props: SongSearchProps) => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
+              props.setSearch(e.target.value);
             }}
           />
         </Box>

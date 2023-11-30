@@ -7,6 +7,10 @@ import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
 import SongContainer from './components/song/SongContainer';
 import ProfileContainer from './components/home/ProfileContainer';
+import LoginContainer from './components/auth/LoginContainer';
+import RegisterContainer from './components/auth/RegisterContainer';
+import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
+import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 
 // interface
 interface Route {
@@ -80,5 +84,33 @@ export const routes: Array<Route> = [
     path: '/profile',
     enabled: true,
     component: ProfileContainer,
+  },
+  {
+    key: 'login-route',
+    title: 'Login',
+    path: '/login',
+    enabled: true,
+    component: LoginContainer,
+  },
+  {
+    key: 'register-route',
+    title: 'Register',
+    path: '/register',
+    enabled: true,
+    component: RegisterContainer,
+  },
+  {
+    key: 'recover-password-route',
+    title: 'Recover Password',
+    path: '/password/recover',
+    enabled: true,
+    component: RecoverPasswordContainer,
+  },
+  {
+    key: 'reset-password-route',
+    title: 'Reset Password',
+    path: '/password/new',
+    enabled: true,
+    component: ResetPasswordContainer,
   },
 ];

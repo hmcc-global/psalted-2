@@ -1,9 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
-export const PRIMARY_MAIN = '#4B50B4';
-export const PRIMARY_LIGHT = '#C9CDFF';
-export const PRIMARY_LIGHTER = '#DDE0FF';
-export const PRIMARY_LIGHTEST = '#EEEFFF';
+const PRIMARY_MAIN = '#4B50B4';
+const PRIMARY_LIGHT = '#C9CDFF';
+const PRIMARY_LIGHTER = '#DDE0FF';
+const PRIMARY_LIGHTEST = '#EEEFFF';
 
 declare module '@mui/material/styles' {
   interface PaletteColorOptions {

@@ -89,7 +89,7 @@ const RecoverPasswordContainer: React.FC = (props: any) => {
             marginBottom={'5rem'}
           >
             <ArrowBackRounded color="primary" />
-            <Typography variant="body1" marginLeft={1} sx={{ color: 'inherit' }}>
+            <Typography variant="body1" color={'primary'} marginLeft={1}>
               Return to Home
             </Typography>
           </Box>
@@ -108,12 +108,9 @@ const RecoverPasswordContainer: React.FC = (props: any) => {
                       required: 'Required',
                     })}
                     fullWidth
+                    error={!!errors?.email?.message}
+                    helperText={errors?.email?.message}
                   />
-                  {errors.email && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.email?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Typography variant={'body1'} textAlign={'left'}>
                   Please input the email you used to create your HMCC account This will only be

@@ -81,12 +81,9 @@ const LoginContainer: React.FC = () => {
                     {...register('email', {
                       required: 'Required',
                     })}
+                    error={!!errors?.email?.message}
+                    helperText={errors?.email?.message}
                   />
-                  {errors.email && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.email?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack spacing={1}>
                   <TextField
@@ -97,12 +94,9 @@ const LoginContainer: React.FC = () => {
                     })}
                     autoComplete={'password'}
                     fullWidth
+                    error={!!errors?.password?.message}
+                    helperText={errors?.password?.message}
                   />
-                  {errors.password && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.password?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>
                   <Checkbox

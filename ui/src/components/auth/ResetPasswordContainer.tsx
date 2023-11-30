@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ResetPasswordFields } from './helpers/form.types';
 import { formSpacing, formWidth } from './helpers/constants';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { stringValidator, passwordValidator } from './helpers/zod.validators';
 
 // zod validation
@@ -38,10 +38,9 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-const ResetPasswordContainer: React.FC = (props: any) => {
-  const { history } = props;
-
+const ResetPasswordContainer: React.FC = () => {
   const query = useQuery();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<AlertColor | undefined>();
@@ -76,7 +75,7 @@ const ResetPasswordContainer: React.FC = (props: any) => {
         setStatus('success');
         setMessage('Password successfully reset! Please login again.');
         setTimeout(() => {
-          history.push('/login');
+          navigate('/login');
         }, 3000);
       } else {
         setStatus('error');
@@ -132,12 +131,9 @@ const ResetPasswordContainer: React.FC = (props: any) => {
                       required: 'Required',
                     })}
                     fullWidth
+                    error={!!errors?.password?.message}
+                    helperText={errors?.password?.message}
                   />
-                  {errors.password && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.password?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack spacing={1}>
                   <TextField
@@ -147,12 +143,9 @@ const ResetPasswordContainer: React.FC = (props: any) => {
                       required: 'Required',
                     })}
                     fullWidth
+                    error={!!errors?.confirmPassword?.message}
+                    helperText={errors?.confirmPassword?.message}
                   />
-                  {errors.confirmPassword && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.confirmPassword?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
                   RESET PASSWORD

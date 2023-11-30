@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Link, Stack, TextField, Snackbar, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { RegisterFormFields } from './helpers/form.types';
@@ -12,6 +12,7 @@ import {
   fullNameValidator,
   passwordValidator,
 } from './helpers/zod.validators';
+import { useNavigate } from 'react-router-dom';
 
 // zod validation
 const registerValidationSchema = z
@@ -31,8 +32,18 @@ const registerValidationSchema = z
     }
   );
 
-const RegisterContainer: React.FC = (props: any) => {
-  const { history } = props;
+const RegisterContainer: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const { register, handleSubmit, formState } = useForm<RegisterFormFields>({
     resolver: zodResolver(registerValidationSchema),
@@ -50,8 +61,9 @@ const RegisterContainer: React.FC = (props: any) => {
         password: data.password ?? '',
       });
       if (payload.status === 200) {
+        setOpen(true);
         setTimeout(() => {
-          history.push('/login');
+          navigate('/login');
         }, 3000);
       }
     } catch (err: any) {
@@ -77,6 +89,7 @@ const RegisterContainer: React.FC = (props: any) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          padding: '5rem',
         }}
       >
         <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
@@ -98,12 +111,9 @@ const RegisterContainer: React.FC = (props: any) => {
                     {...register('fullName', {
                       required: 'Required',
                     })}
+                    error={!!errors?.fullName?.message}
+                    helperText={errors?.fullName?.message}
                   />
-                  {errors.fullName && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.fullName?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack spacing={1}>
                   <TextField
@@ -113,12 +123,9 @@ const RegisterContainer: React.FC = (props: any) => {
                     {...register('email', {
                       required: 'Required',
                     })}
+                    error={!!errors?.email?.message}
+                    helperText={errors?.email?.message}
                   />
-                  {errors.email && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.email?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack spacing={1}>
                   <TextField
@@ -128,12 +135,9 @@ const RegisterContainer: React.FC = (props: any) => {
                       required: 'Required',
                     })}
                     fullWidth
+                    error={!!errors?.password?.message}
+                    helperText={errors?.password?.message}
                   />
-                  {errors.password && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.password?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 <Stack spacing={1}>
                   <TextField
@@ -143,12 +147,9 @@ const RegisterContainer: React.FC = (props: any) => {
                       required: 'Required',
                     })}
                     fullWidth
+                    error={!!errors?.confirmPassword?.message}
+                    helperText={errors?.confirmPassword?.message}
                   />
-                  {errors.confirmPassword && (
-                    <Typography variant={'body2'} color={'error'}>
-                      {errors.confirmPassword?.message}
-                    </Typography>
-                  )}
                 </Stack>
                 {invalidRegistration ? (
                   <Typography variant={'body2'} color={'error'}>
@@ -165,6 +166,16 @@ const RegisterContainer: React.FC = (props: any) => {
             </form>
           </Stack>
         </Box>
+        <Snackbar
+          open={open}
+          onClose={handleClose}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="success" sx={{ width: '100%' }} onClose={handleClose}>
+            Successfully registered! Redirecting to login page...
+          </Alert>
+        </Snackbar>
       </Box>
     </>
   );

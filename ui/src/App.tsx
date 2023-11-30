@@ -1,31 +1,14 @@
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { CssBaseline, Box } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { routes as appRoutes } from './routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import customTheme from './theme';
 function App() {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#717CFF',
-        main: '#717CFF',
-        dark: '#717CFF',
-        contrastText: '#000',
-      },
-      secondary: {
-        main: '#717CFF',
-        light: '#717CFF',
-        dark: '#717CFF',
-        contrastText: '#000',
-      },
-    },
-  });
-
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={customTheme}>
         <CssBaseline />
         <Box height="100vh" display="flex" flexDirection="column">
           <BrowserRouter>

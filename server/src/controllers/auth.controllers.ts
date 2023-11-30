@@ -35,7 +35,8 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
     Object.keys(credentials).length > 0 &&
     credentials.email &&
     credentials.password &&
-    credentials.isRememberPassword
+    credentials.isRememberPassword !== undefined &&
+    credentials.isRememberPassword !== null
   ) {
     try {
       const userRecord: UserDocument | null = await User.findOne({
@@ -109,7 +110,12 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
 const signup: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { ...toCreate }: UserSchema = req.body;
 
-  if (Object.keys(toCreate).length > 0 && toCreate.password && toCreate.email) {
+  if (
+    Object.keys(toCreate).length > 0 &&
+    toCreate.password &&
+    toCreate.email &&
+    toCreate.fullName
+  ) {
     try {
       toCreate.email = toCreate.email.toLowerCase();
       toCreate.password = await hashInput(toCreate.password);
@@ -247,17 +253,19 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
         resetPwdTokenRecord.expireAt &&
         resetPwdTokenRecord.expireAt >= new Date()
       ) {
-        await User.updateOne({ email: resetPwdTokenRecord.email }).set({
-          password: await hashInput(password),
-        });
+        await User.updateOne(
+          { email: resetPwdTokenRecord.email },
+          { $set: { password: await hashInput(password) } }
+        );
 
-        await ResetPwdToken.updateOne({ email: email }).set({ isUsed: true });
+        await ResetPwdToken.updateOne({ email: email }, { $set: { isUsed: true } });
 
         sendResponse(res, 200, 'Successfully reset password!');
       } else {
         sendResponse(res, 401, 'Invalid or expired reset password token');
       }
     } catch (error: any) {
+      console.log(error);
       sendResponse(res, 500, 'Failed to process reset password request');
     }
   } else {

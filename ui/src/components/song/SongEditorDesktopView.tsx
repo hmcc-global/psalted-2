@@ -14,11 +14,10 @@ import {
   Chip,
   Alert,
   AlertTitle,
-  IconButton,
   Snackbar,
   Fade,
 } from '@mui/material';
-import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add, Close } from '@mui/icons-material';
+import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
 import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,9 +30,10 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [tempo, setTempo] = useState<string[]>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
 
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
 
+  // FORM HANDLER
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
 
@@ -78,23 +78,23 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
       if (payload.status === 200) {
         setInvalidSong('');
-        setSubmitSuccess(true);
+        setSuccessSnackbarOpen(true);
         // TODO: redirect to song view page after saving
         return payload.data;
       }
 
-      setSubmitSuccess(false);
+      setSuccessSnackbarOpen(false);
       setInvalidSong('Error saving song!');
       return;
     } catch (error: any) {
       setInvalidSong(error.response.data);
-      setSubmitSuccess(false);
+      setSuccessSnackbarOpen(false);
       console.log(error);
     }
   };
 
-  const handleCloseSuccess = () => {
-    setSubmitSuccess(false);
+  const handleCloseSuccessSnackbar = () => {
+    setSuccessSnackbarOpen(false);
   };
 
   return (
@@ -124,13 +124,13 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
           {/* Success message */}
           <Snackbar
-            open={submitSuccess}
-            onClose={handleCloseSuccess}
+            open={successSnackbarOpen}
+            onClose={handleCloseSuccessSnackbar}
             autoHideDuration={6000}
             TransitionComponent={Fade}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           >
-            <Alert severity="success" onClose={handleCloseSuccess}>
+            <Alert severity="success" onClose={handleCloseSuccessSnackbar}>
               <AlertTitle>Success</AlertTitle>
               Song successfully saved!
             </Alert>

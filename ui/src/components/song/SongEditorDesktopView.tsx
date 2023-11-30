@@ -73,6 +73,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
+        // TODO: figure out how to retrieve proper lyrics preview
         lyricsPreview: data.chordLyrics,
       });
 

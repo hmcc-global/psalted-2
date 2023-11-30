@@ -253,17 +253,19 @@ const resetPassword: RequestHandler = async (req: Request, res: Response): Promi
         resetPwdTokenRecord.expireAt &&
         resetPwdTokenRecord.expireAt >= new Date()
       ) {
-        await User.updateOne({ email: resetPwdTokenRecord.email }).set({
-          password: await hashInput(password),
-        });
+        await User.updateOne(
+          { email: resetPwdTokenRecord.email },
+          { $set: { password: await hashInput(password) } }
+        );
 
-        await ResetPwdToken.updateOne({ email: email }).set({ isUsed: true });
+        await ResetPwdToken.updateOne({ email: email }, { $set: { isUsed: true } });
 
         sendResponse(res, 200, 'Successfully reset password!');
       } else {
         sendResponse(res, 401, 'Invalid or expired reset password token');
       }
     } catch (error: any) {
+      console.log(error);
       sendResponse(res, 500, 'Failed to process reset password request');
     }
   } else {

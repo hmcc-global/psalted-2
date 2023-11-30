@@ -17,12 +17,17 @@ import {
   Snackbar,
   Fade,
 } from '@mui/material';
-import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add } from '@mui/icons-material';
-import { PRIMARY_MAIN } from '../../theme';
 import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import axios from 'axios';
+
+// ICONS
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import InfoIcon from '@mui/icons-material/Info';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 
 const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
@@ -51,11 +56,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         gap={1}
         mx={2}
       >
-        {actionOnEditor === 'EDIT' ? (
-          <Edit sx={{ color: PRIMARY_MAIN }} />
-        ) : (
-          <Add sx={{ color: PRIMARY_MAIN }} />
-        )}
+        {actionOnEditor === 'EDIT' ? <EditIcon color="primary" /> : <AddIcon color="primary" />}
         {actionOnEditor ? actionOnEditor.toUpperCase() : 'ADD NEW'} SONG
       </Typography>
     );
@@ -102,7 +103,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
     <Container>
       <form onSubmit={handleSubmit(handleSaveSong)}>
         <Toolbar>
-          <ArrowBackIosNew sx={{ color: PRIMARY_MAIN }} />
+          <ArrowBackIosNewIcon color="primary" />
           {editorMode(actionOnEditor)}
           <Button
             type={'submit'}
@@ -142,7 +143,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             <Box width={'30vw'}>
               <Stack direction="column" spacing={2}>
                 <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
-                  <Info sx={{ color: '#4B50B4' }} />
+                  <InfoIcon color="primary" />
                   Song Details
                 </Typography>
 
@@ -299,7 +300,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             <Box width="100%">
               <Stack direction="column" spacing={2}>
                 <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
-                  <LibraryMusic sx={{ color: PRIMARY_MAIN }} />
+                  <LibraryMusicIcon color="primary" />
                   Lyrics & Chords
                 </Typography>
 

@@ -126,10 +126,11 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
           </Alert>
         </Snackbar>
 
-        <Stack direction="column" spacing={2}>
-          <form onSubmit={handleSubmit(handleSaveSong)}>
+        <form onSubmit={handleSubmit(handleSaveSong)}>
+          <Stack direction="column" spacing={2}>
             {/* Artist Field */}
             <TextField
+              fullWidth
               id="artist"
               label="Artist Name"
               error={!!errors.artist}
@@ -139,6 +140,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Song Title Field */}
             <TextField
+              fullWidth
               id="title"
               label="Song Title"
               error={!!errors.title}
@@ -262,6 +264,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Year field */}
             <TextField
+              fullWidth
               id="year"
               label="Year"
               type="number"
@@ -273,6 +276,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Code field */}
             <TextField
+              fullWidth
               id="code"
               label="Code"
               error={!!errors.code}
@@ -287,6 +291,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Chord Lyrics field */}
             <TextField
+              fullWidth
               id="chord-lyrics"
               placeholder="Enter lyrics & chords here"
               multiline
@@ -307,8 +312,8 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             <Button fullWidth type={'submit'} color={'primary'} variant={'contained'}>
               SAVE
             </Button>
-          </form>
-        </Stack>
+          </Stack>
+        </form>
       </Box>
     </Container>
   );

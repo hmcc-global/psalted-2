@@ -22,6 +22,7 @@ import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import { tempoOptions, musicKeysOptions } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
+import AutocompleteInput from '../custom/AutocompleteInput';
 
 // ICONS
 import EditIcon from '@mui/icons-material/Edit';
@@ -32,9 +33,9 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 
 const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
-  const [themes, setThemes] = useState<string[]>([]);
-  const [tempo, setTempo] = useState<string[]>([]);
-  const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
+  const [themes, setThemes] = useState<string | string[] | null>([]);
+  const [tempo, setTempo] = useState<string | string[] | null>([]);
+  const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
@@ -157,62 +158,39 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Themes field */}
             <FormControl fullWidth>
-              <Autocomplete
-                multiple
+              <AutocompleteInput
                 id="themes"
                 options={themeOptions}
-                freeSolo
-                filterSelectedOptions
+                label="Theme"
+                autoComplete="themes"
+                value={themes}
                 onChange={(event, newValue) => {
                   setThemes(newValue);
                 }}
-                value={themes}
-                renderTags={(value: readonly string[], getTagProps) =>
-                  value.map((option: string, index: number) => (
+                register={register}
+                multiple
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
                     <Chip variant="outlined" label={option} {...getTagProps({ index })} />
                   ))
                 }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Theme"
-                    {...register('themes')}
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'tempo',
-                      required: themes.length === 0,
-                    }}
-                  />
-                )}
               />
             </FormControl>
 
             {/* Tempo field */}
             <FormControl fullWidth>
-              <Autocomplete
-                multiple
+              <AutocompleteInput
                 id="tempo"
                 options={tempoOptions}
-                getOptionLabel={(option) => option}
-                filterSelectedOptions
+                label="Tempo"
+                autoComplete="tempo"
+                value={tempo}
                 onChange={(event, newValue) => {
                   setTempo(newValue);
                 }}
-                value={tempo}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Tempo"
-                    {...register('tempo')}
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'tempo',
-                      required: tempo.length === 0,
-                    }}
-                  />
-                )}
+                register={register}
+                multiple
               />
             </FormControl>
 
@@ -238,29 +216,17 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
             {/* Recommended Keys field */}
             <FormControl fullWidth>
-              <Autocomplete
-                multiple
+              <AutocompleteInput
                 id="recommended-keys"
                 options={musicKeysOptions}
-                getOptionLabel={(option) => option}
-                filterSelectedOptions
+                label="Recommended Keys"
+                autoComplete="recommended-keys"
+                value={recommendedKeys}
                 onChange={(event, newValue) => {
                   setRecommendedKeys(newValue);
                 }}
-                value={recommendedKeys}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Recommended Keys"
-                    {...register('recommendedKeys')}
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'tempo',
-                      required: recommendedKeys.length === 0,
-                    }}
-                  />
-                )}
+                register={register}
+                multiple
               />
             </FormControl>
 

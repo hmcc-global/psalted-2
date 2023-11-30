@@ -95,7 +95,7 @@ const deleteUser: RequestHandler = async (req: Request, res: Response): Promise<
   if (userId) {
     try {
       await User.updateOne({ _id: userId, isDeleted: false }, { $set: { isDeleted: true } });
-      sendResponse(res, 404, 'User successfully deleted');
+      sendResponse(res, 200, 'User successfully deleted');
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }

@@ -16,10 +16,12 @@ import {
   AlertTitle,
   Snackbar,
   Fade,
+  Grid,
 } from '@mui/material';
 import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
+import SongHelpDialog from './SongHelpDialog';
 import axios from 'axios';
 
 // ICONS
@@ -299,10 +301,13 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             {/* column 2: Lyrics & Chords */}
             <Box width="100%">
               <Stack direction="column" spacing={2}>
-                <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
-                  <LibraryMusicIcon color="primary" />
-                  Lyrics & Chords
-                </Typography>
+                <Grid container direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+                    <LibraryMusicIcon color="primary" />
+                    Lyrics & Chords
+                  </Typography>
+                  <SongHelpDialog />
+                </Grid>
 
                 <TextField
                   id="chord-lyrics"

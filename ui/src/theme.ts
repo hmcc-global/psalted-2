@@ -5,6 +5,9 @@ const PRIMARY_LIGHT = '#C9CDFF';
 const PRIMARY_LIGHTER = '#DDE0FF';
 const PRIMARY_LIGHTEST = '#EEEFFF';
 
+const SECONDARY_MAIN = '#9E9E9E';
+const SECONDARY_LIGHT = '##00000099';
+
 declare module '@mui/material/styles' {
   interface PaletteColorOptions {
     main?: string;
@@ -21,6 +24,10 @@ const customTheme = createTheme({
       light: PRIMARY_LIGHT,
       lighter: PRIMARY_LIGHTER,
       lightest: PRIMARY_LIGHTEST,
+    },
+    secondary: {
+      main: SECONDARY_MAIN,
+      light: SECONDARY_LIGHT,
     },
   },
   typography: {

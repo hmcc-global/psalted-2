@@ -16,10 +16,12 @@ import {
   Autocomplete,
   Chip,
   TextareaAutosize,
+  Grid,
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import { tempoOptions, musicKeysOptions } from '../../constants';
+import SongHelpDialog from './SongHelpDialog';
 
 // ICONS
 import EditIcon from '@mui/icons-material/Edit';
@@ -284,10 +286,18 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
               {...register('code', { required: 'Required' })}
             />
 
-            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
-              <LibraryMusicIcon color="primary" />
-              Lyrics & Chords
-            </Typography>
+            <Grid container direction="row" alignItems="center" justifyContent="space-between">
+              <Typography
+                variant="h4"
+                sx={{ display: 'flex', alignItems: 'center' }}
+                gap={1}
+                py={1}
+              >
+                <LibraryMusicIcon color="primary" />
+                Lyrics & Chords
+              </Typography>
+              <SongHelpDialog />
+            </Grid>
 
             {/* Chord Lyrics field */}
             <TextField

@@ -10,4 +10,8 @@ type SongEditorFields = {
   chordLyrics: string;
 };
 
-export type { SongEditorFields };
+interface SongEditorProps {
+  actionOnEditor: string;
+}
+
+export type { SongEditorFields, SongEditorProps };

@@ -14,19 +14,16 @@ import {
   Chip,
   Alert,
   AlertTitle,
-  Collapse,
   IconButton,
+  Snackbar,
+  Fade,
 } from '@mui/material';
 import { Info, LibraryMusic, Edit, ArrowBackIosNew, Add, Close } from '@mui/icons-material';
 import { PRIMARY_MAIN } from '../../theme';
 import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SongEditorFields } from '#/types/song.types';
+import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import axios from 'axios';
-
-interface SongEditorProps {
-  actionOnEditor: string;
-}
 
 const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
@@ -96,6 +93,10 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
     }
   };
 
+  const handleCloseSuccess = () => {
+    setSubmitSuccess(false);
+  };
+
   return (
     <Container>
       <form onSubmit={handleSubmit(handleSaveSong)}>
@@ -122,26 +123,18 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
           ) : null}
 
           {/* Success message */}
-          <Collapse in={submitSuccess}>
-            <Alert
-              severity="success"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setSubmitSuccess(false);
-                  }}
-                >
-                  <Close fontSize="inherit" />
-                </IconButton>
-              }
-            >
+          <Snackbar
+            open={submitSuccess}
+            onClose={handleCloseSuccess}
+            autoHideDuration={6000}
+            TransitionComponent={Fade}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="success" onClose={handleCloseSuccess}>
               <AlertTitle>Success</AlertTitle>
               Song successfully saved!
             </Alert>
-          </Collapse>
+          </Snackbar>
 
           <Stack direction={['row']} spacing={8} mt={2}>
             {/* column 1: Song Details */}

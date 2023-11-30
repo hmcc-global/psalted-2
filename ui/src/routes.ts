@@ -2,7 +2,7 @@ import { FC } from 'react';
 import HomeContainer from './components/home/HomeContainer';
 import LoginContainer from './components/auth/LoginContainer';
 import RegisterContainer from './components/auth/RegisterContainer';
-import RecoverPasswordContainer from './components/auth/RecoverPassword';
+import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 
 // interface

@@ -24,7 +24,7 @@ const recoverPwdValidationSchema = z.object({
   email: emailValidator,
 });
 
-const RecoverPasswordContainer: React.FC = (props: any) => {
+const RecoverPasswordContainer: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<AlertColor | undefined>();
   const [message, setMessage] = useState<string>('');

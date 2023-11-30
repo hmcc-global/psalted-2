@@ -28,7 +28,7 @@ interface SongEditorProps {
   actionOnEditor: string;
 }
 
-const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
+const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
   const [themes, setThemes] = useState<string[]>([]);
   const [tempo, setTempo] = useState<string[]>([]);
@@ -335,4 +335,4 @@ const SongEditor: FC<SongEditorProps> = ({ actionOnEditor }) => {
   );
 };
 
-export default SongEditor;
+export default SongEditorDesktopView;

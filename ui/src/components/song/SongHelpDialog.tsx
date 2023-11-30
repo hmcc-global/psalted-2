@@ -1,50 +1,20 @@
-import { FC, useState } from 'react';
-import {
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  Typography,
-} from '@mui/material';
-
-// ICONS
+import { FC } from 'react';
+import { Typography } from '@mui/material';
+import HelpDialog from '../custom/HelpDialog';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import CloseIcon from '@mui/icons-material/Close';
 
 const SongHelpDialog: FC = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpenHelpDialog = () => {
-    setOpen(!open);
-  };
-
   return (
     <>
-      <HelpOutlineIcon color="secondary" onClick={handleOpenHelpDialog} />
-      <Dialog open={open} onClose={handleOpenHelpDialog}>
-        <DialogTitle variant="h2" fontWeight="700" color="primary">
-          Markdown Hints
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleOpenHelpDialog}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: 'secondary',
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <DialogContentText>
+      <HelpDialog
+        icon={<HelpOutlineIcon />}
+        title="Markdown Hints"
+        content={
+          <>
             <Typography color="primary" mb={2}>
               Use hashtags “#” to indicate sections <br />
               Use square brackets “[ ]” to indicate chords
             </Typography>
-
             <Typography color="secondary.light" fontWeight="700">
               Example:
             </Typography>
@@ -55,9 +25,9 @@ const SongHelpDialog: FC = () => {
               [D]Longing just to [A]bring something that's of [Em]worth <br />
               That will bless Your [A]heart <br />
             </Typography>
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
+          </>
+        }
+      />
     </>
   );
 };

@@ -7,7 +7,6 @@ import { routes as appRoutes } from './routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import customTheme from './theme';
 import NavBarMobile from './components/navigation/NavBarMobile';
-import SidebarMobile from './components/navigation/SidebarMobile';
 import Sidebar from './components/navigation/Sidebar';
 import NavBar from './components/navigation/NavBar';
 
@@ -20,7 +19,6 @@ function App() {
   };
 
   const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <NavBar />;
-  const sideBar = isMobile ? <SidebarMobile isOpen={isSidebarOpen} /> : <Sidebar />;
 
   return (
     <Provider store={store}>
@@ -30,7 +28,7 @@ function App() {
           {navBar}
 
           <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
-            {sideBar}
+            <Sidebar isOpen={isSidebarOpen} />
 
             <Box component="main" sx={{ flexGrow: 1 }}>
               <Routes>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, List, ListItem, ListItemText, Typography, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { FC, ReactElement } from 'react';
@@ -11,11 +10,11 @@ const SongTab: FC = (): ReactElement => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: '16px',
+        padding: '1em',
         borderRadius: '4px',
         backgroundColor: 'primary.light',
         height: '40vh',
-        position: 'relative', // Enable positioning of the plus button
+        position: 'relative',
       }}
     >
       <Box
@@ -28,10 +27,10 @@ const SongTab: FC = (): ReactElement => {
           width: '100%',
         }}
       >
-        <Typography variant="h6" color="primary">
+        <Typography variant="h3" color="primary">
           Groups
         </Typography>
-        <SupervisedUserCircleIcon color="primary" sx={{ fontSize: '20', marginLeft: '8px' }} />
+        <SupervisedUserCircleIcon color="primary" sx={{ marginLeft: '1em' }} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <List>
@@ -51,9 +50,7 @@ const SongTab: FC = (): ReactElement => {
         aria-label="Add"
         size="medium"
         sx={{
-          position: 'absolute',
-          bottom: '16px',
-          right: '16px',
+          marginLeft: 'auto',
         }}
       >
         <AddIcon />

@@ -1,13 +1,13 @@
-import { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useState, useEffect } from 'react';
 import {
   Box,
   Drawer,
   List,
-  Divider,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
@@ -15,10 +15,29 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
+interface SidebarProps {
+  isOpen: boolean;
+}
+
 const drawerWidth = 240;
 
-const SideBar: FC = (): ReactElement => {
+const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const isDesktop = useMediaQuery('(min-width: 769px)');
+  const menuItems = [
+    { icon: <HomeIcon />, text: 'Home' },
+    { icon: <MusicNoteIcon />, text: 'Songs' },
+    { icon: <QueueMusicIcon />, text: 'My Setlists' },
+    { icon: <SupervisedUserCircleIcon />, text: 'Groups' },
+    { icon: <TextSnippetIcon />, text: 'Resources' },
+  ];
+
+  // Reset when switching views
+  useEffect(() => {
+    if (isDesktop) {
+      setSelectedItem(null);
+    }
+  }, [isDesktop]);
 
   const handleClick = (text: string) => {
     setSelectedItem(text);
@@ -33,26 +52,23 @@ const SideBar: FC = (): ReactElement => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            ...(isDesktop && { position: 'relative' }),
           },
         }}
-        variant="permanent"
+        // drawer only open in desktop/ clicked on mobile
+        variant={isDesktop ? 'permanent' : 'temporary'}
+        open={isDesktop || isOpen}
         anchor="left"
       >
-        <Divider />
-        <List sx={{ marginTop: '4em' }}>
-          {[
-            { icon: <HomeIcon />, text: 'Home' },
-            { icon: <MusicNoteIcon />, text: 'Songs' },
-            { icon: <QueueMusicIcon />, text: 'My Setlists' },
-            { icon: <SupervisedUserCircleIcon />, text: 'Groups' },
-            { icon: <TextSnippetIcon />, text: 'Resources' },
-          ].map((item, index) => (
+        <List sx={{ marginTop: { xs: '4em', md: '0' } }}>
+          {menuItems.map((item, index) => (
             <ListItem
               key={index}
               disablePadding
               sx={{ '&:hover': { backgroundColor: 'primary.light' } }}
             >
               <ListItemButton
+                // highlight selected item
                 selected={selectedItem === item.text}
                 onClick={() => handleClick(item.text)}
               >
@@ -60,6 +76,7 @@ const SideBar: FC = (): ReactElement => {
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
+                  // primaryTypographyProps is  the only way to change listItemText styling
                   primaryTypographyProps={{
                     sx: { color: selectedItem === item.text ? 'primary.main' : '' },
                   }}

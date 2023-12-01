@@ -1,6 +1,4 @@
-import React from 'react';
 import { Box, Grid } from '@mui/material';
-import { yellow } from '@mui/material/colors';
 import { FC, ReactElement } from 'react';
 import SongTab from './SongTab';
 import SetlistTab from './SetlistTab';

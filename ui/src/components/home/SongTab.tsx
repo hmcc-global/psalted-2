@@ -21,7 +21,7 @@ const SongTab: FC = (): ReactElement => {
           marginBottom: '16px',
         }}
       >
-        <MusicNoteIcon sx={{ fontSize: '20', marginX: '1vw' }} color="primary" />
+        <MusicNoteIcon sx={{ marginX: '1vw' }} color="primary" />
         <Typography variant="h3" color={'primary.main'}>
           Song
         </Typography>

@@ -10,7 +10,7 @@ const SongTab: FC = (): ReactElement => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: '16px',
+        padding: '1em',
         borderRadius: '4px',
         backgroundColor: 'primary.light',
         height: '40vh',
@@ -23,14 +23,14 @@ const SongTab: FC = (): ReactElement => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '16px',
+          marginBottom: '1em',
           width: '100%',
         }}
       >
         <Typography variant="h3" color="primary">
           My Setlist
         </Typography>
-        <QueueMusicIcon color="primary" sx={{ fontSize: '20', marginLeft: '8px' }} />
+        <QueueMusicIcon color="primary" sx={{ marginLeft: '1em' }} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <List>
@@ -45,14 +45,12 @@ const SongTab: FC = (): ReactElement => {
           </ListItem>
         </List>
       </Box>
-      <Fab
+      <Fab //: floating action button, button component with styling by default
         color="primary"
         aria-label="Add"
         size="medium"
         sx={{
-          position: 'absolute',
-          bottom: '16px',
-          right: '16px',
+          marginLeft: 'auto',
         }}
       >
         <AddIcon />

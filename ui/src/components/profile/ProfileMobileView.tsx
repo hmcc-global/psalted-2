@@ -3,69 +3,56 @@ import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Divider, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
-import PersonIcon from '@mui/icons-material/Person';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function HomeProfile(props: any) {
   return (
-    <Stack spacing={2} width="50%" margin={5}>
+    <Stack spacing={2} width="100%">
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
-          marginBottom: '3%',
         }}
       >
         <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
         <Typography variant="h3" color="primary" fontWeight="bold">
           PROFILE
         </Typography>
-        <PersonIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Name
-      </Typography>
-      <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
         disabled
         id="outlined-name"
         label="Name"
         {...props.register('fullName', { required: true })}
-        style={{ marginBottom: '5%' }}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
             WebkitTextFillColor: 'black',
           },
         }}
       />
-      <Typography variant="h3" fontWeight={400}>
-        Email
-      </Typography>
-      <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
         disabled
         id="outlined-email"
         label="Email"
         {...props.register('email', { required: true })}
-        style={{ marginBottom: '5%' }}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
             WebkitTextFillColor: 'black',
           },
         }}
       />
-      <Button variant="contained" onClick={props.onClickEdit}>
+      <Button variant="outlined" onClick={props.onClickEdit} style={{ width: '45%' }}>
         <Typography variant="subtitle2">EDIT PROFILE</Typography>
       </Button>
-      <Button variant="contained" onClick={props.onClickChange}>
+      <Button variant="outlined" onClick={props.onClickChange} style={{ width: '60%' }}>
         <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
@@ -74,50 +61,35 @@ function HomeProfile(props: any) {
 
 function EditProfile(props: any) {
   return (
-    <Stack spacing={2} width="40%" margin={5}>
+    <Stack spacing={2} width="100%">
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
+          justifyContent: 'space-between',
         }}
       >
-        <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
-          EDIT PROFILE
-        </Typography>
-        <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
+          <Typography variant="h3" color="primary" fontWeight="bold">
+            EDIT PROFILE
+          </Typography>
+        </div>
+        <CreateIcon color="primary" />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Old Name & Email
-      </Typography>
-      <Divider style={{ marginBottom: '3%' }} />
-      <TextField
-        fullWidth
-        disabled
-        id="outlined-name"
-        label="Name"
-        {...props.register('fullName', { required: true })}
-        style={{ marginBottom: '5%' }}
-      />
-      <TextField
-        fullWidth
-        disabled
-        id="outlined-email"
-        label="Email"
-        {...props.register('email', { required: true })}
-        style={{ marginBottom: '5%' }}
-      />
-      <Typography variant="h3" fontWeight={400}>
-        New Name
-      </Typography>
-      <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={props.onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
           fullWidth
           id="outlined-name"
           {...props.register('fullName')}
-          label="Enter New Name"
+          label="Name"
           style={{ marginBottom: '5%' }}
         />
         <TextField
@@ -133,7 +105,7 @@ function EditProfile(props: any) {
             },
           }}
         />
-        <Button variant="contained" type="submit" fullWidth>
+        <Button variant="contained" type="submit">
           <Typography variant="subtitle2">SAVE</Typography>
         </Button>
       </form>
@@ -166,25 +138,30 @@ function ChangePassword(props: any) {
   };
 
   return (
-    <Stack spacing={2} width="40%" margin={5}>
+    <Stack spacing={2} width="100%">
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
+          justifyContent: 'space-between',
         }}
       >
-        <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
-          CHANGE PASSWORD
-        </Typography>
-        <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
+          <Typography variant="h3" color="primary" fontWeight="bold">
+            CHANGE PASSWORD
+          </Typography>
+        </div>
+        <CreateIcon color="primary" />
       </div>
 
-      <Typography variant="h3" fontWeight={400}>
-        Old Password
-      </Typography>
-      <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={props.onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
           fullWidth
@@ -208,10 +185,6 @@ function ChangePassword(props: any) {
             ),
           }}
         />
-        <Typography variant="h3" fontWeight={400}>
-          New Password
-        </Typography>
-        <Divider style={{ marginTop: '2%', marginBottom: '3%' }} />
         <TextField
           fullWidth
           id="outlined-adornment-password"
@@ -262,16 +235,17 @@ function ChangePassword(props: any) {
             ),
           }}
         />
-        <Button variant="contained" type="submit" fullWidth>
-          <Typography variant="subtitle2">SAVE</Typography>
+        <Button variant="contained" type="submit">
+          <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
         </Button>
       </form>
     </Stack>
   );
 }
 
-const ProfileContainerDesktop: FC = (props: any): ReactElement => {
+const ProfileMobileView: FC = (props: any): ReactElement => {
   const user = useSelector((state: any) => state.user);
+
   const { setValue, handleSubmit, register } = useForm();
   const [userData, setUserData] = useState(null);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
@@ -310,6 +284,7 @@ const ProfileContainerDesktop: FC = (props: any): ReactElement => {
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
     });
+
     if (status === 200) {
       fetchUserData();
     }
@@ -384,4 +359,4 @@ const ProfileContainerDesktop: FC = (props: any): ReactElement => {
   );
 };
 
-export default ProfileContainerDesktop;
+export default ProfileMobileView;

@@ -11,7 +11,7 @@ import LoginContainer from './components/auth/LoginContainer';
 import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
-import ProfileContainer from './components/home/ProfileContainer';
+import ProfileContainer from './components/profile/ProfileContainer';
 
 // interface
 interface Route {

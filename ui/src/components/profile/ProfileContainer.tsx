@@ -1,21 +1,21 @@
 import { Box, Container } from '@mui/material';
 import { FC, ReactElement } from 'react';
-import ProfileContainerDesktop from './ProfileContainerDesktop';
-import ProfileContainerMobile from './ProfileContainerMobile';
+import ProfileDesktopView from './ProfileDesktopView';
+import ProfileMobileView from './ProfileMobileView';
 
-const ProfileContainer: FC = (props: any): ReactElement => {
+const ProfileContainer: FC = (): ReactElement => {
   return (
     <Box>
       <Container
         sx={{ zIndex: 2, position: 'relative', display: { xs: 'none', sm: 'none', md: 'block' } }}
       >
-        <ProfileContainerDesktop />
+        <ProfileDesktopView />
       </Container>
 
       <Container
         sx={{ zIndex: 2, position: 'relative', display: { xs: 'block', sm: 'block', md: 'none' } }}
       >
-        <ProfileContainerMobile />
+        <ProfileMobileView />
       </Container>
     </Box>
   );

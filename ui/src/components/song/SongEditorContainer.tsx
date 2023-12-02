@@ -1,48 +1,16 @@
-import { useState, useEffect } from 'react';
 import SongEditorDesktopView from './SongEditorDesktopView';
 import SongEditorMobileView from './SongEditorMobileView';
-
-interface windowSize {
-  width: number | undefined;
-  height: number | undefined;
-}
-
-// Custom Hook to detect screen size
-function useWindowSize() {
-  const [windowSize, setWindowSize] = useState<windowSize>({
-    width: undefined,
-    height: undefined,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowSize;
-}
+import { useMediaQuery } from '@mui/material';
 
 const SongEditorContainer = () => {
-  const size = useWindowSize();
+  // hook to detect the window size
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-  return (
-    <div>
-      {size.width && size.width <= 768 ? (
-        <SongEditorMobileView actionOnEditor="ADD NEW" />
-      ) : (
-        <SongEditorDesktopView actionOnEditor="ADD NEW" />
-      )}
-    </div>
+  // render the mobile view if the window size is less than 768px
+  return isMobile ? (
+    <SongEditorMobileView actionOnEditor="ADD NEW" />
+  ) : (
+    <SongEditorDesktopView actionOnEditor="ADD NEW" />
   );
 };
 

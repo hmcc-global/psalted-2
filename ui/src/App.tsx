@@ -1,24 +1,44 @@
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { CssBaseline, Box } from '@mui/material';
+import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { routes as appRoutes } from './routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import customTheme from './theme';
+import NavBarMobile from './components/navigation/NavBarMobile';
+import Sidebar from './components/navigation/Sidebar';
+import NavBar from './components/navigation/NavBar';
+
 function App() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <NavBar />;
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        <Box height="100vh" display="flex" flexDirection="column">
-          <BrowserRouter>
-            <Routes>
-              {appRoutes.map((route) => (
-                <Route key={route.key} path={route.path} element={<route.component />} />
-              ))}
-            </Routes>
-          </BrowserRouter>
-        </Box>
+        <BrowserRouter>
+          {navBar}
+
+          <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
+            <Sidebar isOpen={isSidebarOpen} />
+
+            <Box component="main" sx={{ flexGrow: 1 }}>
+              <Routes>
+                {appRoutes.map((route) => (
+                  <Route key={route.key} path={route.path} element={<route.component />} />
+                ))}
+              </Routes>
+            </Box>
+          </Box>
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   );

@@ -32,13 +32,6 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     { icon: <TextSnippetIcon />, text: 'Resources' },
   ];
 
-  // Reset when switching views
-  useEffect(() => {
-    if (isDesktop) {
-      setSelectedItem(null);
-    }
-  }, [isDesktop]);
-
   const handleClick = (text: string) => {
     setSelectedItem(text);
   };
@@ -65,7 +58,11 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
             <ListItem
               key={index}
               disablePadding
-              sx={{ '&:hover': { backgroundColor: 'primary.light' } }}
+              sx={{
+                ...(selectedItem === item.text && {
+                  backgroundColor: 'primary.lighter',
+                }),
+              }}
             >
               <ListItemButton
                 // highlight selected item

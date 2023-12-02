@@ -7,7 +7,7 @@ const SongTab: FC = (): ReactElement => {
   return (
     <Box
       sx={{
-        padding: '16px',
+        padding: '1em',
         border: '1px solid #ccc',
         borderRadius: '4px',
         backgroundColor: 'primary.light',
@@ -18,7 +18,7 @@ const SongTab: FC = (): ReactElement => {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          marginBottom: '16px',
+          marginBottom: '1em',
         }}
       >
         <MusicNoteIcon sx={{ marginX: '1vw' }} color="primary" />

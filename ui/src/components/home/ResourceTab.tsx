@@ -7,7 +7,6 @@ const GroupTab: FC = (): ReactElement => {
     <Box
       sx={{
         padding: '1em',
-        border: '1px solid #ccc',
         borderRadius: '4px',
         backgroundColor: 'primary.light',
       }}

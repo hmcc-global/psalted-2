@@ -1,3 +1,4 @@
+// TODO: Can we use the same component for both mobile and desktop?
 import { FC, ReactElement, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -76,6 +77,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
         // TODO: figure out how to retrieve proper lyrics preview
+        // make the preview from the start of the first # to right before the second #
         lyricsPreview: data.chordLyrics,
       });
 

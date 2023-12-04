@@ -15,7 +15,6 @@ export type UserEditorProps = {
   register: UseFormRegister<UserEditorFields>;
   onClickEdit: () => void;
   onClickChange: () => void;
-  //   onClose: () => void;
 };
 
 export type HomeProfileProps = Omit<UserEditorProps, 'onSubmit'>;

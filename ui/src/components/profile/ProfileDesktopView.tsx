@@ -77,7 +77,6 @@ function HomeProfile(props: HomeProfileProps) {
 
 function EditProfile(props: otherProfileProps) {
   const { onBack, onSubmit, register } = props;
-  const successSnackbarOpen = true;
   return (
     <Stack spacing={2} width="40%" margin={5}>
       <div
@@ -277,10 +276,7 @@ function ChangePassword(props: otherProfileProps) {
 }
 
 const ProfileDesktopView: FC = (): ReactElement => {
-  const user = {
-    id: '65184899a76ccc3d258a95df',
-  };
-  // const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.user);
   const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
   const [userData, setUserData] = useState(null);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
@@ -289,7 +285,6 @@ const ProfileDesktopView: FC = (): ReactElement => {
   const fetchUserData = useCallback(async () => {
     if (user.id) {
       const { data, status } = await axios.get('/api/users/get', { params: { userId: user.id } });
-      console.log('data: ', data);
       if (status === 200) {
         setUserData(data[0]);
         setUserInformationFields(data[0]);

@@ -9,8 +9,11 @@ import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { UserEditorFields, HomeProfileProps, otherProfileProps } from '../../types/user.types';
 
-function HomeProfile(props: any) {
+function HomeProfile(props: HomeProfileProps) {
+  const { onBack, register, onClickChange, onClickEdit } = props;
+
   return (
     <Stack spacing={2} width="100%">
       <div
@@ -20,7 +23,7 @@ function HomeProfile(props: any) {
           flexWrap: 'wrap',
         }}
       >
-        <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
+        <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
         <Typography variant="h3" color="primary" fontWeight="bold">
           PROFILE
         </Typography>
@@ -30,7 +33,7 @@ function HomeProfile(props: any) {
         disabled
         id="outlined-name"
         label="Name"
-        {...props.register('fullName', { required: true })}
+        {...register('fullName', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
             WebkitTextFillColor: 'black',
@@ -42,24 +45,26 @@ function HomeProfile(props: any) {
         disabled
         id="outlined-email"
         label="Email"
-        {...props.register('email', { required: true })}
+        {...register('email', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
             WebkitTextFillColor: 'black',
           },
         }}
       />
-      <Button variant="outlined" onClick={props.onClickEdit} style={{ width: '45%' }}>
+      <Button variant="outlined" onClick={onClickEdit} style={{ width: '45%' }}>
         <Typography variant="subtitle2">EDIT PROFILE</Typography>
       </Button>
-      <Button variant="outlined" onClick={props.onClickChange} style={{ width: '60%' }}>
+      <Button variant="outlined" onClick={onClickChange} style={{ width: '60%' }}>
         <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
   );
 }
 
-function EditProfile(props: any) {
+function EditProfile(props: otherProfileProps) {
+  const { onBack, onSubmit, register } = props;
+
   return (
     <Stack spacing={2} width="100%">
       <div
@@ -77,18 +82,18 @@ function EditProfile(props: any) {
             flexWrap: 'wrap',
           }}
         >
-          <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
+          <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
           <Typography variant="h3" color="primary" fontWeight="bold">
             EDIT PROFILE
           </Typography>
         </div>
         <CreateIcon color="primary" />
       </div>
-      <form onSubmit={props.onSubmit} style={{ marginBottom: '10%' }}>
+      <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
           fullWidth
           id="outlined-name"
-          {...props.register('fullName')}
+          {...register('fullName')}
           label="Name"
           style={{ marginBottom: '5%' }}
         />
@@ -97,7 +102,7 @@ function EditProfile(props: any) {
           disabled
           id="outlined-email"
           label="Email"
-          {...props.register('email', { required: true })}
+          {...register('email', { required: true })}
           style={{ marginBottom: '5%' }}
           sx={{
             '& .MuiInputBase-input.Mui-disabled': {
@@ -113,7 +118,7 @@ function EditProfile(props: any) {
   );
 }
 
-function ChangePassword(props: any) {
+function ChangePassword(props: otherProfileProps) {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -123,6 +128,7 @@ function ChangePassword(props: any) {
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmNewPassword = () => setShowConfirmNewPassword((show) => !show);
+  const { onBack, onSubmit, register } = props;
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -154,7 +160,7 @@ function ChangePassword(props: any) {
             flexWrap: 'wrap',
           }}
         >
-          <ArrowBackIosNewIcon onClick={props.onBack} sx={{ color: 'gray' }} />
+          <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
           <Typography variant="h3" color="primary" fontWeight="bold">
             CHANGE PASSWORD
           </Typography>
@@ -162,11 +168,11 @@ function ChangePassword(props: any) {
         <CreateIcon color="primary" />
       </div>
 
-      <form onSubmit={props.onSubmit} style={{ marginBottom: '10%' }}>
+      <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
           fullWidth
           id="outlined-old-password"
-          {...props.register('currentPassword')}
+          {...register('currentPassword')}
           label="Enter Old Password"
           style={{ marginBottom: '5%' }}
           type={showOldPassword ? 'text' : 'password'}
@@ -190,10 +196,8 @@ function ChangePassword(props: any) {
           id="outlined-adornment-password"
           label="New Password"
           style={{ marginBottom: '5%' }}
-          onChange={(e) => setNewPassword(e.target.value)}
-          onBlur={onVerifyPassword}
           type={showNewPassword ? 'text' : 'password'}
-          {...props.register('newPassword')}
+          {...register('newPassword')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -208,6 +212,8 @@ function ChangePassword(props: any) {
               </InputAdornment>
             ),
           }}
+          onChange={(e) => setNewPassword(e.target.value)}
+          onBlur={onVerifyPassword}
         />
         {/* TODO: error handling still aint right */}
         <TextField
@@ -243,14 +249,12 @@ function ChangePassword(props: any) {
   );
 }
 
-const ProfileMobileView: FC = (props: any): ReactElement => {
+const ProfileMobileView: FC = (): ReactElement => {
   const user = useSelector((state: any) => state.user);
-
-  const { setValue, handleSubmit, register } = useForm();
+  const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
   const [userData, setUserData] = useState(null);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-  const settableDataFields = ['email', 'fullName', 'password'];
 
   const fetchUserData = useCallback(async () => {
     if (user.id) {
@@ -291,11 +295,9 @@ const ProfileMobileView: FC = (props: any): ReactElement => {
   };
 
   const setUserInformationFields = (userData: any) => {
-    for (let key in userData) {
-      if (settableDataFields.includes(key)) {
-        setValue(key, userData[key]);
-      }
-    }
+    setValue('fullName', userData['fullName']);
+    setValue('email', userData['email']);
+    setValue('password', userData['password']);
   };
 
   const editProfileHandler = () => {
@@ -334,7 +336,6 @@ const ProfileMobileView: FC = (props: any): ReactElement => {
       {/* TODO: ADD NAVBAR LATER */}
       {!showEditProfile && !showChangePassword && (
         <HomeProfile
-          name={'fullName'}
           onClickEdit={editProfileHandler}
           onClickChange={changePassHandler}
           onBack={backProfileHandler}

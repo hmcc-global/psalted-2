@@ -14,15 +14,16 @@ import {
 } from '@mui/material';
 import { SongSearchProps, SongCardProps } from '../../types/song';
 import { useState, useEffect, useCallback } from 'react';
+import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
   const prevFilter = props.filterData;
-  const [tempoList, setTempoList] = useState([] as string[]);
-  const [themesList, setThemesList] = useState([] as string[]);
+  const [tempoList, setTempoList] = useState<string[]>([]);
+  const [themesList, setThemesList] = useState<string[]>([]);
   const [search, setSearch] = useState(prevFilter?.search ?? '');
-  const [tempo, setTempo] = useState(prevFilter?.tempo ?? ([] as string[]));
-  const [themes, setThemes] = useState(prevFilter?.themes ?? ([] as string[]));
+  const [tempo, setTempo] = useState<string[]>(prevFilter?.tempo ?? []);
+  const [themes, setThemes] = useState<string[]>(prevFilter?.themes ?? []);
   const [displayResult, setDisplayResult] = useState(
     prevFilter?.display ?? {
       tempo: true,
@@ -67,16 +68,6 @@ const SongSearch = (props: SongSearchProps) => {
     setThemesList(Array.from(new Set(tempThemes)));
   }, [Songs]);
 
-  // const checkboxStyle = {
-  //   color: 'rgba(0, 0, 0, 0.54)',
-  //   '&$checked': {
-  //     color: 'rgba(0, 0, 0, 0.54)',
-  //   },
-  //   borderRadius: '50%',
-  //   padding: '5px',
-  //   border: '2px solid rgba(0, 0, 0, 0.54)',
-  // };
-
   useEffect(() => {
     getSelectOptions();
   }, [getSelectOptions]);
@@ -94,12 +85,9 @@ const SongSearch = (props: SongSearchProps) => {
           >
             SEARCH SONGS
           </Typography>
-          <Box
-            component="img"
-            alt="Psalted 2.0"
-            sx={{ height: '24px', width: '16px' }}
-            src={process.env.PUBLIC_URL + `/images/song_logo.svg`}
-          />
+          <Box sx={{ height: '24px', width: '16px' }}>
+            <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} />
+          </Box>
         </Stack>
         <Box component="form" noValidate autoComplete="off">
           <TextField

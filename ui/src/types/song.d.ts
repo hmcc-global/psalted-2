@@ -1,9 +1,9 @@
 export type SongCardProps = {
   _id: Types.ObjectId;
   title: string;
-  tempo: [string];
+  tempo: string[];
   originalKey: string;
-  themes: [string];
+  themes: string[];
   artist: string;
   year: string;
   lyricsPreview: string;

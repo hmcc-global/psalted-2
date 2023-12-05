@@ -9,15 +9,17 @@ import {
   Modal,
 } from '@mui/material';
 import axios from 'axios';
-import { FC, ReactElement } from 'react';
-import { useEffect, useState, useCallback } from 'react';
+import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
 import { SongCardProps, SongSearchFilter } from '../../types/song';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
+import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
+import AddIcon from '@mui/icons-material/Add';
+import TuneIcon from '@mui/icons-material/Tune';
 
 const SongContainer: FC = (): ReactElement => {
-  const [allSongs, setAllSongs] = useState([] as SongCardProps[]);
-  const [songView, setSongView] = useState([] as SongCardProps[]);
+  const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
+  const [songView, setSongView] = useState<SongCardProps[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -53,7 +55,7 @@ const SongContainer: FC = (): ReactElement => {
     }
   }, [filterData]);
 
-  const style = {
+  const modalSearchStyle = {
     position: 'absolute',
     width: '100vw',
     height: '100vh',
@@ -64,19 +66,15 @@ const SongContainer: FC = (): ReactElement => {
   useEffect(() => {
     getSongView();
   }, [getSongView, filterData]);
-  console.log(songView);
-  console.log(filterData);
+
   return (
     <>
       <Container fixed sx={{ padding: '24px' }}>
         <Stack direction="row" display="flex" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
-            <Box
-              component="img"
-              alt="Psalted 2.0"
-              sx={{ height: '24px', width: '16px' }}
-              src={process.env.PUBLIC_URL + `/images/song_logo.svg`}
-            />
+            <Box sx={{ height: '24px', width: '16px' }}>
+              <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} />
+            </Box>
             <Typography
               color="#4B50B4"
               fontFamily="Roboto"
@@ -88,10 +86,7 @@ const SongContainer: FC = (): ReactElement => {
               SONGS
             </Typography>
           </Stack>
-          <Button
-            variant="outlined"
-            startIcon={<Box component="img" src={process.env.PUBLIC_URL + `/images/add.svg`} />}
-          >
+          <Button variant="outlined" startIcon={<AddIcon />}>
             NEW SONG
           </Button>
         </Stack>
@@ -110,7 +105,7 @@ const SongContainer: FC = (): ReactElement => {
             onClick={handleOpen}
             sx={{ backgroundColor: '#4B50B4', borderRadius: 2.5, width: '60px', height: '60px' }}
           >
-            <Box component="img" src={process.env.PUBLIC_URL + `/images/filter.svg`} />
+            <TuneIcon sx={{ color: 'white' }} />
           </IconButton>
         </Stack>
         <Button>
@@ -129,7 +124,7 @@ const SongContainer: FC = (): ReactElement => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalSearchStyle}>
           <SongSearch
             filterData={filterData}
             setFilterData={setFilterData}

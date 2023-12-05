@@ -1,6 +1,7 @@
 import { Box, Container, Popover, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '../../types/song';
 import { useState } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const SongCard = (props: SongCardProps) => {
   const { title, tempo, originalKey, themes, artist, year, lyricsPreview, filterData } = props;
@@ -15,6 +16,7 @@ const SongCard = (props: SongCardProps) => {
   const fieldData = [themes, tempo, originalKey, year];
   const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
 
+  // state for the popover, to detect whether mouse is hovering or not
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,22 +29,6 @@ const SongCard = (props: SongCardProps) => {
 
   const open = Boolean(anchorEl);
 
-  const titleStyle = {
-    color: '#4B50B4',
-    fontFamily: 'Roboto',
-    fontSize: '24px',
-    fontStyle: 'normal',
-    fontWeight: 700,
-    lineHeight: 'normal',
-  };
-  const fieldStyle = {
-    color: '#9E9E9E',
-    fontFamily: 'Roboto',
-    fontSize: '14px',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: 'normal',
-  };
   return (
     <>
       <Container
@@ -53,8 +39,10 @@ const SongCard = (props: SongCardProps) => {
       >
         <Stack direction="row" display="flex" justifyContent="space-between">
           <Stack>
-            <Typography sx={titleStyle}>{title}</Typography>
-            <Typography>{artist}</Typography>
+            <Typography variant="h2" fontWeight={700} color={'primary.main'}>
+              {title}
+            </Typography>
+            <Typography variant="subtitle1">{artist}</Typography>
           </Stack>
           {filterData?.display?.lyricsPreview === true ||
           filterData?.display?.lyricsPreview === undefined ? (
@@ -64,10 +52,10 @@ const SongCard = (props: SongCardProps) => {
                 aria-haspopup="true"
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
-                component="img"
                 sx={{ height: '30px', width: '30px' }}
-                src={process.env.PUBLIC_URL + '/images/preview.svg'}
-              />
+              >
+                <VisibilityIcon sx={{ color: 'primary.main' }} />
+              </Box>
               <Popover
                 id="mouse-over-popover"
                 sx={{
@@ -98,10 +86,12 @@ const SongCard = (props: SongCardProps) => {
                 <Stack direction="row" display="flex" key={i}>
                   {displayData[i] ? (
                     <>
-                      <Typography style={fieldStyle} width="40%">
+                      <Typography variant="body2" color={'secondary.main'} width="40%">
                         {field}
                       </Typography>
-                      <Typography style={fieldStyle}>{fieldData[i]}</Typography>
+                      <Typography variant="body2" color={''}>
+                        {fieldData[i]}
+                      </Typography>
                     </>
                   ) : null}
                 </Stack>

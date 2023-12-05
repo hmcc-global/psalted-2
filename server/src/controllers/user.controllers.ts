@@ -33,7 +33,7 @@ const createUser: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const getUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { id: userId } = req.params;
+  const { id: userId } = req.query;
 
   if (userId) {
     try {

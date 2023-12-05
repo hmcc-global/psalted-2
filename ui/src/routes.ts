@@ -4,6 +4,7 @@ import LoginContainer from './components/auth/LoginContainer';
 import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
+import SongEditorContainer from './components/song/SongEditorContainer';
 
 // interface
 interface Route {
@@ -11,7 +12,7 @@ interface Route {
   title: string;
   path: string;
   enabled: boolean;
-  component: FC<{}>;
+  component: FC<any>;
 }
 
 export const routes: Array<Route> = [
@@ -49,5 +50,19 @@ export const routes: Array<Route> = [
     path: '/password/new',
     enabled: true,
     component: ResetPasswordContainer,
+  },
+  {
+    key: 'song-add-route',
+    title: 'Add New Song',
+    path: '/song/add',
+    enabled: true,
+    component: SongEditorContainer,
+  },
+  {
+    key: 'song-edit-route',
+    title: 'Edit Song',
+    path: '/song/edit/:id',
+    enabled: true,
+    component: SongEditorContainer,
   },
 ];

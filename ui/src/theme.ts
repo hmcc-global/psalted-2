@@ -5,6 +5,9 @@ const PRIMARY_LIGHT = '#C9CDFF';
 const PRIMARY_LIGHTER = '#DDE0FF';
 const PRIMARY_LIGHTEST = '#EEEFFF';
 
+const SECONDARY_MAIN = '#9E9E9E';
+const SECONDARY_LIGHT = '##00000099';
+
 declare module '@mui/material/styles' {
   interface PaletteColorOptions {
     main?: string;
@@ -21,6 +24,10 @@ const customTheme = createTheme({
       light: PRIMARY_LIGHT,
       lighter: PRIMARY_LIGHTER,
       lightest: PRIMARY_LIGHTEST,
+    },
+    secondary: {
+      main: SECONDARY_MAIN,
+      light: SECONDARY_LIGHT,
     },
   },
   typography: {
@@ -50,6 +57,10 @@ const customTheme = createTheme({
       fontSize: '1.25rem', // Equivalent to 20px (16 * 1.25)
       fontWeight: 500,
     },
+    h4: {
+      fontSize: '1.125rem', // Equivalent to 18px (16 * 1.125)
+      fontWeight: 700,
+    },
     subtitle1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)
       fontWeight: 400,
@@ -77,6 +88,16 @@ const customTheme = createTheme({
     caption: {
       fontSize: '0.75rem', // Equivalent to 12px (16 * 0.75)
       fontWeight: 400,
+    },
+  },
+  components: {
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          background: '#fff',
+          border: '1px solid {theme.palette.primary.main}',
+        },
+      },
     },
   },
 });

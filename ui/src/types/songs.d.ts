@@ -6,7 +6,9 @@ export type SongSchema = {
   originalKey: string;
   themes: Types.Array<string>;
   artist: string;
-  firstLine: string;
+  year: string;
+  code: string;
+  lyricsPreview: string;
   createdBy: Types.ObjectId; 
   lastUpdatedBy: Types.ObjectId; 
   isVerified: boolean; 

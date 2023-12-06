@@ -6,6 +6,7 @@ export type SongCardProps = {
   themes: string[];
   artist: string;
   year: string;
+  code: string;
   lyricsPreview: string;
   createdBy: Types.ObjectId;
   lastUpdatedBy: Types.ObjectId;
@@ -13,6 +14,7 @@ export type SongCardProps = {
   isVerified: Boolean;
   createdAt: Date;
   updatedAt: Date;
+  showDetails?: boolean;
 };
 
 export type SongSearchProps = {

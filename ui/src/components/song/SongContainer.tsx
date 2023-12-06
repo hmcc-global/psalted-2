@@ -23,6 +23,7 @@ const SongContainer: FC = (): ReactElement => {
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -36,10 +37,16 @@ const SongContainer: FC = (): ReactElement => {
           // filter the song based on data
           const filteredSong = songs.filter(
             (song) =>
-              ((filterData.search ? song.artist.includes(filterData.search) : true) ||
-                (filterData.search ? song.title.includes(filterData.search) : true) ||
-                (filterData.search ? song.lyricsPreview.includes(filterData.search) : true) ||
-                (filterData.search ? song.themes.includes(filterData.search) : true)) &&
+              ((filterData.search
+                ? song.artist && song.artist.includes(filterData.search)
+                : true) ||
+                (filterData.search ? song.title && song.title.includes(filterData.search) : true) ||
+                (filterData.search
+                  ? song.lyricsPreview && song.lyricsPreview.includes(filterData.search)
+                  : true) ||
+                (filterData.search
+                  ? song.themes && song.themes.includes(filterData.search)
+                  : true)) &&
               (filterData.themes
                 ? filterData.themes.every((theme) => song.themes.includes(theme))
                 : true) &&
@@ -60,7 +67,7 @@ const SongContainer: FC = (): ReactElement => {
     width: '100vw',
     height: '100vh',
     bgcolor: 'background.paper',
-    p: 4,
+    p: '32px 16px',
   };
 
   useEffect(() => {
@@ -69,32 +76,38 @@ const SongContainer: FC = (): ReactElement => {
 
   return (
     <>
-      <Container fixed sx={{ padding: '24px' }}>
+      <Container fixed sx={{ padding: '0 24px 24px', height: '100%' }}>
         <Stack direction="row" display="flex" justifyContent="space-between">
-          <Stack direction="row" spacing={2}>
-            <Box sx={{ height: '24px', width: '16px' }}>
-              <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} />
+          <Stack direction="row" spacing={2} display="flex" alignItems="center">
+            <Box sx={{ height: '36px', width: '24px' }}>
+              <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} fontSize="large" />
             </Box>
-            <Typography
-              color="#4B50B4"
-              fontFamily="Roboto"
-              fontSize="20px"
-              fontStyle="normal"
-              fontWeight={700}
-              lineHeight="28px"
-            >
+            <Typography variant="h2" color="primary.main">
               SONGS
             </Typography>
           </Stack>
-          <Button variant="outlined" startIcon={<AddIcon />}>
-            NEW SONG
+          <Button
+            variant="outlined"
+            sx={{ borderWidth: '2px', padding: '10px 25px' }}
+            startIcon={<AddIcon />}
+          >
+            <Typography>NEW SONG</Typography>
           </Button>
         </Stack>
-        <Stack direction="row" display="flex" justifyContent="space-between" marginTop="12px">
+        <Stack
+          spacing={2}
+          direction="row"
+          display="flex"
+          justifyContent="space-between"
+          marginTop="12px"
+        >
           <TextField
             id="search-bar"
             label="Search"
-            variant="outlined"
+            variant="filled"
+            placeholder="Search by title, artist, lyrics, or theme"
+            fullWidth
+            sx={{ backgroundColor: 'primary.lightest', borderRadius: '8px' }}
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -108,14 +121,28 @@ const SongContainer: FC = (): ReactElement => {
             <TuneIcon sx={{ color: 'white' }} />
           </IconButton>
         </Stack>
-        <Button>
-          <Typography>SHOW DETAILS</Typography>
+        <Button
+          variant="outlined"
+          sx={{ borderWidth: '2px', margin: '5px 0 15px 0' }}
+          onClick={() => setShowDetails(!showDetails)}
+        >
+          <Typography variant="caption">SHOW DETAILS</Typography>
         </Button>
-        <Stack direction="column" spacing={3}>
-          {songView &&
+        <Stack direction="column" spacing={3} height="100%">
+          {songView.length > 0 ? (
             songView.map((song, i) => {
-              return <SongCard key={i} {...song} filterData={filterData} />;
-            })}
+              return (
+                <SongCard key={i} {...song} showDetails={showDetails} filterData={filterData} />
+              );
+            })
+          ) : (
+            <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="h2" color="primary.main">
+                Couldn't find "{filterData?.search}"
+              </Typography>
+              <Typography variant="subtitle2">Try searching again</Typography>
+            </Stack>
+          )}
         </Stack>
       </Container>
       <Modal

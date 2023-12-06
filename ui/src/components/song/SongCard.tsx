@@ -1,10 +1,38 @@
-import { Box, Container, Popover, Stack, Typography } from '@mui/material';
+import { Box, Chip, Container, Popover, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '../../types/song';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
+type FieldArrayProps = {
+  data: string[] | string;
+};
+
+const FieldArray = ({ data }: FieldArrayProps) => {
+  if (Array.isArray(data)) {
+    return (
+      <Stack spacing={1} direction="row">
+        {data.map((item: string, i: number) => {
+          return <Chip size="small" key={i} label={item} />;
+        })}
+      </Stack>
+    );
+  }
+  return null;
+};
+
 const SongCard = (props: SongCardProps) => {
-  const { title, tempo, originalKey, themes, artist, year, lyricsPreview, filterData } = props;
+  const {
+    title,
+    tempo,
+    originalKey,
+    themes,
+    artist,
+    year,
+    code,
+    lyricsPreview,
+    filterData,
+    showDetails,
+  } = props;
 
   const displayData = [
     filterData?.display?.themes ?? true,
@@ -13,7 +41,7 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
   ];
-  const fieldData = [themes, tempo, originalKey, year];
+  const fieldData = [themes, tempo, originalKey, year, code];
   const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
 
   // state for the popover, to detect whether mouse is hovering or not
@@ -35,6 +63,7 @@ const SongCard = (props: SongCardProps) => {
         sx={{
           borderRadius: '4px',
           background: '#FAFAFA',
+          padding: '10px',
         }}
       >
         <Stack direction="row" display="flex" justifyContent="space-between">
@@ -79,8 +108,9 @@ const SongCard = (props: SongCardProps) => {
             </>
           ) : null}
         </Stack>
-        <Stack direction="column">
+        <Stack direction="column" spacing={1}>
           {CardFields &&
+            showDetails !== false &&
             CardFields.map((field, i) => {
               return (
                 <Stack direction="row" display="flex" key={i}>
@@ -89,9 +119,13 @@ const SongCard = (props: SongCardProps) => {
                       <Typography variant="body2" color={'secondary.main'} width="40%">
                         {field}
                       </Typography>
-                      <Typography variant="body2" color={''}>
-                        {fieldData[i]}
-                      </Typography>
+                      {Array.isArray(fieldData[i]) ? (
+                        <FieldArray data={fieldData[i]} />
+                      ) : (
+                        <Typography variant="body2" color={''}>
+                          {fieldData[i]}
+                        </Typography>
+                      )}
                     </>
                   ) : null}
                 </Stack>

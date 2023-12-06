@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import * as React from 'react'
+import Chip from "@mui/material/Chip";
+import InfoIcon from '@mui/icons-material/Info';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -24,12 +25,11 @@ const Item = styled(Paper)(({ theme }) => ({
   
 
 const SongsTitleCard: FC = (): ReactElement => {
-    const id: string = "656380f7f0f7b1247bcc0834";
+    const id: string = "656e196bd1f1ef5572282d8d";
     const [songs, setSongs] = useState<Song>()
 
     const getSongs = useCallback(async () => {
-        const response: AxiosResponse<Song> = await axios.get(`http://localhost:1337/api/songs/get?id=${id}`, {
-            headers: { "content-type": "application/json" },
+        const response: AxiosResponse<Song> = await axios.get(`/api/songs/get`, {
             params: { id: id }
         });
         const { data, status } = response;
@@ -47,36 +47,22 @@ const SongsTitleCard: FC = (): ReactElement => {
     }, [getSongs])
     console.log(songs)
 
-    function iterate(input: Array<String>){
-        const themeList = [];
-        for (let i in input){
-            themeList.push(input[i] + ' ');
-            <Box>
-                themeList[i];
-            </Box>
-        }
-        
-        return themeList;
-    }
-
-
     return <>
         <ThemeProvider theme = {customTheme}>
             
         <Box
         sx={{
-            bgcolor: 'white',
-            boxShadow: 4,
-            borderRadius: 2,
+            bgcolor: "white",
+            boxShadow: 0,
+            borderRadius: 0,
             p: 2,
-            minWidth: 300,
+            minWidth: 150,
         }}
         >
-           
-            <Box fontWeight={'Bold'} fontFamily={'Inter'} sx={{fontSize: 34, color:'primary.main'}}>
+            <Box fontWeight={'Bold'} fontFamily={'Inter'} sx={{ color:'primary.main'}}fontSize={{sm:'28px',md:'34px'}}>
                 {songs && songs.title}
             </Box>
-            <Box fontWeight={'Regular'} fontFamily={'Inter'} sx={{color:'black'}}>
+            <Box fontWeight={'Regular'} fontFamily={'Inter'} sx={{color:'black'}} fontSize={{sm:'16px',md:'26px'}}>
                 {songs && songs.artist}
             </Box>
             <Box>
@@ -87,12 +73,17 @@ const SongsTitleCard: FC = (): ReactElement => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                     >
-                    <Typography  fontFamily={'Inter'} fontWeight={'Bold'}>About The Song</Typography>
+                    <Typography  
+                    fontFamily={'Inter'} 
+                    fontWeight={'Bold'}>
+                        <Typography fontSize={{sm:'12px',md:'18px'}}>
+                            <InfoIcon  sx={{marginRight:'2vh'}}fontSize="large" color="primary"/>About The Song</Typography>
+                        </Typography>
                 </AccordionSummary>
                 </Box>
 
                 <AccordionDetails>
-                <Box sx={{ flexGrow: 1}}>
+                <Box sx={{ flexGrow: 1}} >
                
                     <Grid container spacing={2}>
                         <Grid item xs={3} md={2}>
@@ -101,9 +92,10 @@ const SongsTitleCard: FC = (): ReactElement => {
                             </Typography>
                         </Grid>
                         <Grid item xs={9} md={10}>
-                        
                             <Item>
-                            {iterate(songs && songs.themes)}
+                            {songs && songs.themes.map((themes:string, i:number) => {
+                                return<Chip label={themes} key={i} />
+                            })}
                             </Item>
                         </Grid>
                         <Grid item xs={3} md={2}>
@@ -128,7 +120,7 @@ const SongsTitleCard: FC = (): ReactElement => {
                             </Typography>
                         </Grid>
                         <Grid item xs={9} md={10}>
-                        <Item>{songs && songs.originalKey}</Item>
+                        <Item>{songs && songs.year}</Item>
                         </Grid>
                         <Grid item xs={3} md={2}>
                             <Typography>
@@ -136,7 +128,7 @@ const SongsTitleCard: FC = (): ReactElement => {
                             </Typography>
                         </Grid>
                         <Grid item xs={9} md={10}>
-                        <Item>xs=6 md=8</Item>
+                        <Item>{songs && songs.code}</Item>
                         </Grid>
                     </Grid>
                 </Box>
@@ -144,8 +136,8 @@ const SongsTitleCard: FC = (): ReactElement => {
                 
                 </AccordionDetails>
             </Accordion>
-           </Box>
-       </Box>
+            </Box>
+        </Box>
 
         </ThemeProvider>
       

@@ -275,7 +275,7 @@ const ProfileMobileView: FC = (): ReactElement => {
     }
   }, [user.id]);
 
-  const handleEditUserInformation = async (data: any, e: any) => {
+  const handleEditUserInformation = async (data: UserEditorFields) => {
     data.id = user.id;
 
     const { status } = await axios.put('/api/users/update', {
@@ -288,7 +288,7 @@ const ProfileMobileView: FC = (): ReactElement => {
     }
   };
 
-  const handleChangePassword = async (data: any, e: any) => {
+  const handleChangePassword = async (data: UserEditorFields) => {
     data.id = user.id;
 
     const { status } = await axios.put('/api/users/change-password', {
@@ -302,7 +302,7 @@ const ProfileMobileView: FC = (): ReactElement => {
     }
   };
 
-  const setUserInformationFields = (userData: any) => {
+  const setUserInformationFields = (userData: UserEditorFields) => {
     setValue('fullName', userData['fullName']);
     setValue('email', userData['email']);
     setValue('password', userData['password']);

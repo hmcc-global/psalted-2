@@ -34,7 +34,7 @@ function HomeProfile(props: HomeProfileProps) {
           marginBottom: '3%',
         }}
       >
-        <ArrowBackIosNewIcon onClick={onBack} color="primary" />
+        <ArrowBackIosNewIcon onClick={onBack} color="secondary" />
         <Typography variant="h3" color="primary" fontWeight="bold">
           PROFILE
         </Typography>
@@ -301,7 +301,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
     }
   }, [user.id]);
 
-  const handleEditUserInformation = async (data: any, e: any) => {
+  const handleEditUserInformation = async (data: UserEditorFields) => {
     data.id = user.id;
 
     const { status } = await axios.put('/api/users/update', {
@@ -314,7 +314,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
     }
   };
 
-  const handleChangePassword = async (data: any, e: any) => {
+  const handleChangePassword = async (data: UserEditorFields) => {
     data.id = user.id;
 
     const { status } = await axios.put('/api/users/change-password', {

@@ -15,6 +15,7 @@ export type SongCardProps = {
   createdAt: Date;
   updatedAt: Date;
   showDetails?: boolean;
+  isDesktop: boolean;
 };
 
 export type SongSearchProps = {
@@ -23,6 +24,7 @@ export type SongSearchProps = {
   setFilterData: React.Dispatch<React.SetStateAction<SongSearchFilter | undefined>>;
   onClose: () => void;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  isDesktop: boolean;
 };
 
 export type SongSearchFilter = {

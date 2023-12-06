@@ -9,6 +9,7 @@ type FieldArrayProps = {
 
 const FieldArray = ({ data }: FieldArrayProps) => {
   if (Array.isArray(data)) {
+    if (data.length === 0) return <Typography>-</Typography>;
     return (
       <Stack spacing={1} direction="row">
         {data.map((item: string, i: number) => {
@@ -32,6 +33,7 @@ const SongCard = (props: SongCardProps) => {
     lyricsPreview,
     filterData,
     showDetails,
+    isDesktop,
   } = props;
 
   const displayData = [
@@ -108,22 +110,26 @@ const SongCard = (props: SongCardProps) => {
             </>
           ) : null}
         </Stack>
-        <Stack direction="column" spacing={1}>
+        <Stack direction={isDesktop ? 'row' : 'column'} spacing={isDesktop ? 4 : 1}>
           {CardFields &&
             showDetails !== false &&
             CardFields.map((field, i) => {
               return (
-                <Stack direction="row" display="flex" key={i}>
+                <Stack direction="row" display="flex" key={i} spacing={1}>
                   {displayData[i] ? (
                     <>
-                      <Typography variant="body2" color={'secondary.main'} width="40%">
+                      <Typography
+                        variant="body2"
+                        color={'secondary.main'}
+                        width={isDesktop ? '100%' : '40%'}
+                      >
                         {field}
                       </Typography>
                       {Array.isArray(fieldData[i]) ? (
                         <FieldArray data={fieldData[i]} />
                       ) : (
                         <Typography variant="body2" color={''}>
-                          {fieldData[i]}
+                          {fieldData[i] ?? '-'}
                         </Typography>
                       )}
                     </>

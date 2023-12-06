@@ -20,6 +20,7 @@ import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
   const prevFilter = props.filterData;
+  const isDesktop = props.isDesktop;
   const [tempoList, setTempoList] = useState<string[]>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [search, setSearch] = useState(prevFilter?.search ?? '');
@@ -54,6 +55,34 @@ const SongSearch = (props: SongSearchProps) => {
     props.onClose();
   };
 
+  const handleClear = () => {
+    props.setFilterData({
+      search: undefined,
+      tempo: undefined,
+      themes: undefined,
+      display: {
+        tempo: true,
+        themes: true,
+        lyricsPreview: true,
+        originalKey: true,
+        year: true,
+        code: true,
+      },
+    });
+    setSearch('');
+    setTempo([]);
+    setThemes([]);
+    setDisplayResult({
+      tempo: true,
+      themes: true,
+      lyricsPreview: true,
+      originalKey: true,
+      year: true,
+      code: true,
+    });
+    props.onClose();
+  };
+
   const getSelectOptions = useCallback(() => {
     const tempTempo: string[] = [];
     const tempThemes: string[] = [];
@@ -73,7 +102,7 @@ const SongSearch = (props: SongSearchProps) => {
   return (
     <>
       <Container>
-        <Stack direction="row" display="flex" justifyContent="space-between">
+        <Stack direction="row" display={isDesktop ? 'none' : 'flex'} justifyContent="space-between">
           <Typography variant="h2" color="primary.main" marginBottom="16px">
             SEARCH SONGS
           </Typography>
@@ -88,6 +117,7 @@ const SongSearch = (props: SongSearchProps) => {
               label="Search"
               variant="outlined"
               value={search}
+              fullWidth
               onChange={(e) => {
                 setSearch(e.target.value);
                 props.setSearch(e.target.value);
@@ -188,6 +218,9 @@ const SongSearch = (props: SongSearchProps) => {
           </FormControl>
           <Button variant="contained" onClick={handleSubmit}>
             SEARCH
+          </Button>
+          <Button sx={{ backgroundColor: '#666666' }} variant="contained" onClick={handleClear}>
+            CLEAR
           </Button>
         </Stack>
       </Container>

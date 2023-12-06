@@ -6,8 +6,8 @@ import axios from 'axios';
 import { Box, Button, Checkbox, Link, Stack, TextField, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { LoginFormFields } from './helpers/form.types';
-import { formSpacing, formWidth } from './helpers/constants';
+import { LoginFormFields } from '../../types/form.types';
+import { formSpacing, formWidth } from '../../constants';
 import { emailValidator, passwordValidator } from './helpers/zod.validators';
 
 // zod validation

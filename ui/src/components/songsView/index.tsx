@@ -2,14 +2,16 @@ import { Container, Box } from "@mui/material"
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { Song } from "../../types/songs";
 import axios, { AxiosResponse } from "axios";
+import SongsTitleCard from "./songsTitleCard";
+import SongsButtonCard from "./songsButtonsCard";
+import SongsLyrics from "./songsLyrics";
 
 const SongsView: FC = (): ReactElement => {
-    const id: string = "655b5d36cebd56139435b286";
+    const id: string = "6564a92b5a811dfaa8637b41";
     const [songs, setSongs] = useState<Song>()
 
     const getSongs = useCallback(async () => {
-        const response: AxiosResponse<Song> = await axios.get(`http://localhost:1337/api/songs/get?id=${id}`, {
-            headers: { "content-type": "application/json" },
+        const response: AxiosResponse<Song> = await axios.get(`/api/songs/get`, {
             params: { id: id }
         });
         const { data, status } = response;
@@ -27,17 +29,13 @@ const SongsView: FC = (): ReactElement => {
     }, [getSongs])
     console.log(songs)
     return <>
-        <Container maxWidth='lg'>
-            <Box>
-                Box 1
-                {songs && songs.chordLyrics}
+        <Container maxWidth="lg">
+            <Box sx={{ bgcolor: 'white', width: '100%' }}>
+                <SongsTitleCard></SongsTitleCard>
             </Box>
-            <Box>
-                Box 2a
-                asd
-                {songs && songs.artist}
+            <Box sx={{marginBottom:'15vh', width: '100%' }}>
+                <SongsButtonCard></SongsButtonCard>
             </Box>
-            Test
         </Container>
     </>
 }

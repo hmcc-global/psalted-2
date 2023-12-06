@@ -1,9 +1,12 @@
 import { FC, ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Toolbar, Typography, IconButton, InputBase, Divider } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 
 const NavBar: FC = (): ReactElement => {
+  const navigate = useNavigate();
+
   return (
     <Box>
       <AppBar
@@ -29,11 +32,11 @@ const NavBar: FC = (): ReactElement => {
             }}
           >
             <IconButton size="medium" edge="end">
-              <Search />
+              <SearchIcon />
             </IconButton>
             <InputBase placeholder="Search..." sx={{ ml: 1 }} />
           </Box>
-          <IconButton size="medium" edge="end">
+          <IconButton size="medium" edge="end" onClick={() => navigate('/profile')}>
             <PersonIcon color="primary" />
           </IconButton>
         </Toolbar>

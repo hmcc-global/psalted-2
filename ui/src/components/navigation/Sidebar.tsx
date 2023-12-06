@@ -9,6 +9,7 @@ import {
   ListItemText,
   useMediaQuery,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
@@ -22,18 +23,20 @@ interface SidebarProps {
 const drawerWidth = 240;
 
 const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
   const menuItems = [
-    { icon: <HomeIcon />, text: 'Home' },
-    { icon: <MusicNoteIcon />, text: 'Songs' },
-    { icon: <QueueMusicIcon />, text: 'My Setlists' },
-    { icon: <SupervisedUserCircleIcon />, text: 'Groups' },
-    { icon: <TextSnippetIcon />, text: 'Resources' },
+    { icon: <HomeIcon />, text: 'Home', path: '' },
+    { icon: <MusicNoteIcon />, text: 'Songs', path: 'song' },
+    { icon: <QueueMusicIcon />, text: 'My Setlists', path: 'setlist' },
+    { icon: <SupervisedUserCircleIcon />, text: 'Groups', path: 'group' },
+    { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },
   ];
 
-  const handleClick = (text: string) => {
+  const handleClick = (text: string, path: string) => {
     setSelectedItem(text);
+    navigate(`/${path}`);
   };
 
   return (
@@ -67,7 +70,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
               <ListItemButton
                 // highlight selected item
                 selected={selectedItem === item.text}
-                onClick={() => handleClick(item.text)}
+                onClick={() => handleClick(item.text, item.path)}
               >
                 <ListItemIcon sx={{ color: selectedItem === item.text ? 'primary.main' : '' }}>
                   {item.icon}

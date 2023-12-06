@@ -2,15 +2,24 @@ import axios from 'axios';
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import {
+  Box,
+  Button,
+  Divider,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+  Container,
+} from '@mui/material';
+import { UserEditorFields, HomeProfileProps, otherProfileProps } from '../../types/user.types';
 
-import { Box, Button, Divider, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import PersonIcon from '@mui/icons-material/Person';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { UserEditorFields, HomeProfileProps, otherProfileProps } from '../../types/user.types';
 
 function HomeProfile(props: HomeProfileProps) {
   const { onBack, register, onClickChange, onClickEdit } = props;
@@ -25,7 +34,7 @@ function HomeProfile(props: HomeProfileProps) {
           marginBottom: '3%',
         }}
       >
-        <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
+        <ArrowBackIosNewIcon onClick={onBack} color="primary" />
         <Typography variant="h3" color="primary" fontWeight="bold">
           PROFILE
         </Typography>
@@ -347,40 +356,41 @@ const ProfileDesktopView: FC = (): ReactElement => {
   }, [fetchUserData]);
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'left',
-        alignItems: 'left',
-        padding: 2,
-      }}
-    >
-      {/* TODO: ADD NAVBAR LATER */}
-      {!showEditProfile && !showChangePassword && (
-        <HomeProfile
-          onClickEdit={editProfileHandler}
-          onClickChange={changePassHandler}
-          onBack={backProfileHandler}
-          register={register}
-        />
-      )}
-      {showEditProfile && !showChangePassword && (
-        <EditProfile
-          onBack={backProfileHandler}
-          onSubmit={handleSubmit(handleEditUserInformation)}
-          register={register}
-        />
-      )}
-      {!showEditProfile && showChangePassword && (
-        <ChangePassword
-          onSubmit={handleSubmit(handleChangePassword)}
-          onBack={backProfileHandler}
-          register={register}
-        />
-      )}
-    </Box>
+    <Container>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'left',
+          alignItems: 'left',
+          padding: 2,
+        }}
+      >
+        {!showEditProfile && !showChangePassword && (
+          <HomeProfile
+            onClickEdit={editProfileHandler}
+            onClickChange={changePassHandler}
+            onBack={backProfileHandler}
+            register={register}
+          />
+        )}
+        {showEditProfile && !showChangePassword && (
+          <EditProfile
+            onBack={backProfileHandler}
+            onSubmit={handleSubmit(handleEditUserInformation)}
+            register={register}
+          />
+        )}
+        {!showEditProfile && showChangePassword && (
+          <ChangePassword
+            onSubmit={handleSubmit(handleChangePassword)}
+            onBack={backProfileHandler}
+            register={register}
+          />
+        )}
+      </Box>
+    </Container>
   );
 };
 

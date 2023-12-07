@@ -4,10 +4,9 @@ import { SongView } from '../../types/song';
 import axios, { AxiosResponse } from 'axios';
 import SongsTitleCard from './songsTitleCard';
 import SongsButtonCard from './songsButtonsCard';
-import SongsLyrics from './songsLyrics';
 
 const SongsView: FC = (): ReactElement => {
-  const id: string = '6564a92b5a811dfaa8637b41';
+  const id: string = '6567745b8c8e45647e7ab722';
   const [songs, setSongs] = useState<SongView>();
 
   const getSongs = useCallback(async () => {
@@ -32,10 +31,10 @@ const SongsView: FC = (): ReactElement => {
     <>
       <Container maxWidth="lg">
         <Box sx={{ bgcolor: 'white', width: '100%' }}>
-          <SongsTitleCard></SongsTitleCard>
+          <SongsTitleCard song={songs} />
         </Box>
         <Box sx={{ marginBottom: '15vh', width: '100%' }}>
-          <SongsButtonCard></SongsButtonCard>
+          <SongsButtonCard chordStatus={true} song={songs} />
         </Box>
       </Container>
     </>

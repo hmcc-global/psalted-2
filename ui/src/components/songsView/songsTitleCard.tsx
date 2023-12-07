@@ -1,10 +1,5 @@
-import { Container, Box, styled, Shadows } from '@mui/material';
-import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
+import { Container, Box, styled } from '@mui/material';
 import { SongView } from '../../types/song';
-import axios, { AxiosResponse } from 'axios';
-import { ThemeProvider } from '@mui/system';
-import customTheme from '../../theme';
-
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -22,32 +17,16 @@ const Item = styled(Paper)(({ theme }) => ({
   shadows: '0',
 }));
 
-const SongsTitleCard: FC = (): ReactElement => {
-  const id: string = '656e196bd1f1ef5572282d8d';
-  const [songs, setSongs] = useState<SongView>();
+type SongTitleCardProps = {
+  song: SongView | undefined;
+};
 
-  const getSongs = useCallback(async () => {
-    const response: AxiosResponse<SongView> = await axios.get(`/api/songs/get`, {
-      params: { id: id },
-    });
-    const { data, status } = response;
-    try {
-      if (status === 200) {
-        setSongs(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    getSongs();
-  }, [getSongs]);
-  console.log(songs);
+const SongsTitleCard = (props: SongTitleCardProps) => {
+  const songs = props.song
 
   return (
     <>
-      <ThemeProvider theme={customTheme}>
+      <Container>
         <Box
           sx={{
             bgcolor: 'white',
@@ -81,11 +60,13 @@ const SongsTitleCard: FC = (): ReactElement => {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography fontFamily={'Inter'} fontWeight={'Bold'}>
-                    <Typography fontSize={{ sm: '12px', md: '18px' }}>
-                      <InfoIcon sx={{ marginRight: '2vh' }} fontSize="large" color="primary" />
-                      About The Song
-                    </Typography>
+                  <Typography
+                    fontFamily={'Inter'}
+                    fontWeight={'Bold'}
+                    fontSize={{ sm: '12px', md: '18px' }}
+                  >
+                    <InfoIcon sx={{ marginRight: '2vh' }} fontSize="large" color="primary" />
+                    About The Song
                   </Typography>
                 </AccordionSummary>
               </Box>
@@ -134,7 +115,7 @@ const SongsTitleCard: FC = (): ReactElement => {
             </Accordion>
           </Box>
         </Box>
-      </ThemeProvider>
+      </Container>
     </>
   );
 };

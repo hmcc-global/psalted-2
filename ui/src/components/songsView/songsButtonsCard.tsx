@@ -1,6 +1,6 @@
 import { Container, Box, styled, Shadows, Typography } from "@mui/material"
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
-import { Song } from "../../types/songs";
+import { SongView } from "../../types/song";
 import axios, { AxiosResponse } from "axios";
 import { ThemeProvider } from "@mui/system";
 import customTheme from "../../theme";
@@ -100,10 +100,10 @@ const transposeChord = (originalKey: string, chord: string, transpose: number): 
   };
 const SongsButtonCard: FC = (): ReactElement => {
     const id: string = "656ed724e6aa73999bd5cf3b";
-    const [songs, setSongs] = useState<Song>()
+    const [songs, setSongs] = useState<SongView>()
 
     const getSongs = useCallback(async () => {
-        const response: AxiosResponse<Song> = await axios.get(`/api/songs/get`, {
+        const response: AxiosResponse<SongView> = await axios.get(`/api/songs/get`, {
             params: { id: id }
         });
         const { data, status } = response;

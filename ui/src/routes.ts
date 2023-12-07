@@ -85,7 +85,7 @@ export const routes: Array<Route> = [
   {
     key: 'songsView-route',
     title: 'songsView',
-    path: '/songsView',
+    path: '/song/:id',
     enabled: true,
     component: SongsView,
   },

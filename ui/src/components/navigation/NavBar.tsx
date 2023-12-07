@@ -1,14 +1,5 @@
 import { FC, ReactElement } from 'react';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  InputBase,
-  Divider,
-} from '@mui/material';
+import { AppBar, Box, Toolbar, Typography, IconButton, InputBase, Divider } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import PersonIcon from '@mui/icons-material/Person';
 

@@ -5,6 +5,7 @@ import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
+import SongContainer from './components/song/SongContainer';
 
 // interface
 interface Route {
@@ -64,5 +65,12 @@ export const routes: Array<Route> = [
     path: '/song/edit/:id',
     enabled: true,
     component: SongEditorContainer,
+  },
+  {
+    key: 'song-route',
+    title: 'Song',
+    path: '/song',
+    enabled: true,
+    component: SongContainer,
   },
 ];

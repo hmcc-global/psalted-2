@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
-<<<<<<< HEAD
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
-=======
-import { CssBaseline, Box } from '@mui/material';
->>>>>>> 4ff3fe5 (GH-24: Implemented Chord view  and Improvable Transpose Functionality)
 import { ThemeProvider } from '@mui/material/styles';
 import { routes as appRoutes } from './routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import customTheme from './theme';
-<<<<<<< HEAD
 import NavBarMobile from './components/navigation/NavBarMobile';
 import Sidebar from './components/navigation/Sidebar';
 import NavBar from './components/navigation/NavBar';
@@ -24,10 +19,6 @@ function App() {
   };
 
   const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <NavBar />;
-=======
-
-function App() {
->>>>>>> 4ff3fe5 (GH-24: Implemented Chord view  and Improvable Transpose Functionality)
 
   return (
     <Provider store={store}>

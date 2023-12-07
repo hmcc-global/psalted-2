@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { musicKeysOptions, tempoOptions, timeSignatureOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SongEditorFields, SongEditorProps } from '#/types/song.types';
+import { SongEditorFields, SongEditorProps } from '../../types/song';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 import axios from 'axios';

@@ -31,32 +31,36 @@ const createSong: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const getSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-    const { id: songId } = req.query;
-    if (songId) {
-      try {
-        const data: SongDocument | null = await Song.findOne({ _id: songId, isDeleted: false }).exec();
-  
-        if (data) {
-          sendResponse(res, 200, data);
-        } else {
-          sendResponse(res, 404, 'Song not found');
-        }
-      } catch (error: any) {
-        sendResponse(res, 500, error?.message );
+  const { id: songId } = req.query;
+
+  if (songId) {
+    try {
+      const data: SongDocument | null = await Song.findOne({
+        _id: songId,
+        isDeleted: false,
+      }).exec();
+
+      if (data) {
+        sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, 'Song not found');
       }
-    } else {
-      try {
-        const data: SongDocument[] = await Song.find({ isDeleted: false }).exec();
-  
-        if (data) {
-          sendResponse(res, 200, data);
-        } else {
-          sendResponse(res, 404, 'Songs not found');
-        }
-      } catch (error: any) {
-        sendResponse(res, 500, error?.message);
+    } catch (error: any) {
+      sendResponse(res, 500, error?.message);
+    }
+  } else {
+    try {
+      const data: SongDocument[] = await Song.find({ isDeleted: false }).exec();
+
+      if (data) {
+        sendResponse(res, 200, data);
+      } else {
+        sendResponse(res, 404, 'Songs not found');
       }
-    } 
+    } catch (error: any) {
+      sendResponse(res, 500, error?.message);
+    }
+  }
 };
 
 const getSongView: RequestHandler = async (req: Request, res: Response): Promise<void> => {

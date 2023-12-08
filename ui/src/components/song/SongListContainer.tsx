@@ -19,7 +19,7 @@ import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
 
-const SongContainer: FC = (): ReactElement => {
+const SongListContainer: FC = (): ReactElement => {
   const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
   const [songView, setSongView] = useState<SongCardProps[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
@@ -196,4 +196,4 @@ const SongContainer: FC = (): ReactElement => {
   );
 };
 
-export default SongContainer;
+export default SongListContainer;

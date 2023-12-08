@@ -2,6 +2,7 @@ import { Box, Chip, Container, Popover, Stack, Typography } from '@mui/material'
 import { SongCardProps } from '../../types/song';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useNavigate } from 'react-router-dom';
 
 type FieldArrayProps = {
   data: string[] | string;
@@ -23,6 +24,7 @@ const FieldArray = ({ data }: FieldArrayProps) => {
 
 const SongCard = (props: SongCardProps) => {
   const {
+    _id,
     title,
     tempo,
     originalKey,
@@ -48,6 +50,7 @@ const SongCard = (props: SongCardProps) => {
 
   // state for the popover, to detect whether mouse is hovering or not
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const navigate = useNavigate();
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -67,6 +70,7 @@ const SongCard = (props: SongCardProps) => {
           background: '#FAFAFA',
           padding: '10px',
         }}
+        onClick={() => navigate(`/song/${_id}`)}
       >
         <Stack direction="row" display="flex" justifyContent="space-between">
           <Stack>

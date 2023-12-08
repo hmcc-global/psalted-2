@@ -63,7 +63,7 @@ const customTheme = createTheme({
     },
     subtitle1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)
-      fontWeight: 400,
+      fontWeight: 600,
     },
     subtitle2: {
       fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)

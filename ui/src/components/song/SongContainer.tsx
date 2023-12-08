@@ -14,6 +14,7 @@ import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
 import { SongCardProps, SongSearchFilter } from '../../types/song';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
+import { useNavigate } from 'react-router-dom';
 import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -25,7 +26,10 @@ const SongContainer: FC = (): ReactElement => {
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
+
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -92,6 +96,7 @@ const SongContainer: FC = (): ReactElement => {
             variant="outlined"
             sx={{ borderWidth: '2px', padding: '10px 25px' }}
             startIcon={<AddIcon />}
+            onClick={() => navigate('/song/add')}
           >
             <Typography>NEW SONG</Typography>
           </Button>

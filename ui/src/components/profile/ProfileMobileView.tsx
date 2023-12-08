@@ -266,11 +266,11 @@ const ProfileMobileView: FC = (): ReactElement => {
 
   const fetchUserData = useCallback(async () => {
     if (user.id) {
-      const { data, status } = await axios.get('/api/users/get', { params: { userId: user.id } });
+      const { data, status } = await axios.get('/api/users/get', { params: { id: user.id } });
 
       if (status === 200) {
-        setUserData(data[0]);
-        setUserInformationFields(data[0]);
+        setUserData(data);
+        setUserInformationFields(data);
       }
     }
   }, [user.id]);

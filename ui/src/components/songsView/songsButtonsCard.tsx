@@ -17,24 +17,21 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SongsLyrics from './songsLyrics';
 
 type SongsButtonCardProps = {
-  chordStatus: boolean;
   song: SongView | undefined;
 };
 
 const SongsButtonCard = (props: SongsButtonCardProps) => {
   const songs = props.song;
-  const [state, setState] = useState({ chord: false });
-  const [isOpen, setIsOpen] = useState(false);
+  const [chordStatus, setChordStatus] = useState(false);
+  const [useFlat, setUseFlat] = useState(false);
   const [count, setCount] = useState(0);
   const [split, setSplit] = useState(1);
-  const isDesktop = useMediaQuery('(min-width:768px)')
+  const isDesktop = useMediaQuery('(min-width:768px)');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsOpen((isOpen) => !isOpen);
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+  const handleChange = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    return (event: React.ChangeEvent<{}>, value: boolean) => {
+      setter(value);
+    };
   };
 
   const handleIncrement = () => {
@@ -61,20 +58,17 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
               borderRadius: 0,
               p: 0,
               width: '100%',
-              padding:"12px"
+              padding: '12px',
             }}
           >
             <Stack direction="row" spacing={{ base: '0', xs: '1vh', sm: '1.5vh', md: '2vh' }}>
-              <Box
-                justifyContent='left'
-                bgcolor="white"
-                padding="4px 12px"
-                borderRadius="4px"
-              >
+              <Box justifyContent="left" bgcolor="white" padding="4px 12px" borderRadius="4px">
                 <FormGroup>
                   <FormControlLabel
                     labelPlacement="start"
-                    control={<Switch checked={state.chord} onChange={handleChange} name="chord" />}
+                    control={
+                      <Switch checked={chordStatus} onChange={handleChange(setChordStatus)} name="chord" />
+                    }
                     label="Chord"
                   />
                 </FormGroup>
@@ -96,31 +90,29 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                     <KeyboardArrowDownIcon />
                   </IconButton>
                 </Box>
-                {/* <Chip
-                  label={transposeChord(
-                    'test',
-                    String('[' + (songs && songs.originalKey) + ']'),
-                    count
-                  ).slice(
-                    1,
-                    transposeChord('test', String('[' + (songs && songs.originalKey) + ']'), count)
-                      .length - 1
-                  )}
-                  color="primary"
-                /> */}
+                <Chip label={''} color="primary" />
                 <Box bgcolor="primary.lightest">
                   <IconButton color="primary" aria-label="up" onClick={handleIncrement}>
                     <KeyboardArrowUpIcon />
                   </IconButton>
                 </Box>
               </Stack>
+              <Box justifyContent="left" bgcolor="white" padding="4px 12px" borderRadius="4px">
+                <FormGroup>
+                  <FormControlLabel
+                    labelPlacement="start"
+                    control={<Switch checked={useFlat} onChange={handleChange(setUseFlat)} name="flat" />}
+                    label="use Flat"
+                  />
+                </FormGroup>
+              </Box>
               <Stack
                 direction="row"
                 spacing={1}
                 bgcolor="white"
                 padding="4px 12px"
                 borderRadius="4px"
-                display={isDesktop ? "flex" : "none"}
+                display={isDesktop ? 'flex' : 'none'}
               >
                 <Box>
                   <Typography alignItems={'center'} paddingTop="5px">
@@ -154,7 +146,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
             </Stack>
           </Box>
         </Box>
-        <SongsLyrics chordStatus={isOpen} changeKey={count} song={songs} split={split} />
+        <SongsLyrics chordStatus={chordStatus} changeKey={count} song={songs} split={split} />
       </Container>
     </>
   );

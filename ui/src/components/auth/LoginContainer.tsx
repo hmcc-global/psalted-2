@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { LoginFormFields } from '../../types/form.types';
 import { formSpacing, formWidth } from '../../constants';
 import { emailValidator, passwordValidator } from './helpers/zod.validators';
+import { useNavigate } from 'react-router-dom';
 
 // zod validation
 const loginValidationSchema = z.object({
@@ -20,13 +21,13 @@ const LoginContainer: React.FC = () => {
   const { register, handleSubmit, formState } = useForm<LoginFormFields>({
     resolver: zodResolver(loginValidationSchema),
   });
-
   const { errors } = formState;
 
   const [invalidLogin, setInvalidLogin] = useState<string>('');
   const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleEmailLogin: SubmitHandler<LoginFormFields> = async (data) => {
     try {
@@ -37,7 +38,7 @@ const LoginContainer: React.FC = () => {
       });
       dispatch(signin(payload.data));
       setInvalidLogin('');
-      window.location.reload();
+      navigate('/');
     } catch (error: any) {
       if (error?.response?.status === 500 || error?.response?.status === 401) {
         setInvalidLogin('Invalid email or wrong password');

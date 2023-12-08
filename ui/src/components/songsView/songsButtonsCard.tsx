@@ -114,16 +114,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
             </Stack>
           </Box>
         </Box>
-        <Box
-          sx={{
-            bgcolor: 'pink',
-            boxShadow: 0,
-            p: 0,
-            minWidth: '100%',
-          }}
-        >
-          <SongsLyrics chordStatus={isOpen} changeKey={count} song={songs} />
-        </Box>
+        <SongsLyrics chordStatus={isOpen} changeKey={count} song={songs} />
       </Container>
     </>
   );

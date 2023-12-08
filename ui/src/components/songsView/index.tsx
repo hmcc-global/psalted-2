@@ -6,7 +6,7 @@ import SongsTitleCard from './songsTitleCard';
 import SongsButtonCard from './songsButtonsCard';
 
 const SongsView: FC = (): ReactElement => {
-  const id: string = '6567745b8c8e45647e7ab722';
+  const id: string = window.location.pathname.split('/')[2];
   const [songs, setSongs] = useState<SongView>();
 
   const getSongs = useCallback(async () => {
@@ -21,7 +21,7 @@ const SongsView: FC = (): ReactElement => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     getSongs();

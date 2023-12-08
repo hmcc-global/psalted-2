@@ -39,6 +39,7 @@ const TagArray = ({ data }: FieldArrayProps) => {
 
 const SongCard = (props: SongCardProps) => {
   const {
+    _id,
     title,
     tempo,
     originalKey,

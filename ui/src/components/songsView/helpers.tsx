@@ -114,13 +114,9 @@ export const parseWithChords = (
       pass = true;
     }
 
-    if (lyricsArray[index].match('<')) {
-      //lyricsArray[index] = transposeChord(lyricsArray[index],transpose) // transpose
-    }
-
     // console.log(lyricsArray.length);
     if (pass) {
-      lyricsArray[index] = lyricsArray[index].replace(/\<(.*?)\>/g, ' ');
+      lyricsArray[index] = lyricsArray[index].replace(/<([^>]+)>/g, ' ');
       lyricsArray.push(newStr);
       pass = false;
       newStr = '';

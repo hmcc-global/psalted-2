@@ -26,7 +26,7 @@ const SongsView: FC = (): ReactElement => {
   useEffect(() => {
     getSongs();
   }, [getSongs]);
-  console.log(songs);
+
   return (
     <>
       <Container maxWidth="lg">

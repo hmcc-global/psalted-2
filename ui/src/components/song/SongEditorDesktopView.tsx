@@ -18,7 +18,7 @@ import {
   Fade,
   Grid,
 } from '@mui/material';
-import { musicKeysOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import SongHelpDialog from './SongHelpDialog';
@@ -38,7 +38,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [tempo, setTempo] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
-  const [tempoList, setTempoList] = useState<string[]>([]);
+  const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');

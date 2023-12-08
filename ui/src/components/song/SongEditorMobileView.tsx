@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
-import { musicKeysOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 
@@ -38,7 +38,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [tempo, setTempo] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
-  const [tempoList, setTempoList] = useState<string[]>([]);
+  const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');

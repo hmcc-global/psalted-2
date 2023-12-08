@@ -34,7 +34,7 @@ const SongsView: FC = (): ReactElement => {
           <SongsTitleCard song={songs} />
         </Box>
         <Box sx={{ marginBottom: '15vh', width: '100%' }}>
-          <SongsButtonCard chordStatus={true} song={songs} />
+          <SongsButtonCard song={songs} />
         </Box>
       </Container>
     </>

@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { transposeChord } from './helpers';
 import SongsLyrics from './songsLyrics';
 
 type SongsButtonCardProps = {
@@ -97,7 +96,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                     <KeyboardArrowDownIcon />
                   </IconButton>
                 </Box>
-                <Chip
+                {/* <Chip
                   label={transposeChord(
                     'test',
                     String('[' + (songs && songs.originalKey) + ']'),
@@ -108,7 +107,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                       .length - 1
                   )}
                   color="primary"
-                />
+                /> */}
                 <Box bgcolor="primary.lightest">
                   <IconButton color="primary" aria-label="up" onClick={handleIncrement}>
                     <KeyboardArrowUpIcon />

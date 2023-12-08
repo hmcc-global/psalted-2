@@ -67,7 +67,11 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                   <FormControlLabel
                     labelPlacement="start"
                     control={
-                      <Switch checked={chordStatus} onChange={handleChange(setChordStatus)} name="chord" />
+                      <Switch
+                        checked={chordStatus}
+                        onChange={handleChange(setChordStatus)}
+                        name="chord"
+                      />
                     }
                     label="Chord"
                   />
@@ -101,7 +105,9 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                 <FormGroup>
                   <FormControlLabel
                     labelPlacement="start"
-                    control={<Switch checked={useFlat} onChange={handleChange(setUseFlat)} name="flat" />}
+                    control={
+                      <Switch checked={useFlat} onChange={handleChange(setUseFlat)} name="flat" />
+                    }
                     label="use Flat"
                   />
                 </FormGroup>
@@ -137,7 +143,13 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                   >
                     {Array.from({ length: split }, (e, i) => {
                       return (
-                        <Box bgcolor="primary.main" height="15px" width="6px" borderRadius="2px" />
+                        <Box
+                          key={i}
+                          bgcolor="primary.main"
+                          height="15px"
+                          width="6px"
+                          borderRadius="2px"
+                        />
                       );
                     })}
                   </Stack>

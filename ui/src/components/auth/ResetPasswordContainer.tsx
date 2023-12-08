@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ResetPasswordFields } from './helpers/form.types';
-import { formSpacing, formWidth } from './helpers/constants';
+import { ResetPasswordFields } from '../../types/form.types';
+import { formSpacing, formWidth } from '../../constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { stringValidator, passwordValidator } from './helpers/zod.validators';
 

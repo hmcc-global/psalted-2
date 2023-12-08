@@ -4,8 +4,8 @@ import axios from 'axios';
 import { Alert, Box, Button, Link, Stack, TextField, Snackbar, Typography } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { RegisterFormFields } from './helpers/form.types';
-import { formSpacing, formWidth } from './helpers/constants';
+import { RegisterFormFields } from '../../types/form.types';
+import { formSpacing, formWidth } from '../../constants';
 import {
   stringValidator,
   emailValidator,

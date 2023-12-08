@@ -1,4 +1,5 @@
 import { FC, ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
@@ -8,6 +9,8 @@ interface NavBarMobileProps {
 }
 
 const NavBarMobile: FC<NavBarMobileProps> = ({ onToggleSidebar }): ReactElement => {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -28,7 +31,7 @@ const NavBarMobile: FC<NavBarMobileProps> = ({ onToggleSidebar }): ReactElement 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'primary' }}>
             Psalted 2.0
           </Typography>
-          <IconButton>
+          <IconButton onClick={() => navigate('/profile')}>
             <PersonIcon color="primary" />
           </IconButton>
         </Toolbar>

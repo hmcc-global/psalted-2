@@ -14,8 +14,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { RecoverPasswordFields } from './helpers/form.types';
-import { formSpacing, formWidth } from './helpers/constants';
+import { RecoverPasswordFields } from '../../types/form.types';
+import { formSpacing, formWidth } from '../../constants';
 import { ArrowBackRounded } from '@mui/icons-material';
 import { emailValidator } from './helpers/zod.validators';
 

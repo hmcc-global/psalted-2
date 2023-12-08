@@ -38,6 +38,8 @@ const LoginContainer: React.FC = () => {
       });
       dispatch(signin(payload.data));
       setInvalidLogin('');
+      // TODO: Switch method once private routes are implemented
+      // window.location.reload();
       navigate('/');
     } catch (error: any) {
       if (error?.response?.status === 500 || error?.response?.status === 401) {

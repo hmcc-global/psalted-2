@@ -20,7 +20,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function HomeProfile(props: HomeProfileProps) {
-  const { onBack, register, onClickChange, onClickEdit } = props;
+  const { onBack, register, onClickChange, onClickEdit, user } = props;
 
   return (
     <Stack spacing={2} width="100%">
@@ -41,6 +41,7 @@ function HomeProfile(props: HomeProfileProps) {
         disabled
         id="outlined-name"
         label="Name"
+        value={user?.fullName}
         {...register('fullName', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
@@ -53,6 +54,7 @@ function HomeProfile(props: HomeProfileProps) {
         disabled
         id="outlined-email"
         label="Email"
+        value={user?.email}
         {...register('email', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
@@ -71,7 +73,7 @@ function HomeProfile(props: HomeProfileProps) {
 }
 
 function EditProfile(props: otherProfileProps) {
-  const { onBack, onSubmit, register } = props;
+  const { onBack, onSubmit, register, user } = props;
 
   return (
     <Stack spacing={2} width="100%">
@@ -103,6 +105,7 @@ function EditProfile(props: otherProfileProps) {
           id="outlined-name"
           {...register('fullName')}
           label="Name"
+          value={user?.fullName}
           style={{ marginBottom: '5%' }}
         />
         <TextField
@@ -110,6 +113,7 @@ function EditProfile(props: otherProfileProps) {
           disabled
           id="outlined-email"
           label="Email"
+          value={user?.email}
           {...register('email', { required: true })}
           style={{ marginBottom: '5%' }}
           sx={{
@@ -260,7 +264,7 @@ function ChangePassword(props: otherProfileProps) {
 const ProfileMobileView: FC = (): ReactElement => {
   const user = useSelector((state: any) => state.user);
   const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(undefined);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
@@ -348,6 +352,7 @@ const ProfileMobileView: FC = (): ReactElement => {
             onClickChange={changePassHandler}
             onBack={backProfileHandler}
             register={register}
+            user={userData}
           />
         )}
         {showEditProfile && !showChangePassword && (
@@ -355,6 +360,7 @@ const ProfileMobileView: FC = (): ReactElement => {
             onBack={backProfileHandler}
             onSubmit={handleSubmit(handleEditUserInformation)}
             register={register}
+            user={userData}
           />
         )}
         {!showEditProfile && showChangePassword && (

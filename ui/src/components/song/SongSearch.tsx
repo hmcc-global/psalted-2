@@ -12,6 +12,7 @@ import {
   FormLabel,
   Button,
   Alert,
+  Grid,
 } from '@mui/material';
 import { SongSearchProps, SongCardProps } from '../../types/song';
 import { useState, useEffect, useCallback } from 'react';
@@ -149,70 +150,80 @@ const SongSearch = (props: SongSearchProps) => {
           >
             <FormLabel component="legend">Display Results Details (optional)</FormLabel>
             <FormGroup>
-              <Stack direction="row">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.tempo}
-                      onChange={handleDisplayChange}
-                      name="tempo"
-                    />
-                  }
-                  label="Tempo"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.lyricsPreview}
-                      onChange={handleDisplayChange}
-                      name="lyricsPreview"
-                    />
-                  }
-                  label="Lyrics Preview"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.year}
-                      onChange={handleDisplayChange}
-                      name="year"
-                    />
-                  }
-                  label="Year"
-                />
-              </Stack>
-              <Stack direction="row">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.themes}
-                      onChange={handleDisplayChange}
-                      name="themes"
-                    />
-                  }
-                  label="Themes"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.originalKey}
-                      onChange={handleDisplayChange}
-                      name="originalKey"
-                    />
-                  }
-                  label="Original Key"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={displayResult.code}
-                      onChange={handleDisplayChange}
-                      name="code"
-                    />
-                  }
-                  label="Code"
-                />
-              </Stack>
+              <Grid container columns={8}>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.tempo}
+                        onChange={handleDisplayChange}
+                        name="tempo"
+                      />
+                    }
+                    label="Tempo"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.lyricsPreview}
+                        onChange={handleDisplayChange}
+                        name="lyricsPreview"
+                      />
+                    }
+                    label="Lyrics Preview"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.year}
+                        onChange={handleDisplayChange}
+                        name="year"
+                      />
+                    }
+                    label="Year"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.themes}
+                        onChange={handleDisplayChange}
+                        name="themes"
+                      />
+                    }
+                    label="Themes"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.originalKey}
+                        onChange={handleDisplayChange}
+                        name="originalKey"
+                      />
+                    }
+                    label="Original Key"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.code}
+                        onChange={handleDisplayChange}
+                        name="code"
+                      />
+                    }
+                    label="Code"
+                  />
+                </Grid>
+              </Grid>
               <Alert severity="info">Song Title and Artist will be displayed by default</Alert>
             </FormGroup>
           </FormControl>

@@ -20,4 +20,9 @@ type SongSchema = {
 
 type SongDocument = SongSchema & MongoInjectedFields;
 
-export { SongSchema, SongDocument };
+type SongOptions = {
+  themes: string[];
+  tempo: string[];
+};
+
+export { SongSchema, SongDocument, SongOptions };

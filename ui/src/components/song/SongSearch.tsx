@@ -213,7 +213,7 @@ const SongSearch = (props: SongSearchProps) => {
                   label="Code"
                 />
               </Stack>
-              <Alert severity="info">Title and Artist will be displayed by default</Alert>
+              <Alert severity="info">Song Title and Artist will be displayed by default</Alert>
             </FormGroup>
           </FormControl>
           <Button variant="contained" onClick={handleSubmit}>

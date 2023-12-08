@@ -35,14 +35,12 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} color="secondary" />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary" fontWeight="700">
           PROFILE
         </Typography>
         <PersonIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Name
-      </Typography>
+      <Typography variant="h3">Name</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
@@ -57,9 +55,7 @@ function HomeProfile(props: HomeProfileProps) {
           },
         }}
       />
-      <Typography variant="h3" fontWeight={400}>
-        Email
-      </Typography>
+      <Typography variant="h3">Email</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
@@ -96,14 +92,12 @@ function EditProfile(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary" fontWeight="700">
           EDIT PROFILE
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Old Name & Email
-      </Typography>
+      <Typography variant="h3">Old Name & Email</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
@@ -121,9 +115,7 @@ function EditProfile(props: otherProfileProps) {
         {...register('email', { required: true })}
         style={{ marginBottom: '5%' }}
       />
-      <Typography variant="h3" fontWeight={400}>
-        New Name
-      </Typography>
+      <Typography variant="h3">New Name</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
@@ -189,15 +181,13 @@ function ChangePassword(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary" fontWeight="700">
           CHANGE PASSWORD
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
 
-      <Typography variant="h3" fontWeight={400}>
-        Old Password
-      </Typography>
+      <Typography variant="h3">Old Password</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
@@ -222,9 +212,7 @@ function ChangePassword(props: otherProfileProps) {
             ),
           }}
         />
-        <Typography variant="h3" fontWeight={400}>
-          New Password
-        </Typography>
+        <Typography variant="h3">New Password</Typography>
         <Divider style={{ marginTop: '2%', marginBottom: '3%' }} />
         <TextField
           fullWidth

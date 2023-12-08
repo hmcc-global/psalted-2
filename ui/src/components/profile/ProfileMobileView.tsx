@@ -32,7 +32,7 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary" fontWeight="700">
           PROFILE
         </Typography>
       </div>
@@ -91,7 +91,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="bold">
+          <Typography variant="h3" color="primary" fontWeight="700">
             EDIT PROFILE
           </Typography>
         </div>
@@ -169,7 +169,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="bold">
+          <Typography variant="h3" color="primary" fontWeight="700">
             CHANGE PASSWORD
           </Typography>
         </div>

@@ -55,11 +55,11 @@ const customTheme = createTheme({
     },
     h3: {
       fontSize: '1.25rem', // Equivalent to 20px (16 * 1.25)
-      fontWeight: 500,
+      fontWeight: 400,
     },
     h4: {
       fontSize: '1.125rem', // Equivalent to 18px (16 * 1.125)
-      fontWeight: 700,
+      fontWeight: 400,
     },
     subtitle1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)

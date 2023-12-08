@@ -83,24 +83,37 @@ const SongListContainer: FC = (): ReactElement => {
   return (
     <>
       <Container fixed sx={{ padding: '0 24px 24px', height: '100%' }}>
-        <Stack direction="row" display="flex" justifyContent="space-between">
-          <Stack direction="row" spacing={2} display="flex" alignItems="center">
-            <Box sx={{ height: '36px', width: '24px' }}>
-              <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} fontSize="large" />
-            </Box>
-            <Typography variant="h2" color="primary.main">
-              SONGS
-            </Typography>
-          </Stack>
+        {/* Toolbar at the top */}
+        <Stack
+          direction="row"
+          display="flex"
+          justifyContent="space-between"
+          pb="10px"
+          pl={{ base: '0', md: '15px' }}
+        >
+          {/* Title */}
+          <Typography
+            variant="h2"
+            fontWeight="700"
+            color="primary"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <AudiotrackRoundedIcon color="primary" fontSize="large" />
+            SONGS
+          </Typography>
+
+          {/* Add new song button */}
           <Button
             variant="outlined"
             sx={{ borderWidth: '2px', padding: '10px 25px' }}
             startIcon={<AddIcon />}
             onClick={() => navigate('/song/add')}
           >
-            <Typography>NEW SONG</Typography>
+            <Typography fontWeight="500">NEW SONG</Typography>
           </Button>
         </Stack>
+
+        {/* Mobile Search bar and filters */}
         <Box display={{ base: 'block', md: 'none' }}>
           <Stack
             spacing={2}
@@ -132,6 +145,8 @@ const SongListContainer: FC = (): ReactElement => {
               <TuneIcon sx={{ color: 'white' }} />
             </IconButton>
           </Stack>
+
+          {/* Show song details or not (option only shows in mobile) */}
           <Button
             variant="outlined"
             sx={{ borderWidth: '2px', margin: '5px 0 15px 0' }}
@@ -140,6 +155,8 @@ const SongListContainer: FC = (): ReactElement => {
             <Typography variant="caption">SHOW DETAILS</Typography>
           </Button>
         </Box>
+
+        {/* Desktop search bar and filters */}
         <Stack direction="row" width="100%">
           <Box display={isDesktop ? 'block' : 'none'}>
             <SongSearch
@@ -151,6 +168,8 @@ const SongListContainer: FC = (): ReactElement => {
               isDesktop={isDesktop}
             />
           </Box>
+
+          {/* Song cards search results */}
           <Stack direction="column" spacing={3} height="100%" width="100%">
             {songView.length > 0 ? (
               songView.map((song, i) => {
@@ -165,6 +184,7 @@ const SongListContainer: FC = (): ReactElement => {
                 );
               })
             ) : (
+              // Error message when no songs are found
               <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
                 <Typography variant="h2" color="primary.main">
                   Couldn't find "{filterData?.search}"
@@ -175,6 +195,8 @@ const SongListContainer: FC = (): ReactElement => {
           </Stack>
         </Stack>
       </Container>
+
+      {/* Mobile search filters modal */}
       <Modal
         open={open}
         onClose={handleClose}

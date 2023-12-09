@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SongView } from '../../types/song';
 import {
   Container,
@@ -15,6 +15,7 @@ import {
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SongsLyrics from './songsLyrics';
+import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 
 type SongsButtonCardProps = {
   song: SongView | undefined;
@@ -24,7 +25,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
   const songs = props.song;
   const [chordStatus, setChordStatus] = useState(false);
   const [useFlat, setUseFlat] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C'));
   const [split, setSplit] = useState(1);
   const isDesktop = useMediaQuery('(min-width:768px)');
 
@@ -35,17 +36,23 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
   };
 
   const handleIncrement = () => {
-    setCount(count + 1);
+    if (count < 11) setCount(count + 1);
+    else setCount(0);
   };
 
   const handleDecrement = () => {
-    setCount(count - 1);
+    if (count > 0) setCount(count - 1);
+    else setCount(11);
   };
 
   const handleSplit = () => {
     if (split < 3) setSplit(split + 1);
     else setSplit(1);
   };
+
+  useEffect(() => {
+    setCount(sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C'));
+  }, [songs]);
 
   return (
     <>
@@ -94,7 +101,10 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
                     <KeyboardArrowDownIcon />
                   </IconButton>
                 </Box>
-                <Chip label={''} color="primary" />
+                <Chip
+                  label={useFlat ? flatMusicKeysOptions[count] : sharpMusicKeysOptions[count]}
+                  color="primary"
+                />
                 <Box bgcolor="primary.lightest">
                   <IconButton color="primary" aria-label="up" onClick={handleIncrement}>
                     <KeyboardArrowUpIcon />
@@ -158,7 +168,13 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
             </Stack>
           </Box>
         </Box>
-        <SongsLyrics chordStatus={chordStatus} changeKey={count} song={songs} split={split} />
+        <SongsLyrics
+          useFlat={useFlat}
+          chordStatus={chordStatus}
+          changeKey={count}
+          song={songs}
+          split={split}
+        />
       </Container>
     </>
   );

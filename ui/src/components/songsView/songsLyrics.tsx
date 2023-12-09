@@ -1,20 +1,28 @@
 import { Box, Chip, Stack, Typography, useMediaQuery } from '@mui/material';
 import { SongView } from '../../types/song';
+import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 
 interface SongsLyricsProps {
   chordStatus: boolean;
   changeKey: number;
   song: SongView | undefined;
   split: number;
+  useFlat: boolean;
 }
 
-const SongsLyrics = ({ chordStatus, changeKey, song, split }: SongsLyricsProps) => {
+const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyricsProps) => {
   const songs = song;
   const isDesktop = useMediaQuery('(min-width:768px)');
+  const originalChordIndex =
+    sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C') === -1
+      ? flatMusicKeysOptions.indexOf(songs?.originalKey ?? 'C')
+      : sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C');
+  const transpossedChordIndex = changeKey - originalChordIndex;
+
   const noSplit = isDesktop ? split : 1;
 
   const lyricsLine = songs?.chordLyrics.split('\n');
-
+  console.log(changeKey, originalChordIndex);
   return (
     <>
       <Box>
@@ -39,10 +47,18 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split }: SongsLyricsProps) 
                       const startChord = lyric.indexOf('[');
                       const endChord = lyric.indexOf(']');
                       const chord = lyric.slice(startChord + 1, endChord);
+                      const chordIndex = useFlat
+                        ? flatMusicKeysOptions.indexOf(chord[0])
+                        : sharpMusicKeysOptions.indexOf(chord[0]);
+                      const transpossedChord =
+                        (useFlat
+                          ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
+                          : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
+                        chord.slice(1);
                       const textLyrics = '\u00A0' + lyric.slice(endChord + 1);
                       return (
                         <Box key={i}>
-                          {chordStatus ? <Chip label={chord} /> : null}
+                          {chordStatus ? <Chip label={transpossedChord} /> : null}
                           <Typography>{textLyrics}</Typography>
                         </Box>
                       );

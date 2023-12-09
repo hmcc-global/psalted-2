@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Chip, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { SongView } from '../../types/song';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -16,57 +16,23 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
   const isDesktop = useMediaQuery('(min-width:768px)');
   const noSplit = isDesktop ? split : 1;
   const [finalLyrics, setFinalLyrics] = useState<ReactNode[]>();
-  const [paragraph, setParagraph] = useState(0);
 
   const countParagraph = (inputSong: SongView | undefined) => {
     const lyricsLine = inputSong?.chordLyrics.split('\n');
     let para = 0;
     lyricsLine &&
       lyricsLine.map((line) => (line.includes('{') && line.includes('}') ? para++ : null));
-    setParagraph(para);
   };
 
-  // needs improvement
-  const groupLyricsToParagraphs = useCallback((inputSong: string[]) => {
-    const seperator = '{';
-    const result = [];
-    let currentGroup: string[] = [];
-
-    for (let i = 0; i < inputSong.length; i++) {
-      //base case
-      if (i === 0 && inputSong[i].includes(seperator)) {
-        currentGroup.push(inputSong[i]);
-      }
-
-      if (!inputSong[i].includes(seperator)) {
-        currentGroup.push(inputSong[i]);
-      }
-
-      if (inputSong[i].includes(seperator)) {
-        if (i !== 0) {
-          result.push(currentGroup);
-          currentGroup = [inputSong[i]];
-        }
-      }
-    }
-
-    if (currentGroup.length > 0) {
-      result.push(currentGroup);
-    }
-    console.log(result);
-    return result;
-  }, []);
-
   const parseLyrics = useCallback(
-    (inputSong: SongView | undefined) => {
+    (inputSong: SongView | undefined, songChunk: string[]) => {
       const result: ReactNode[] = [];
       const originalChordIndex =
         sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C') === -1
           ? flatMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C')
           : sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C');
       const transpossedChordIndex = changeKey - originalChordIndex;
-      const lyricsLine = inputSong?.chordLyrics.split('\n');
-      const groupedLyricsLine = groupLyricsToParagraphs(lyricsLine ?? []);
+      const lyricsLine = songChunk;
       // render the lyrics
       lyricsLine &&
         lyricsLine.map((line, j) => {
@@ -121,18 +87,61 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
         });
       return result;
     },
-    [changeKey, chordStatus, useFlat, groupLyricsToParagraphs]
+    [changeKey, chordStatus, useFlat]
+  );
+
+  // needs improvement
+  const groupLyricsToParagraphs = useCallback(
+    (song: SongView | undefined) => {
+      const seperator = '{';
+      const result = [];
+      const inputSong = song ? song.chordLyrics.split('\n') : [];
+      let currentGroup: string[] = [];
+
+      for (let i = 0; i < inputSong.length; i++) {
+        //base case
+        if (i === 0 && inputSong[i].includes(seperator)) {
+          currentGroup.push(inputSong[i]);
+        }
+
+        if (!inputSong[i].includes(seperator)) {
+          currentGroup.push(inputSong[i]);
+        }
+
+        if (inputSong[i].includes(seperator)) {
+          if (i !== 0) {
+            const parsedGroup = parseLyrics(song, currentGroup);
+            result.push(parsedGroup);
+            currentGroup = [inputSong[i]];
+          }
+        }
+      }
+
+      if (currentGroup.length > 0) {
+        result.push(parseLyrics(song, currentGroup));
+      }
+      return result;
+    },
+    [parseLyrics]
   );
 
   useEffect(() => {
     countParagraph(songs);
-    const res = parseLyrics(songs);
+    const res = groupLyricsToParagraphs(songs);
     setFinalLyrics(res);
-  }, [parseLyrics, songs]);
-  console.log(paragraph);
+  }, [parseLyrics, songs, groupLyricsToParagraphs]);
   return (
     <>
-      <Box>{finalLyrics}</Box>
+      <Grid container>
+        {finalLyrics &&
+          finalLyrics.map((chunk, i) => {
+            return (
+              <Grid item xs={12 / noSplit} key={i}>
+                {chunk}
+              </Grid>
+            );
+          })}
+      </Grid>
     </>
   );
 };

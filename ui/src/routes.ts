@@ -15,7 +15,6 @@ interface Route {
   path: string;
   enabled: boolean;
   component: FC<any>;
-  permissions: Array<string>;
 }
 
 export const routes: Array<Route> = [
@@ -26,7 +25,6 @@ export const routes: Array<Route> = [
     path: '/login',
     enabled: true,
     component: LoginContainer,
-    permissions: ['noUser'],
   },
   {
     key: 'register-route',
@@ -34,7 +32,6 @@ export const routes: Array<Route> = [
     path: '/register',
     enabled: true,
     component: RegisterContainer,
-    permissions: ['noUser'],
   },
   {
     key: 'recover-password-route',
@@ -42,7 +39,6 @@ export const routes: Array<Route> = [
     path: '/password/recover',
     enabled: true,
     component: RecoverPasswordContainer,
-    permissions: ['noUser'],
   },
   {
     key: 'reset-password-route',
@@ -50,7 +46,6 @@ export const routes: Array<Route> = [
     path: '/password/new',
     enabled: true,
     component: ResetPasswordContainer,
-    permissions: ['noUser'],
   },
   // Home routes
   {
@@ -59,7 +54,6 @@ export const routes: Array<Route> = [
     path: '/',
     enabled: true,
     component: HomeContainer,
-    permissions: ['user'],
   },
   {
     key: 'profile-route',
@@ -67,7 +61,6 @@ export const routes: Array<Route> = [
     path: '/profile',
     enabled: true,
     component: ProfileContainer,
-    permissions: ['user'],
   },
   // Song routes
   {
@@ -76,7 +69,6 @@ export const routes: Array<Route> = [
     path: '/song/add',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['user'],
   },
   {
     key: 'song-edit-route',
@@ -84,7 +76,6 @@ export const routes: Array<Route> = [
     path: '/song/edit/:id',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['admin'],
   },
   {
     key: 'song-route',
@@ -92,6 +83,5 @@ export const routes: Array<Route> = [
     path: '/song',
     enabled: true,
     component: SongListContainer,
-    permissions: ['user'],
   },
 ];

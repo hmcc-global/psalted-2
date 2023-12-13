@@ -1,23 +1,22 @@
 import { Box, Chip, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-import { SongView } from '../../types/song';
+import { SongViewSchema } from '../../types/song.types';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 interface SongsLyricsProps {
   chordStatus: boolean;
   changeKey: number;
-  song: SongView | undefined;
+  song: SongViewSchema | undefined;
   split: number;
   useFlat: boolean;
 }
 
 const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyricsProps) => {
-  const songs = song;
   const isDesktop = useMediaQuery('(min-width:768px)');
   const noSplit = isDesktop ? split : 1;
   const [finalLyrics, setFinalLyrics] = useState<ReactNode[]>();
 
-  const countParagraph = (inputSong: SongView | undefined) => {
+  const countParagraph = (inputSong: SongViewSchema | undefined) => {
     const lyricsLine = inputSong?.chordLyrics.split('\n');
     let para = 0;
     lyricsLine &&
@@ -25,7 +24,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
   };
 
   const parseLyrics = useCallback(
-    (inputSong: SongView | undefined, songChunk: string[]) => {
+    (inputSong: SongViewSchema | undefined, songChunk: string[]) => {
       const result: ReactNode[] = [];
       const originalChordIndex =
         sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C') === -1
@@ -92,7 +91,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
 
   // needs improvement
   const groupLyricsToParagraphs = useCallback(
-    (song: SongView | undefined) => {
+    (song: SongViewSchema | undefined) => {
       const seperator = '{';
       const result = [];
       const inputSong = song ? song.chordLyrics.split('\n') : [];
@@ -126,10 +125,10 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
   );
 
   useEffect(() => {
-    countParagraph(songs);
-    const res = groupLyricsToParagraphs(songs);
+    countParagraph(song);
+    const res = groupLyricsToParagraphs(song);
     setFinalLyrics(res);
-  }, [parseLyrics, songs, groupLyricsToParagraphs]);
+  }, [parseLyrics, song, groupLyricsToParagraphs]);
   return (
     <>
       <Grid container>

@@ -7,7 +7,7 @@ import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
 import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
-import SongsView from './components/songsView/index';  
+import SongsView from './components/songsView/index';
 
 // interface
 interface Route {
@@ -63,6 +63,22 @@ export const routes: Array<Route> = [
     permissions: ['user'],
   },
   {
+    key: 'song-add-route',
+    title: 'Add New Song',
+    path: '/songs/add',
+    enabled: true,
+    component: SongEditorContainer,
+    permissions: ['user']
+  },
+  {
+    key: 'song-edit-route',
+    title: 'Edit Song',
+    path: '/songs/edit/:id',
+    enabled: true,
+    component: SongEditorContainer,
+    permissions: ['user']
+  },
+  {
     key: 'profile-route',
     title: 'Profile',
     path: '/profile',
@@ -98,8 +114,9 @@ export const routes: Array<Route> = [
   {
     key: 'songsView-route',
     title: 'songsView',
-    path: '/song/:id',
+    path: '/songs/:id',
     enabled: true,
     component: SongsView,
+    permissions: ['user'],
   },
 ];

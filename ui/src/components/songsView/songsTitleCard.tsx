@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/material';
-import { SongView } from '../../types/song';
+import { SongViewSchema } from '../../types/song.types';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -10,11 +10,11 @@ import Chip from '@mui/material/Chip';
 import InfoIcon from '@mui/icons-material/Info';
 
 type SongTitleCardProps = {
-  song: SongView | undefined;
+  song: SongViewSchema | undefined;
 };
 
 const SongsTitleCard = (props: SongTitleCardProps) => {
-  const songs = props.song;
+  const song = props.song;
 
   return (
     <>
@@ -34,7 +34,7 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
             sx={{ color: 'primary.main' }}
             fontSize={{ sm: '28px', md: '34px' }}
           >
-            {songs && songs.title}
+            {song && song.title}
           </Box>
           <Box
             fontWeight={'Regular'}
@@ -42,7 +42,7 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
             sx={{ color: 'black' }}
             fontSize={{ sm: '16px', md: '26px' }}
           >
-            {songs && songs.artist}
+            {song && song.artist}
           </Box>
           <Box>
             <Accordion>
@@ -66,8 +66,8 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
                       <Typography>Themes</Typography>
                     </Grid>
                     <Grid item xs={9} md={10}>
-                      {songs &&
-                        songs.themes.map((themes: string, i: number) => {
+                      {song &&
+                        song.themes.map((themes: string, i: number) => {
                           return <Chip label={themes} key={i} />;
                         })}
                     </Grid>
@@ -75,8 +75,8 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
                       <Typography>Tempo</Typography>
                     </Grid>
                     <Grid item xs={9} md={10}>
-                    {songs &&
-                        songs.tempo.map((themes: string, i: number) => {
+                      {song &&
+                        song.tempo.map((themes: string, i: number) => {
                           return <Chip label={themes} key={i} />;
                         })}
                     </Grid>
@@ -84,19 +84,19 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
                       <Typography>Original Key</Typography>
                     </Grid>
                     <Grid item xs={9} md={10}>
-                      {songs && songs.originalKey}
+                      {song && song.originalKey}
                     </Grid>
                     <Grid item xs={3} md={2}>
                       <Typography>Year</Typography>
                     </Grid>
                     <Grid item xs={9} md={10}>
-                      {songs && songs.year}
+                      {song && song.year}
                     </Grid>
                     <Grid item xs={3} md={2}>
                       <Typography>Code</Typography>
                     </Grid>
                     <Grid item xs={9} md={10}>
-                      {songs && songs.code}
+                      {song && song.code}
                     </Grid>
                   </Grid>
                 </Box>

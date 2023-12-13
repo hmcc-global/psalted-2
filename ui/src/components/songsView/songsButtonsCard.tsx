@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SongView } from '../../types/song';
+import { SongViewSchema } from '../../types/song.types';
 import {
   Container,
   Box,
@@ -14,18 +14,18 @@ import {
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SongsLyrics from './songsLyrics';
+import SongsLyrics from './SongsLyrics';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 
 type SongsButtonCardProps = {
-  song: SongView | undefined;
+  song: SongViewSchema | undefined;
 };
 
 const SongsButtonCard = (props: SongsButtonCardProps) => {
-  const songs = props.song;
+  const song = props.song;
   const [chordStatus, setChordStatus] = useState(false);
   const [useFlat, setUseFlat] = useState(false);
-  const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C'));
+  const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
   const [split, setSplit] = useState(1);
   const isDesktop = useMediaQuery('(min-width:768px)');
 
@@ -51,8 +51,8 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
   };
 
   useEffect(() => {
-    setCount(sharpMusicKeysOptions.indexOf(songs?.originalKey ?? 'C'));
-  }, [songs]);
+    setCount(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
+  }, [song]);
 
   return (
     <>
@@ -172,7 +172,7 @@ const SongsButtonCard = (props: SongsButtonCardProps) => {
           useFlat={useFlat}
           chordStatus={chordStatus}
           changeKey={count}
-          song={songs}
+          song={song}
           split={split}
         />
       </Container>

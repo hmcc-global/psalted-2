@@ -20,7 +20,7 @@ import {
   Grid,
 } from '@mui/material';
 import axios from 'axios';
-import { SongEditorFields, SongEditorProps } from '../../types/song';
+import { SongEditorFields, SongEditorProps } from '../../types/song.types';
 import { tempoOptions, musicKeysOptions } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';

@@ -1,3 +1,5 @@
+import { UserEditorFields } from './user.types';
+
 type SongEditorFields = {
   artist: string;
   title: string;
@@ -15,7 +17,7 @@ interface SongEditorProps {
 }
 
 type SongCardProps = {
-  _id: Types.ObjectId;
+  _id: string;
   title: string;
   tempo: string[];
   originalKey: string;
@@ -24,8 +26,8 @@ type SongCardProps = {
   year: string;
   code: string;
   lyricsPreview: string;
-  createdBy: Types.ObjectId;
-  lastUpdatedBy: Types.ObjectId;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
   filterData?: SongSearchFilter;
   isVerified: Boolean;
   createdAt: Date;
@@ -57,7 +59,7 @@ type SongSearchFilter = {
   };
 };
 
-type SongView = {
+type SongViewSchema = {
   _id: string;
   title: string;
   tempo: string[];
@@ -67,13 +69,20 @@ type SongView = {
   year: string;
   code: string;
   lyricsPreview: string;
-  createdBy: Types.ObjectId; 
-  lastUpdatedBy: Types.ObjectId; 
-  isVerified: boolean; 
-  chordLyrics: string; 
-  isDeleted: boolean; 
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
+  isVerified: boolean;
+  chordLyrics: string;
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export type { SongCardProps, SongView, SongSearchFilter, SongSearchProps, SongEditorFields, SongEditorProps };
+export type {
+  SongCardProps,
+  SongViewSchema,
+  SongSearchFilter,
+  SongSearchProps,
+  SongEditorFields,
+  SongEditorProps,
+};

@@ -2,8 +2,8 @@ import { Container, Box } from '@mui/material';
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { SongViewSchema } from '../../types/song.types';
 import axios, { AxiosResponse } from 'axios';
-import SongsTitleCard from './SongsTitleCard';
-import SongsButtonCard from './SongsButtonsCard';
+import SongsTitleCard from './songsTitleCard';
+import SongsButtonCard from './songsButtonsCard';
 
 const SongsView: FC = (): ReactElement => {
   const id: string = window.location.pathname.split('/')[2];

@@ -14,6 +14,8 @@ type SongSchema = {
   createdBy: Types.ObjectId;
   lastUpdatedBy: Types.ObjectId;
   isVerified: boolean;
+  timeSignature: string;
+  simplifiedChords: string;
   chordLyrics: string;
   isDeleted: boolean;
 };

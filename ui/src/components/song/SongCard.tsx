@@ -1,5 +1,4 @@
 import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
-import { CardFields } from '../../constants';
 import { SongCardProps } from '#/types/song.types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -62,6 +61,8 @@ const SongCard = (props: SongCardProps) => {
   ];
   const fieldData = [themes, timeSignature, tempo, originalKey, year, code];
   const CardFields = ['Themes', 'Time Signature', 'Tempo', 'Original Key', 'Year', 'Code'];
+
+  const navigate = useNavigate();
 
   // state for the modal
   const [modalOpen, setModalOpen] = useState(false);

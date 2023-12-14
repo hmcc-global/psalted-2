@@ -1,4 +1,4 @@
-import { Button, Box, Chip, Container, Modal, Popover, Stack, Typography } from '@mui/material';
+import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
 import { CardFields } from '#/constants';
 import { useState } from 'react';

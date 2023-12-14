@@ -1,6 +1,7 @@
-import { Box, Chip, Container, Popover, Stack, Typography } from '@mui/material';
+import { Button, Box, Chip, Container, Modal, Popover, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 type FieldArrayProps = {
@@ -14,6 +15,20 @@ const FieldArray = ({ data }: FieldArrayProps) => {
       <Stack spacing={1} direction="row">
         {data.map((item: string, i: number) => {
           return <Chip size="small" key={i} label={item} />;
+        })}
+      </Stack>
+    );
+  }
+  return null;
+};
+
+const TagArray = ({ data }: FieldArrayProps) => {
+  if (Array.isArray(data)) {
+    if (data.length === 0) return <Typography>-</Typography>;
+    return (
+      <Stack spacing={1} direction="row">
+        {data.map((item: string, i: number) => {
+          return <Chip sx={{ bgcolor: 'primary.light' }} size="medium" key={i} label={item} />;
         })}
       </Stack>
     );
@@ -44,8 +59,14 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
   ];
-  const fieldData = [themes, timeSignature, tempo, originalKey, year, code];
-  const CardFields = ['Themes', 'Time Signature', 'Tempo', 'Original Key', 'Year', 'Code'];
+  const fieldData = [themes, tempo, originalKey, year, code];
+  const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
+  const navigate = useNavigate();
+
+  // state for the modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   // state for the popover, to detect whether mouse is hovering or not
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -79,35 +100,41 @@ const SongCard = (props: SongCardProps) => {
           {filterData?.display?.lyricsPreview === true ||
           filterData?.display?.lyricsPreview === undefined ? (
             <>
-              <Box
-                aria-owns={open ? 'mouse-over-popover' : undefined}
-                aria-haspopup="true"
-                onMouseEnter={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
-                sx={{ height: '30px', width: '30px' }}
-              >
-                <VisibilityIcon sx={{ color: 'primary.main' }} />
+              <Box sx={{ height: '30px', width: '30px' }}>
+                <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
               </Box>
-              <Popover
-                id="mouse-over-popover"
-                sx={{
-                  pointerEvents: 'none',
-                }}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                onClose={handlePopoverClose}
-                disableRestoreFocus
-              >
-                <Typography sx={{ p: 1 }}>{lyricsPreview}</Typography>
-              </Popover>
+              <Modal open={modalOpen} onClose={handleClose}>
+                <Stack
+                  sx={{
+                    position: 'absolute' as 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 2,
+                    p: 4,
+                  }}
+                  spacing={1}
+                >
+                  <Typography variant="h2" fontWeight={500}>
+                    {title}
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
+                    {artist}
+                  </Typography>
+                  <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
+                  {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
+                  <Stack direction="row" display="flex" justifyContent="right">
+                    <Button size="small" variant="text" onClick={handleClose}>
+                      CANCEL
+                    </Button>
+                    <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
+                      ADD SONG
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Modal>
             </>
           ) : null}
         </Stack>

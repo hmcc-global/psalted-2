@@ -19,6 +19,9 @@ export const musicKeysOptions = [
   'A♭',
 ];
 
+export const sharpMusicKeysOptions = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+export  const flatMusicKeysOptions = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+
 export const tempoOptions = ['Fast', 'Medium', 'Slow'];
 
 // register/login form

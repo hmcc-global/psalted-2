@@ -28,7 +28,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const isDesktop = useMediaQuery('(min-width: 769px)');
   const menuItems = [
     { icon: <HomeIcon />, text: 'Home', path: '' },
-    { icon: <MusicNoteIcon />, text: 'Songs', path: 'song' },
+    { icon: <MusicNoteIcon />, text: 'Songs', path: 'songs' },
     { icon: <QueueMusicIcon />, text: 'My Setlists', path: 'setlist' },
     { icon: <SupervisedUserCircleIcon />, text: 'Groups', path: 'group' },
     { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },

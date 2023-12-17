@@ -7,7 +7,7 @@ import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
 import SongContainer from './components/song/SongContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
-import SongsView from './components/songsView/index';
+import SongsViewContainer from './components/songsView/SongsViewContainer';
 
 // interface
 interface Route {
@@ -87,6 +87,6 @@ export const routes: Array<Route> = [
     title: 'songsView',
     path: '/songs/:id',
     enabled: true,
-    component: SongsView,
+    component: SongsViewContainer,
   },
 ];

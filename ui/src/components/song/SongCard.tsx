@@ -70,7 +70,7 @@ const SongCard = (props: SongCardProps) => {
           background: '#FAFAFA',
           padding: '10px',
         }}
-        onClick={() => navigate(`/song/${_id}`)}
+        onClick={() => navigate(`/songs/${_id}`)}
       >
         <Stack direction="row" display="flex" justifyContent="space-between">
           <Stack>

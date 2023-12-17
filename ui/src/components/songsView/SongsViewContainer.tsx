@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from 'axios';
 import SongsTitleCard from './SongsTitleCard';
 import SongsButtonCard from './SongsButtonsCard';
 
-const SongsView: FC = (): ReactElement => {
+const SongsViewContainer: FC = (): ReactElement => {
   const id: string = window.location.pathname.split('/')[2];
   const [song, setSong] = useState<SongViewSchema>();
 
@@ -40,4 +40,4 @@ const SongsView: FC = (): ReactElement => {
     </>
   );
 };
-export default SongsView;
+export default SongsViewContainer;

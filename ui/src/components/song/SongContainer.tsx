@@ -96,7 +96,7 @@ const SongContainer: FC = (): ReactElement => {
             variant="outlined"
             sx={{ borderWidth: '2px', padding: '10px 25px' }}
             startIcon={<AddIcon />}
-            onClick={() => navigate('/song/add')}
+            onClick={() => navigate('/songs/add')}
           >
             <Typography>NEW SONG</Typography>
           </Button>

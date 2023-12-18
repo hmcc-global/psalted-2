@@ -1,5 +1,6 @@
 import { Button, Box, Chip, Container, Modal, Popover, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
+import { CardFields } from '#/constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -60,7 +61,6 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.code ?? true,
   ];
   const fieldData = [themes, tempo, originalKey, year, code];
-  const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
   const navigate = useNavigate();
 
   // state for the modal
@@ -68,106 +68,91 @@ const SongCard = (props: SongCardProps) => {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
-  // state for the popover, to detect whether mouse is hovering or not
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-
   return (
-    <>
-      <Container
-        sx={{
-          borderRadius: '4px',
-          background: '#FAFAFA',
-          padding: '10px',
-        }}
-      >
-        <Stack direction="row" display="flex" justifyContent="space-between">
-          <Stack>
-            <Typography variant="h2" color={'primary.main'}>
-              {title}
-            </Typography>
-            <Typography variant="body1">{artist}</Typography>
-          </Stack>
-          {filterData?.display?.lyricsPreview === true ||
-          filterData?.display?.lyricsPreview === undefined ? (
-            <>
-              <Box sx={{ height: '30px', width: '30px' }}>
-                <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
-              </Box>
-              <Modal open={modalOpen} onClose={handleClose}>
-                <Stack
-                  sx={{
-                    position: 'absolute' as 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    boxShadow: 2,
-                    p: 4,
-                  }}
-                  spacing={1}
-                >
-                  <Typography variant="h2" fontWeight={500}>
-                    {title}
-                  </Typography>
-                  <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
-                    {artist}
-                  </Typography>
-                  <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
-                  {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
-                  <Stack direction="row" display="flex" justifyContent="right">
-                    <Button size="small" variant="text" onClick={handleClose}>
-                      CANCEL
-                    </Button>
-                    <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
-                      ADD SONG
-                    </Button>
-                  </Stack>
-                </Stack>
-              </Modal>
-            </>
-          ) : null}
+    <Container
+      sx={{
+        borderRadius: '4px',
+        background: '#FAFAFA',
+        padding: '10px',
+      }}
+    >
+      <Stack direction="row" display="flex" justifyContent="space-between">
+        <Stack>
+          <Typography variant="h2" fontWeight={700} color={'primary.main'}>
+            {title}
+          </Typography>
+          <Typography variant="subtitle1">{artist}</Typography>
         </Stack>
-        <Stack direction={isDesktop ? 'row' : 'column'} spacing={isDesktop ? 4 : 1}>
-          {CardFields &&
-            showDetails !== false &&
-            CardFields.map((field, i) => {
-              return (
-                <Stack direction="row" display="flex" key={i} spacing={1}>
-                  {displayData[i] ? (
-                    <>
-                      <Typography
-                        variant="body2"
-                        color={'secondary.main'}
-                        width={isDesktop ? '100%' : '40%'}
-                      >
-                        {field}
+        {filterData?.display?.lyricsPreview === true ||
+        filterData?.display?.lyricsPreview === undefined ? (
+          <>
+            <Box sx={{ height: '30px', width: '30px' }}>
+              <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
+            </Box>
+            <Modal open={modalOpen} onClose={handleClose}>
+              <Stack
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 400,
+                  bgcolor: 'background.paper',
+                  boxShadow: 2,
+                  p: 4,
+                }}
+                spacing={1}
+              >
+                <Typography variant="h2" fontWeight={500}>
+                  {title}
+                </Typography>
+                <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
+                  {artist}
+                </Typography>
+                <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
+                {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
+                <Stack direction="row" display="flex" justifyContent="right">
+                  <Button size="small" variant="text" onClick={handleClose}>
+                    CANCEL
+                  </Button>
+                  <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
+                    ADD SONG
+                  </Button>
+                </Stack>
+              </Stack>
+            </Modal>
+          </>
+        ) : null}
+      </Stack>
+      <Stack direction={isDesktop ? 'row' : 'column'} spacing={isDesktop ? 4 : 1}>
+        {CardFields &&
+          showDetails !== false &&
+          CardFields.map((field, i) => {
+            return (
+              <Stack direction="row" display="flex" key={i} spacing={1}>
+                {displayData[i] ? (
+                  <>
+                    <Typography
+                      variant="body2"
+                      color={'secondary.main'}
+                      width={isDesktop ? '100%' : '40%'}
+                    >
+                      {field}
+                    </Typography>
+                    {Array.isArray(fieldData[i]) ? (
+                      <FieldArray data={fieldData[i]} />
+                    ) : (
+                      <Typography variant="body2" color={''}>
+                        {fieldData[i] ?? '-'}
                       </Typography>
-                      {Array.isArray(fieldData[i]) ? (
-                        <FieldArray data={fieldData[i]} />
-                      ) : (
-                        <Typography variant="body2" color={''}>
-                          {fieldData[i] ?? '-'}
-                        </Typography>
-                      )}
-                    </>
-                  ) : null}
-                </Stack>
-              );
-            })}
-        </Stack>
-      </Container>
-    </>
+                    )}
+                  </>
+                ) : null}
+              </Stack>
+            );
+          })}
+      </Stack>
+    </Container>
   );
 };
 

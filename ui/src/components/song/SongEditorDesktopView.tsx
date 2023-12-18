@@ -17,6 +17,8 @@ import {
   Snackbar,
   Fade,
   Grid,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import { musicKeysOptions, tempoOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -39,6 +41,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
+  const [showSimplifiedChords, setShowSimplifiedChords] = useState<boolean>(false);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
@@ -72,6 +75,8 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         tempo: tempo,
         year: data.year,
         code: data.code,
+        timeSignature: data.timeSignature,
+        simplifiedChords: data.simplifiedChords,
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
@@ -204,6 +209,15 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   />
                 </FormControl>
 
+                {/* Time Signature field */}
+                <TextField
+                  id="timeSignature"
+                  label="Time Signature"
+                  error={!!errors.timeSignature}
+                  helperText={errors?.timeSignature?.message}
+                  {...register('timeSignature', { required: 'Required' })}
+                />
+
                 {/* Tempo field */}
                 <FormControl fullWidth>
                   <AutocompleteInput
@@ -307,6 +321,47 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   }}
                 />
               </Stack>
+
+              <FormControlLabel
+                sx={{ mt: 2 }}
+                label="Show Simplified Chords"
+                control={<Switch onChange={() => setShowSimplifiedChords(!showSimplifiedChords)} />}
+              />
+              {/* columns 2: simplified lyrics & chords */}
+              {showSimplifiedChords ? (
+                <Stack direction="column" spacing={2}>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+                      <LibraryMusicIcon color="primary" />
+                      Simplified Lyrics & Chords
+                    </Typography>
+                    <SongHelpDialog />
+                  </Grid>
+
+                  <TextField
+                    id="simplified-chord-lyrics"
+                    placeholder="Enter lyrics & chords here"
+                    multiline
+                    error={!!errors.simplifiedChords}
+                    helperText={errors?.simplifiedChords?.message}
+                    {...register('simplifiedChords', { required: 'Required' })}
+                    InputProps={{
+                      inputComponent: TextareaAutosize,
+                      inputProps: {
+                        minRows: 20,
+                        style: {
+                          resize: 'vertical',
+                        },
+                      },
+                    }}
+                  />
+                </Stack>
+              ) : null}
             </Box>
           </Stack>
         </Box>

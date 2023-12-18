@@ -5,6 +5,8 @@ type SongEditorFields = {
   tempo: Array<string>;
   year: number;
   code: string;
+  timeSignature: string;
+  simplifiedChords: string;
   originalKey: string;
   recommendedKeys: Array<string>;
   chordLyrics: string;

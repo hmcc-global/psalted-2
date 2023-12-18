@@ -18,6 +18,8 @@ import {
   Chip,
   TextareaAutosize,
   Grid,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
@@ -39,6 +41,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
+  const [showSimplifiedChords, setShowSimplifiedChords] = useState<boolean>(false);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
@@ -194,6 +197,15 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
               />
             </FormControl>
 
+            {/* Time Signature field */}
+            <TextField
+              id="timeSignature"
+              label="Time Signature"
+              error={!!errors.timeSignature}
+              helperText={errors?.timeSignature?.message}
+              {...register('timeSignature', { required: 'Required' })}
+            />
+
             {/* Tempo field */}
             <FormControl fullWidth>
               <AutocompleteInput
@@ -300,6 +312,42 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 },
               }}
             />
+
+            <FormControlLabel
+              sx={{ mt: 2 }}
+              label="Show Simplified Chords"
+              control={<Switch onChange={() => setShowSimplifiedChords(!showSimplifiedChords)} />}
+            />
+            {/* columns 2: simplified lyrics & chords */}
+            {showSimplifiedChords ? (
+              <Stack direction="column" spacing={2}>
+                <Grid container direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+                    <LibraryMusicIcon color="primary" />
+                    Simplified Lyrics & Chords
+                  </Typography>
+                  <SongHelpDialog />
+                </Grid>
+
+                <TextField
+                  id="simplified-chord-lyrics"
+                  placeholder="Enter lyrics & chords here"
+                  multiline
+                  error={!!errors.simplifiedChords}
+                  helperText={errors?.simplifiedChords?.message}
+                  {...register('simplifiedChords', { required: 'Required' })}
+                  InputProps={{
+                    inputComponent: TextareaAutosize,
+                    inputProps: {
+                      minRows: 20,
+                      style: {
+                        resize: 'vertical',
+                      },
+                    },
+                  }}
+                />
+              </Stack>
+            ) : null}
 
             <Button fullWidth type={'submit'} color={'primary'} variant={'contained'}>
               SAVE

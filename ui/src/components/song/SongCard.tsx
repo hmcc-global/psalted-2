@@ -29,6 +29,8 @@ const SongCard = (props: SongCardProps) => {
     themes,
     artist,
     year,
+    // timeSignature,
+    // simplifiedChords,
     code,
     lyricsPreview,
     filterData,

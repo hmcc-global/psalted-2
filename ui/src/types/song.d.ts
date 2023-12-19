@@ -1,6 +1,7 @@
 export type SongCardProps = {
   _id: Types.ObjectId;
   title: string;
+  timeSignature: string[];
   tempo: string[];
   originalKey: string;
   themes: string[];
@@ -29,6 +30,7 @@ export type SongSearchProps = {
 
 export type SongSearchFilter = {
   search?: string;
+  timeSignature?: string[];
   tempo?: string[];
   themes?: string[];
   display?: {

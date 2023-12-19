@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { tempoOptions, musicKeysOptions, timeSignatureOptions } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 
@@ -38,6 +38,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
   const [themes, setThemes] = useState<string | string[] | null>([]);
   const [tempo, setTempo] = useState<string | string[] | null>([]);
+  const [timeSignature, setTimeSignature] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
@@ -198,13 +199,20 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             </FormControl>
 
             {/* Time Signature field */}
-            <TextField
-              id="timeSignature"
-              label="Time Signature"
-              error={!!errors.timeSignature}
-              helperText={errors?.timeSignature?.message}
-              {...register('timeSignature', { required: 'Required' })}
-            />
+            <FormControl fullWidth>
+              <AutocompleteInput
+                id="time-signature"
+                options={timeSignatureOptions}
+                label="Time Signature"
+                autoComplete="time-signature"
+                value={timeSignature}
+                onChange={(event, newValue) => {
+                  setTimeSignature(newValue);
+                }}
+                register={register}
+                multiple
+              />
+            </FormControl>
 
             {/* Tempo field */}
             <FormControl fullWidth>

@@ -53,6 +53,9 @@ const SongListContainer: FC = (): ReactElement => {
                 (filterData.search
                   ? song.themes && song.themes.includes(filterData.search)
                   : true)) &&
+              (filterData.timeSignature
+                ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
+                : true) &&
               (filterData.themes
                 ? filterData.themes.every((theme) => song.themes.includes(theme))
                 : true) &&

@@ -20,7 +20,7 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions, timeSignatureOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import SongHelpDialog from './SongHelpDialog';
@@ -38,6 +38,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
   const [themes, setThemes] = useState<string | string[] | null>([]);
   const [tempo, setTempo] = useState<string | string[] | null>([]);
+  const [timeSignature, setTimeSignature] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
@@ -75,7 +76,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         tempo: tempo,
         year: data.year,
         code: data.code,
-        timeSignature: data.timeSignature,
+        timeSignature: timeSignature,
         simplifiedChords: data.simplifiedChords,
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
@@ -210,13 +211,20 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 </FormControl>
 
                 {/* Time Signature field */}
-                <TextField
-                  id="timeSignature"
-                  label="Time Signature"
-                  error={!!errors.timeSignature}
-                  helperText={errors?.timeSignature?.message}
-                  {...register('timeSignature', { required: 'Required' })}
-                />
+                <FormControl fullWidth>
+                  <AutocompleteInput
+                    id="time-signature"
+                    options={timeSignatureOptions}
+                    label="Time Signature"
+                    autoComplete="time-signature"
+                    value={timeSignature}
+                    onChange={(event, newValue) => {
+                      setTimeSignature(newValue);
+                    }}
+                    register={register}
+                    multiple
+                  />
+                </FormControl>
 
                 {/* Tempo field */}
                 <FormControl fullWidth>

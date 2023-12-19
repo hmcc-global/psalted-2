@@ -22,7 +22,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function HomeProfile(props: HomeProfileProps) {
-  const { onBack, register, onClickChange, onClickEdit } = props;
+  const { onBack, register, onClickChange, onClickEdit, user } = props;
 
   return (
     <Stack spacing={2} width="50%" margin={5}>
@@ -35,20 +35,19 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} color="secondary" />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary">
           PROFILE
         </Typography>
         <PersonIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Name
-      </Typography>
+      <Typography variant="h3">Name</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
         disabled
         id="outlined-name"
         label="Name"
+        value={user?.fullName}
         {...register('fullName', { required: true })}
         style={{ marginBottom: '5%' }}
         sx={{
@@ -57,15 +56,14 @@ function HomeProfile(props: HomeProfileProps) {
           },
         }}
       />
-      <Typography variant="h3" fontWeight={400}>
-        Email
-      </Typography>
+      <Typography variant="h3">Email</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
         disabled
         id="outlined-email"
         label="Email"
+        value={user?.email}
         {...register('email', { required: true })}
         style={{ marginBottom: '5%' }}
         sx={{
@@ -75,17 +73,17 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       />
       <Button variant="contained" onClick={onClickEdit}>
-        <Typography variant="subtitle2">EDIT PROFILE</Typography>
+        <Typography variant="body2">EDIT PROFILE</Typography>
       </Button>
       <Button variant="contained" onClick={onClickChange}>
-        <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+        <Typography variant="body2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
   );
 }
 
 function EditProfile(props: otherProfileProps) {
-  const { onBack, onSubmit, register } = props;
+  const { onBack, onSubmit, register, user } = props;
   return (
     <Stack spacing={2} width="40%" margin={5}>
       <div
@@ -96,20 +94,19 @@ function EditProfile(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary">
           EDIT PROFILE
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
-      <Typography variant="h3" fontWeight={400}>
-        Old Name & Email
-      </Typography>
+      <Typography variant="h3">Old Name & Email</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <TextField
         fullWidth
         disabled
         id="outlined-name"
         label="Name"
+        value={user?.fullName}
         {...register('fullName', { required: true })}
         style={{ marginBottom: '5%' }}
       />
@@ -118,12 +115,11 @@ function EditProfile(props: otherProfileProps) {
         disabled
         id="outlined-email"
         label="Email"
+        value={user?.email}
         {...register('email', { required: true })}
         style={{ marginBottom: '5%' }}
       />
-      <Typography variant="h3" fontWeight={400}>
-        New Name
-      </Typography>
+      <Typography variant="h3">New Name</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
@@ -138,6 +134,7 @@ function EditProfile(props: otherProfileProps) {
           disabled
           id="outlined-email"
           label="Email"
+          value={user?.email}
           {...register('email', { required: true })}
           style={{ marginBottom: '5%' }}
           sx={{
@@ -147,7 +144,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit" fullWidth>
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>
@@ -189,15 +186,13 @@ function ChangePassword(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary">
           CHANGE PASSWORD
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
       </div>
 
-      <Typography variant="h3" fontWeight={400}>
-        Old Password
-      </Typography>
+      <Typography variant="h3">Old Password</Typography>
       <Divider style={{ marginBottom: '3%' }} />
       <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
         <TextField
@@ -222,9 +217,7 @@ function ChangePassword(props: otherProfileProps) {
             ),
           }}
         />
-        <Typography variant="h3" fontWeight={400}>
-          New Password
-        </Typography>
+        <Typography variant="h3">New Password</Typography>
         <Divider style={{ marginTop: '2%', marginBottom: '3%' }} />
         <TextField
           fullWidth
@@ -277,7 +270,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit" fullWidth>
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>
@@ -286,8 +279,10 @@ function ChangePassword(props: otherProfileProps) {
 
 const ProfileDesktopView: FC = (): ReactElement => {
   const user = useSelector((state: any) => state.user);
+
   const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
-  const [userData, setUserData] = useState(null);
+
+  const [userData, setUserData] = useState(undefined);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
@@ -299,6 +294,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
         setUserInformationFields(data);
       }
     }
+    console.log('fetchUserData', user.id);
   }, [user.id]);
 
   const handleEditUserInformation = async (data: UserEditorFields) => {
@@ -373,6 +369,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
             onClickChange={changePassHandler}
             onBack={backProfileHandler}
             register={register}
+            user={userData}
           />
         )}
         {showEditProfile && !showChangePassword && (
@@ -380,6 +377,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
             onBack={backProfileHandler}
             onSubmit={handleSubmit(handleEditUserInformation)}
             register={register}
+            user={userData}
           />
         )}
         {!showEditProfile && showChangePassword && (

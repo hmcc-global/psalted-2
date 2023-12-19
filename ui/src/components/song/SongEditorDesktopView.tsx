@@ -53,7 +53,6 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
     return (
       <Typography
         variant="h3"
-        fontWeight="700"
         color="primary"
         sx={{ display: 'flex', alignItems: 'center' }}
         gap={1}

@@ -5,7 +5,7 @@ import RegisterContainer from './components/auth/RegisterContainer';
 import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
 import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
-import SongContainer from './components/song/SongContainer';
+import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
 
 // interface
@@ -18,13 +18,7 @@ interface Route {
 }
 
 export const routes: Array<Route> = [
-  {
-    key: 'home-route',
-    title: 'Home',
-    path: '/',
-    enabled: true,
-    component: HomeContainer,
-  },
+  // Auth routes
   {
     key: 'login-route',
     title: 'Login',
@@ -53,6 +47,22 @@ export const routes: Array<Route> = [
     enabled: true,
     component: ResetPasswordContainer,
   },
+  // Home routes
+  {
+    key: 'home-route',
+    title: 'Home',
+    path: '/',
+    enabled: true,
+    component: HomeContainer,
+  },
+  {
+    key: 'profile-route',
+    title: 'Profile',
+    path: '/profile',
+    enabled: true,
+    component: ProfileContainer,
+  },
+  // Song routes
   {
     key: 'song-add-route',
     title: 'Add New Song',
@@ -72,13 +82,6 @@ export const routes: Array<Route> = [
     title: 'Song',
     path: '/song',
     enabled: true,
-    component: SongContainer,
-  },
-  {
-    key: 'profile-route',
-    title: 'Profile',
-    path: '/profile',
-    enabled: true,
-    component: ProfileContainer,
+    component: SongListContainer,
   },
 ];

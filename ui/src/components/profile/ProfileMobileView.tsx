@@ -20,7 +20,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function HomeProfile(props: HomeProfileProps) {
-  const { onBack, register, onClickChange, onClickEdit } = props;
+  const { onBack, register, onClickChange, onClickEdit, user } = props;
 
   return (
     <Stack spacing={2} width="100%">
@@ -32,7 +32,7 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="bold">
+        <Typography variant="h3" color="primary">
           PROFILE
         </Typography>
       </div>
@@ -41,6 +41,7 @@ function HomeProfile(props: HomeProfileProps) {
         disabled
         id="outlined-name"
         label="Name"
+        value={user?.fullName}
         {...register('fullName', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
@@ -53,6 +54,7 @@ function HomeProfile(props: HomeProfileProps) {
         disabled
         id="outlined-email"
         label="Email"
+        value={user?.email}
         {...register('email', { required: true })}
         sx={{
           '& .MuiInputBase-input.Mui-disabled': {
@@ -61,17 +63,17 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       />
       <Button variant="outlined" onClick={onClickEdit} style={{ width: '45%' }}>
-        <Typography variant="subtitle2">EDIT PROFILE</Typography>
+        <Typography variant="body2">EDIT PROFILE</Typography>
       </Button>
       <Button variant="outlined" onClick={onClickChange} style={{ width: '60%' }}>
-        <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+        <Typography variant="body2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
   );
 }
 
 function EditProfile(props: otherProfileProps) {
-  const { onBack, onSubmit, register } = props;
+  const { onBack, onSubmit, register, user } = props;
 
   return (
     <Stack spacing={2} width="100%">
@@ -91,7 +93,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="bold">
+          <Typography variant="h3" color="primary">
             EDIT PROFILE
           </Typography>
         </div>
@@ -103,6 +105,7 @@ function EditProfile(props: otherProfileProps) {
           id="outlined-name"
           {...register('fullName')}
           label="Name"
+          value={user?.fullName}
           style={{ marginBottom: '5%' }}
         />
         <TextField
@@ -110,6 +113,7 @@ function EditProfile(props: otherProfileProps) {
           disabled
           id="outlined-email"
           label="Email"
+          value={user?.email}
           {...register('email', { required: true })}
           style={{ marginBottom: '5%' }}
           sx={{
@@ -119,7 +123,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit">
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>
@@ -169,7 +173,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="bold">
+          <Typography variant="h3" color="primary">
             CHANGE PASSWORD
           </Typography>
         </div>
@@ -250,7 +254,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit">
-          <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+          <Typography variant="body2">CHANGE PASSWORD</Typography>
         </Button>
       </form>
     </Stack>
@@ -260,7 +264,7 @@ function ChangePassword(props: otherProfileProps) {
 const ProfileMobileView: FC = (): ReactElement => {
   const user = useSelector((state: any) => state.user);
   const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(undefined);
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
@@ -348,6 +352,7 @@ const ProfileMobileView: FC = (): ReactElement => {
             onClickChange={changePassHandler}
             onBack={backProfileHandler}
             register={register}
+            user={userData}
           />
         )}
         {showEditProfile && !showChangePassword && (
@@ -355,6 +360,7 @@ const ProfileMobileView: FC = (): ReactElement => {
             onBack={backProfileHandler}
             onSubmit={handleSubmit(handleEditUserInformation)}
             register={register}
+            user={userData}
           />
         )}
         {!showEditProfile && showChangePassword && (

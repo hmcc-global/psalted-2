@@ -32,7 +32,7 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="700">
+        <Typography variant="h3" color="primary">
           PROFILE
         </Typography>
       </div>
@@ -63,10 +63,10 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       />
       <Button variant="outlined" onClick={onClickEdit} style={{ width: '45%' }}>
-        <Typography variant="subtitle2">EDIT PROFILE</Typography>
+        <Typography variant="body2">EDIT PROFILE</Typography>
       </Button>
       <Button variant="outlined" onClick={onClickChange} style={{ width: '60%' }}>
-        <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+        <Typography variant="body2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
   );
@@ -93,7 +93,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="700">
+          <Typography variant="h3" color="primary">
             EDIT PROFILE
           </Typography>
         </div>
@@ -123,7 +123,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit">
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>
@@ -173,7 +173,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         >
           <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary" fontWeight="700">
+          <Typography variant="h3" color="primary">
             CHANGE PASSWORD
           </Typography>
         </div>
@@ -254,7 +254,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit">
-          <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+          <Typography variant="body2">CHANGE PASSWORD</Typography>
         </Button>
       </form>
     </Stack>

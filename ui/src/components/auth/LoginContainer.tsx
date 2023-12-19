@@ -66,7 +66,7 @@ const LoginContainer: React.FC = () => {
         <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
           <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
             <Stack spacing={0.5}>
-              <Typography variant="h1" color={'primary'} textAlign={'center'} fontWeight={'bold'}>
+              <Typography variant="h1" color={'primary'} textAlign={'center'}>
                 LOGIN
               </Typography>
               <Typography variant={'body1'} textAlign={'center'}>

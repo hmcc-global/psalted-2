@@ -114,7 +114,7 @@ const ResetPasswordContainer: React.FC = () => {
         <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
           <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
             <Stack spacing={1}>
-              <Typography variant="h1" color={'primary'} textAlign={'center'} fontWeight={'bold'}>
+              <Typography variant="h1" color={'primary'} textAlign={'center'}>
                 RESET PASSWORD
               </Typography>
               <Typography variant={'body1'} textAlign={'center'}>

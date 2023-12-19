@@ -35,7 +35,7 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} color="secondary" />
-        <Typography variant="h3" color="primary" fontWeight="700">
+        <Typography variant="h3" color="primary">
           PROFILE
         </Typography>
         <PersonIcon color="primary" style={{ marginLeft: '2%' }} />
@@ -73,10 +73,10 @@ function HomeProfile(props: HomeProfileProps) {
         }}
       />
       <Button variant="contained" onClick={onClickEdit}>
-        <Typography variant="subtitle2">EDIT PROFILE</Typography>
+        <Typography variant="body2">EDIT PROFILE</Typography>
       </Button>
       <Button variant="contained" onClick={onClickChange}>
-        <Typography variant="subtitle2">CHANGE PASSWORD</Typography>
+        <Typography variant="body2">CHANGE PASSWORD</Typography>
       </Button>
     </Stack>
   );
@@ -94,7 +94,7 @@ function EditProfile(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="700">
+        <Typography variant="h3" color="primary">
           EDIT PROFILE
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
@@ -144,7 +144,7 @@ function EditProfile(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit" fullWidth>
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>
@@ -186,7 +186,7 @@ function ChangePassword(props: otherProfileProps) {
         }}
       >
         <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary" fontWeight="700">
+        <Typography variant="h3" color="primary">
           CHANGE PASSWORD
         </Typography>
         <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
@@ -270,7 +270,7 @@ function ChangePassword(props: otherProfileProps) {
           }}
         />
         <Button variant="contained" type="submit" fullWidth>
-          <Typography variant="subtitle2">SAVE</Typography>
+          <Typography variant="body2">SAVE</Typography>
         </Button>
       </form>
     </Stack>

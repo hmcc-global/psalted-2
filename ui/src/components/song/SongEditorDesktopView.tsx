@@ -53,7 +53,6 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
     return (
       <Typography
         variant="h3"
-        fontWeight="700"
         color="primary"
         sx={{ display: 'flex', alignItems: 'center' }}
         gap={1}
@@ -145,12 +144,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             {/* column 1: Song Details */}
             <Box width={'30vw'}>
               <Stack direction="column" spacing={2}>
-                <Typography
-                  variant="h4"
-                  fontWeight="700"
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                  gap={1}
-                >
+                <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
                   <InfoIcon color="primary" />
                   Song Details
                 </Typography>
@@ -273,12 +267,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             <Box width="100%">
               <Stack direction="column" spacing={2}>
                 <Grid container direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography
-                    variant="h4"
-                    fontWeight="700"
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                    gap={1}
-                  >
+                  <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
                     <LibraryMusicIcon color="primary" />
                     Lyrics & Chords
                   </Typography>

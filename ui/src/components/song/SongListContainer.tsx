@@ -92,12 +92,7 @@ const SongListContainer: FC = (): ReactElement => {
           pl={{ base: '0', md: '15px' }}
         >
           {/* Title */}
-          <Typography
-            variant="h2"
-            fontWeight="700"
-            color="primary"
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
+          <Typography variant="h2" color="primary" sx={{ display: 'flex', alignItems: 'center' }}>
             <AudiotrackRoundedIcon color="primary" fontSize="large" />
             SONGS
           </Typography>
@@ -189,7 +184,7 @@ const SongListContainer: FC = (): ReactElement => {
                 <Typography variant="h2" color="primary.main">
                   Couldn't find "{filterData?.search}"
                 </Typography>
-                <Typography variant="subtitle2">Try searching again</Typography>
+                <Typography variant="body2">Try searching again</Typography>
               </Stack>
             )}
           </Stack>

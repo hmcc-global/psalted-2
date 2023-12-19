@@ -70,10 +70,10 @@ const SongCard = (props: SongCardProps) => {
       >
         <Stack direction="row" display="flex" justifyContent="space-between">
           <Stack>
-            <Typography variant="h2" fontWeight={700} color={'primary.main'}>
+            <Typography variant="h2" color={'primary.main'}>
               {title}
             </Typography>
-            <Typography variant="subtitle1">{artist}</Typography>
+            <Typography variant="body1">{artist}</Typography>
           </Stack>
           {filterData?.display?.lyricsPreview === true ||
           filterData?.display?.lyricsPreview === undefined ? (

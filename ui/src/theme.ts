@@ -47,27 +47,19 @@ const customTheme = createTheme({
     ].join(','),
     h1: {
       fontSize: '2rem', // Equivalent to 32px (16 * 2)
-      fontWeight: 400,
+      fontWeight: 700,
     },
     h2: {
       fontSize: '1.5rem', // Equivalent to 24px (16 * 1.5)
-      fontWeight: 400,
+      fontWeight: 700,
     },
     h3: {
       fontSize: '1.25rem', // Equivalent to 20px (16 * 1.25)
-      fontWeight: 400,
+      fontWeight: 700,
     },
     h4: {
       fontSize: '1.125rem', // Equivalent to 18px (16 * 1.125)
-      fontWeight: 400,
-    },
-    subtitle1: {
-      fontSize: '1rem', // Equivalent to 16px (16 * 1)
-      fontWeight: 400,
-    },
-    subtitle2: {
-      fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)
-      fontWeight: 500,
+      fontWeight: 700,
     },
     body1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)
@@ -77,16 +69,12 @@ const customTheme = createTheme({
       fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)
       fontWeight: 400,
     },
+    caption: {
+      fontSize: '0.6875rem', // Equivalent to 11px (16 * 0.0.6875)
+      fontWeight: 400,
+    },
     button: {
       fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)
-      fontWeight: 500,
-    },
-    overline: {
-      fontSize: '0.625rem', // Equivalent to 10px (16 * 0.625)
-      fontWeight: 500,
-    },
-    caption: {
-      fontSize: '0.75rem', // Equivalent to 12px (16 * 0.75)
       fontWeight: 400,
     },
   },

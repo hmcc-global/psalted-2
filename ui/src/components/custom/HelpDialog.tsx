@@ -21,7 +21,7 @@ const HelpDialog: FC<HelpDialogProps> = ({ icon, title, content }) => {
         {icon}
       </IconButton>
       <Dialog open={open} onClose={handleOpenHelpDialog}>
-        <DialogTitle variant="h2" fontWeight="700" color="primary">
+        <DialogTitle variant="h2" color="primary">
           {title}
         </DialogTitle>
         <IconButton

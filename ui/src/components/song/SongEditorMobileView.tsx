@@ -53,7 +53,6 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
     return (
       <Typography
         variant="h3"
-        fontWeight="700"
         color="primary"
         sx={{ display: 'flex', alignItems: 'center' }}
         gap={1}
@@ -153,12 +152,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
               {...register('title', { required: 'Required' })}
             />
 
-            <Typography
-              variant="h4"
-              fontWeight="700"
-              sx={{ display: 'flex', alignItems: 'center' }}
-              gap={1}
-            >
+            <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
               <InfoIcon color="primary" />
               Song Details
             </Typography>
@@ -262,7 +256,6 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
             <Grid container direction="row" alignItems="center" justifyContent="space-between">
               <Typography
                 variant="h4"
-                fontWeight="700"
                 sx={{ display: 'flex', alignItems: 'center' }}
                 gap={1}
                 py={1}

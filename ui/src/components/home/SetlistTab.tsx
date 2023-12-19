@@ -27,7 +27,7 @@ const SongTab: FC = (): ReactElement => {
           width: '100%',
         }}
       >
-        <Typography variant="h3" color="primary">
+        <Typography variant="h3" fontWeight="500" color="primary">
           My Setlist
         </Typography>
         <QueueMusicIcon color="primary" sx={{ marginLeft: '1em' }} />

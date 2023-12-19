@@ -31,6 +31,7 @@ const NavBar: FC = (): ReactElement => {
               background: '#FFF',
             }}
           >
+            {/* TODO: Add search functionality */}
             <IconButton size="medium" edge="end">
               <SearchIcon />
             </IconButton>

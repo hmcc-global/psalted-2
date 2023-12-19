@@ -19,7 +19,7 @@ import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
 
-const SongContainer: FC = (): ReactElement => {
+const SongListContainer: FC = (): ReactElement => {
   const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
   const [songView, setSongView] = useState<SongCardProps[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
@@ -83,24 +83,32 @@ const SongContainer: FC = (): ReactElement => {
   return (
     <>
       <Container fixed sx={{ padding: '0 24px 24px', height: '100%' }}>
-        <Stack direction="row" display="flex" justifyContent="space-between">
-          <Stack direction="row" spacing={2} display="flex" alignItems="center">
-            <Box sx={{ height: '36px', width: '24px' }}>
-              <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} fontSize="large" />
-            </Box>
-            <Typography variant="h2" color="primary.main">
-              SONGS
-            </Typography>
-          </Stack>
+        {/* Toolbar at the top */}
+        <Stack
+          direction="row"
+          display="flex"
+          justifyContent="space-between"
+          pb="10px"
+          pl={{ base: '0', md: '15px' }}
+        >
+          {/* Title */}
+          <Typography variant="h2" color="primary" sx={{ display: 'flex', alignItems: 'center' }}>
+            <AudiotrackRoundedIcon color="primary" fontSize="large" />
+            SONGS
+          </Typography>
+
+          {/* Add new song button */}
           <Button
             variant="outlined"
             sx={{ borderWidth: '2px', padding: '10px 25px' }}
             startIcon={<AddIcon />}
             onClick={() => navigate('/song/add')}
           >
-            <Typography>NEW SONG</Typography>
+            <Typography fontWeight="500">NEW SONG</Typography>
           </Button>
         </Stack>
+
+        {/* Mobile Search bar and filters */}
         <Box display={{ base: 'block', md: 'none' }}>
           <Stack
             spacing={2}
@@ -132,6 +140,8 @@ const SongContainer: FC = (): ReactElement => {
               <TuneIcon sx={{ color: 'white' }} />
             </IconButton>
           </Stack>
+
+          {/* Show song details or not (option only shows in mobile) */}
           <Button
             variant="outlined"
             sx={{ borderWidth: '2px', margin: '5px 0 15px 0' }}
@@ -140,6 +150,8 @@ const SongContainer: FC = (): ReactElement => {
             <Typography variant="caption">SHOW DETAILS</Typography>
           </Button>
         </Box>
+
+        {/* Desktop search bar and filters */}
         <Stack direction="row" width="100%">
           <Box display={isDesktop ? 'block' : 'none'}>
             <SongSearch
@@ -151,6 +163,8 @@ const SongContainer: FC = (): ReactElement => {
               isDesktop={isDesktop}
             />
           </Box>
+
+          {/* Song cards search results */}
           <Stack direction="column" spacing={3} height="100%" width="100%">
             {songView.length > 0 ? (
               songView.map((song, i) => {
@@ -165,16 +179,19 @@ const SongContainer: FC = (): ReactElement => {
                 );
               })
             ) : (
+              // Error message when no songs are found
               <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
                 <Typography variant="h2" color="primary.main">
                   Couldn't find "{filterData?.search}"
                 </Typography>
-                <Typography variant="subtitle2">Try searching again</Typography>
+                <Typography variant="body2">Try searching again</Typography>
               </Stack>
             )}
           </Stack>
         </Stack>
       </Container>
+
+      {/* Mobile search filters modal */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -196,4 +213,4 @@ const SongContainer: FC = (): ReactElement => {
   );
 };
 
-export default SongContainer;
+export default SongListContainer;

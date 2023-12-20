@@ -18,7 +18,7 @@ import {
   Fade,
   Grid,
 } from '@mui/material';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions, themeOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import SongHelpDialog from './SongHelpDialog';
@@ -44,9 +44,6 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // FORM HANDLER
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
-
-  // TODO: get theme options from database
-  const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
 
   // editor mode is either ADD NEW or EDIT. default is ADD NEW
   const editorMode = (actionOnEditor: string): ReactElement => {
@@ -180,7 +177,6 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     }}
                     register={register}
                     multiple
-                    freeSolo
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
                         <Chip variant="outlined" label={option} {...getTagProps({ index })} />

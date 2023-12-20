@@ -18,7 +18,7 @@ export const musicKeysOptions = [
   'G♯',
   'A♭',
 ];
-
+export const themeOptions = ['Love', 'Hope', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
 export const tempoOptions = ['Fast', 'Medium', 'Slow'];
 
 // register/login form

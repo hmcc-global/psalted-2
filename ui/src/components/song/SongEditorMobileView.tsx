@@ -103,9 +103,9 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
   const getSongOptions = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('/api/songs/get-options');
+      const { data, status } = await axios.get('/api/song-options/list');
       if (status === 200) {
-        setThemesList(data.themes);
+        setThemesList(data.theme);
         setTempoList(data.tempo);
       }
     } catch (error) {

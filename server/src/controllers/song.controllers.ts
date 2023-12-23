@@ -1,11 +1,11 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Song } from '../models/song.model';
-import { SongDocument, SongOptions } from '../types/song.types';
+import { SongDocument } from '../types/song.types';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: SongDocument[] | SongDocument | SongOptions | string
+  payload: SongDocument[] | SongDocument | string
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -124,42 +124,4 @@ const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<
   }
 };
 
-const getSongOptions: RequestHandler = async (_req: Request, res: Response): Promise<void> => {
-  try {
-    const data: SongDocument[] = await Song.find({ isDeleted: false })
-      .select('tempo themes')
-      .exec();
-
-    if (data) {
-      // remove duplicates and rearrange
-      const themes: string[] = [];
-      const tempos: string[] = [];
-
-      data.forEach((song) => {
-        song.themes.forEach((theme) => {
-          if (!themes.includes(theme)) {
-            themes.push(theme);
-          }
-        });
-        song.tempo.forEach((tempo) => {
-          if (!tempos.includes(tempo)) {
-            tempos.push(tempo);
-          }
-        });
-      });
-
-      const result = {
-        themes: themes.sort(),
-        tempo: tempos.sort(),
-      };
-
-      sendResponse(res, 200, result);
-    } else {
-      sendResponse(res, 404, 'Song options not found');
-    }
-  } catch (error: any) {
-    sendResponse(res, 500, error?.message);
-  }
-};
-
-export { createSong, getSong, getSongView, updateSong, deleteSong, getSongOptions };
+export { createSong, getSong, getSongView, updateSong, deleteSong };

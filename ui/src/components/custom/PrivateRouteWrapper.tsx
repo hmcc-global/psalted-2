@@ -65,6 +65,30 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   //   (p: any) => userObj != null && Object.keys(userObj).length !== 0 && p === userObj.accessType
   // );
 
+  const renderPageWithNavBar = (
+    navBar: JSX.Element,
+    children: ReactElement<unknown, string | React.JSXElementConstructor<any>>,
+    isSidebarOpen: boolean
+  ) => {
+    if (isValidElement(children)) {
+      // Render the navbar, sidebar, and the children of the route
+      return (
+        <>
+          {navBar}
+          <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
+            <Sidebar isOpen={isSidebarOpen} />
+            <Box component="main" sx={{ flexGrow: 1 }}>
+              {cloneElement(children)}
+            </Box>
+          </Box>
+        </>
+      );
+    } else {
+      // If the children is not a valid React element, render the error page
+      return <ErrorPage />;
+    }
+  };
+
   // If the route does not require a user
   if (noUser) {
     // If there is no token in the redux store
@@ -76,8 +100,8 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
         </Box>
       );
     } else {
-      // If there is a token, navigate to the home page
-      return <Navigate to="/" />;
+      // If there is a token, navigate to the page
+      renderPageWithNavBar(navBar, children, isSidebarOpen);
     }
   }
   // If the route is accessible (public or matches user's access type)
@@ -87,24 +111,7 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
       // Navigate to the login page
       return <Navigate to="/login" />;
     } else {
-      // If the children is a valid React element
-      if (isValidElement(children)) {
-        // Render the navbar, sidebar, and the children of the route
-        return (
-          <>
-            {navBar}
-            <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
-              <Sidebar isOpen={isSidebarOpen} />
-              <Box component="main" sx={{ flexGrow: 1 }}>
-                {cloneElement(children)}
-              </Box>
-            </Box>
-          </>
-        );
-      } else {
-        // If the children is not a valid React element, render the error page
-        return <ErrorPage />;
-      }
+      renderPageWithNavBar(navBar, children, isSidebarOpen);
     }
   } else {
     // If the route is not accessible, render the error page

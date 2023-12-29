@@ -33,6 +33,16 @@ function App() {
             <Box component="main" sx={{ flexGrow: 1 }}>
               <Routes>
                 {appRoutes.map((route) => (
+                  // TODO: Uncomment this when PrivateRouteWrapper is implemented and delete the navbar here
+                  // <Route
+                  //   key={route.key}
+                  //   path={route.path}
+                  //   element={
+                  //     <PrivateRouteWrapper permissions={route.permissions}>
+                  //       <route.component />
+                  //     </PrivateRouteWrapper>
+                  //   }
+                  // />
                   <Route key={route.key} path={route.path} element={<route.component />} />
                 ))}
               </Routes>

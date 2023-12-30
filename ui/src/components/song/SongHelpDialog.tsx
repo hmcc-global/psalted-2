@@ -12,7 +12,7 @@ const SongHelpDialog: FC = () => {
         content={
           <>
             <Typography color="primary" mb={2}>
-              Use hashtags “{`{ }`}” to indicate sections <br />
+              Use curly brackets “{`{ }`}” to indicate sections <br />
               Use square brackets “[ ]” to indicate chords
             </Typography>
             <Typography color="secondary.light" fontWeight="700">

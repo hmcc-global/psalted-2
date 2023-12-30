@@ -18,8 +18,6 @@ import {
   Chip,
   TextareaAutosize,
   Grid,
-  FormControlLabel,
-  Switch,
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
@@ -33,6 +31,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import InfoIcon from '@mui/icons-material/Info';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
@@ -77,6 +76,8 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         code: data.code,
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
+        timeSignature: timeSignature,
+        simplifiedChords: data.simplifiedChords,
         chordLyrics: data.chordLyrics,
         // TODO: figure out how to retrieve proper lyrics preview
         // make the preview from the start of the first # to right before the second #
@@ -321,41 +322,39 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
               }}
             />
 
-            <FormControlLabel
-              sx={{ mt: 2 }}
-              label="Show Simplified Chords"
-              control={<Switch onChange={() => setShowSimplifiedChords(!showSimplifiedChords)} />}
-            />
             {/* columns 2: simplified lyrics & chords */}
-            {showSimplifiedChords ? (
-              <Stack direction="column" spacing={2}>
-                <Grid container direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
-                    <LibraryMusicIcon color="primary" />
-                    Simplified Lyrics & Chords
+            <Stack direction="column" spacing={2}>
+              <Grid container direction="row" alignItems="center" justifyContent="space-between">
+                <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+                  <LibraryMusicIcon color="primary" />
+                  Simplified Lyrics & Chords
+                </Typography>
+                <Box display="flex" gap="8px">
+                  <Typography variant="body2" color="rgba(0,0,0,0.6)">
+                    Simplified version without the fancy chords (i.e. Cadd9/E) if available.
                   </Typography>
-                  <SongHelpDialog />
-                </Grid>
+                  <HelpOutlineIcon color="secondary" />
+                </Box>
+              </Grid>
 
-                <TextField
-                  id="simplified-chord-lyrics"
-                  placeholder="Enter lyrics & chords here"
-                  multiline
-                  error={!!errors.simplifiedChords}
-                  helperText={errors?.simplifiedChords?.message}
-                  {...register('simplifiedChords', { required: 'Required' })}
-                  InputProps={{
-                    inputComponent: TextareaAutosize,
-                    inputProps: {
-                      minRows: 20,
-                      style: {
-                        resize: 'vertical',
-                      },
+              <TextField
+                id="simplified-chord-lyrics"
+                placeholder="Enter lyrics & chords here"
+                multiline
+                error={!!errors.simplifiedChords}
+                helperText={errors?.simplifiedChords?.message}
+                {...register('simplifiedChords', { required: 'Required' })}
+                InputProps={{
+                  inputComponent: TextareaAutosize,
+                  inputProps: {
+                    minRows: 20,
+                    style: {
+                      resize: 'vertical',
                     },
-                  }}
-                />
-              </Stack>
-            ) : null}
+                  },
+                }}
+              />
+            </Stack>
 
             <Button fullWidth type={'submit'} color={'primary'} variant={'contained'}>
               SAVE

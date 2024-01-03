@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useCallback, useState, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -37,6 +37,8 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [themes, setThemes] = useState<string | string[] | null>([]);
   const [tempo, setTempo] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
+  const [themesList, setThemesList] = useState<string[]>([]);
+  const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
@@ -44,9 +46,6 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // FORM HANDLER
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
-
-  // TODO: get theme options from database
-  const themeOptions: string[] = ['Love', 'Faith', 'Hope', 'Joy', 'Peace', 'Grace'];
 
   // editor mode is either ADD NEW or EDIT. default is ADD NEW
   const editorMode = (actionOnEditor: string): ReactElement => {
@@ -100,6 +99,22 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const handleCloseSuccessSnackbar = () => {
     setSuccessSnackbarOpen(false);
   };
+
+  const getSongOptions = useCallback(async () => {
+    try {
+      const { data, status } = await axios.get('/api/song-options/list');
+      if (status === 200) {
+        setThemesList(data.theme);
+        setTempoList(data.tempo);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getSongOptions();
+  }, [getSongOptions]);
 
   return (
     <Container>
@@ -171,7 +186,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 <FormControl fullWidth>
                   <AutocompleteInput
                     id="themes"
-                    options={themeOptions}
+                    options={themesList}
                     label="Theme"
                     autoComplete="themes"
                     value={themes}
@@ -193,7 +208,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 <FormControl fullWidth>
                   <AutocompleteInput
                     id="tempo"
-                    options={tempoOptions}
+                    options={tempoList}
                     label="Tempo"
                     autoComplete="tempo"
                     value={tempo}

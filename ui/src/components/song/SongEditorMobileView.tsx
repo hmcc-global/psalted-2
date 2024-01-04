@@ -190,6 +190,9 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 register={register}
                 multiple
                 freeSolo
+                getOptionDisabled={(option) =>
+                  themes?.length === 3 || themes?.includes(option) ? true : false
+                }
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
                     <Chip variant="outlined" label={option} {...getTagProps({ index })} />

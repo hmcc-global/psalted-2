@@ -22,6 +22,8 @@ type AutocompleteInputProps = {
   renderTags?: (value: readonly string[], getTagProps: any) => JSX.Element[];
   freeSolo?: boolean;
   multiple?: boolean;
+  getOptionDisabled?: (option: string) => boolean;
+  helperText?: string;
 };
 
 const AutocompleteInput: FC<AutocompleteInputProps> = ({
@@ -35,6 +37,8 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
   renderTags,
   freeSolo,
   multiple,
+  getOptionDisabled,
+  helperText,
 }) => {
   return (
     <Autocomplete
@@ -43,22 +47,26 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
       id={id}
       options={options}
       getOptionLabel={(option) => option}
+      getOptionDisabled={getOptionDisabled}
       filterSelectedOptions
       onChange={onChange}
       value={value}
       renderTags={renderTags}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          variant="outlined"
-          label={label}
-          {...register(id)}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: autoComplete,
-            required: value && value.length === 0,
-          }}
-        />
+        <>
+          <TextField
+            {...params}
+            variant="outlined"
+            label={label}
+            helperText={helperText}
+            {...register(id)}
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: autoComplete,
+              required: value && value.length === 0,
+            }}
+          />
+        </>
       )}
     />
   );

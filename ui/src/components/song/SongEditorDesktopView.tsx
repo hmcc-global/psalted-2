@@ -18,7 +18,7 @@ import {
   Fade,
   Grid,
 } from '@mui/material';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions, themeSelectionLimit } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import SongHelpDialog from './SongHelpDialog';
@@ -189,6 +189,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     options={themesList}
                     label="Theme"
                     autoComplete="themes"
+                    helperText="Choose up to 3 options"
                     value={themes}
                     onChange={(event, newValue) => {
                       setThemes(newValue);
@@ -196,6 +197,11 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     register={register}
                     multiple
                     freeSolo
+                    getOptionDisabled={(option) =>
+                      themes?.length === themeSelectionLimit || themes?.includes(option)
+                        ? true
+                        : false
+                    }
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
                         <Chip variant="outlined" label={option} {...getTagProps({ index })} />

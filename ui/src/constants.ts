@@ -21,6 +21,8 @@ export const musicKeysOptions = [
 
 export const tempoOptions = ['Fast', 'Medium', 'Slow'];
 
+export const themeSelectionLimit = 3;
+
 // register/login form
 export const formSpacing = { xs: 2, sm: 2, md: 3, lg: 3, xl: 3 };
 

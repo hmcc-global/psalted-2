@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions, themeSelectionLimit } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 
@@ -187,7 +187,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 multiple
                 freeSolo
                 getOptionDisabled={(option) =>
-                  themes?.length === 3 || themes?.includes(option) ? true : false
+                  themes?.length === themeSelectionLimit || themes?.includes(option) ? true : false
                 }
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (

@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
-import { SongCardProps, SongSearchFilter } from '../../types/song';
+import { SongCardProps, SongSearchFilter } from '#/types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate } from 'react-router-dom';

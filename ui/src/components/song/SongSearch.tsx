@@ -14,7 +14,7 @@ import {
   Alert,
   Grid,
 } from '@mui/material';
-import { SongSearchProps, SongCardProps } from '../../types/song';
+import { SongSearchProps, SongCardProps } from '#/types/song.types';
 import { useState, useEffect, useCallback } from 'react';
 import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import { timeSignatureOptions } from '../../constants';

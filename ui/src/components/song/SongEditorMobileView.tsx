@@ -41,7 +41,6 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
-  const [showSimplifiedChords, setShowSimplifiedChords] = useState<boolean>(false);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');

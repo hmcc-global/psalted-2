@@ -1,5 +1,5 @@
 import { Box, Chip, Container, Popover, Stack, Typography } from '@mui/material';
-import { SongCardProps } from '../../types/song';
+import { SongCardProps } from '#/types/song.types';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 

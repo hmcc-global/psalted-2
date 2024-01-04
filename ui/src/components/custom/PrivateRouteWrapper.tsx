@@ -15,6 +15,30 @@ interface PrivateRouteProps {
   permissions: string[];
 }
 
+const renderPageWithNavBar = (
+  navBar: JSX.Element,
+  children: ReactElement<unknown, string | React.JSXElementConstructor<any>>,
+  isSidebarOpen: boolean
+) => {
+  if (isValidElement(children)) {
+    // Render the navbar, sidebar, and the children of the route
+    return (
+      <>
+        {navBar}
+        <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
+          <Sidebar isOpen={isSidebarOpen} />
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            {cloneElement(children)}
+          </Box>
+        </Box>
+      </>
+    );
+  } else {
+    // If the children is not a valid React element, render the error page
+    return <ErrorPage />;
+  }
+};
+
 const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   const user = useSelector((state: any) => state.user);
   // TODO: Pass userObj as a prop to NavBar
@@ -65,30 +89,6 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   //   (p: any) => userObj != null && Object.keys(userObj).length !== 0 && p === userObj.accessType
   // );
 
-  const renderPageWithNavBar = (
-    navBar: JSX.Element,
-    children: ReactElement<unknown, string | React.JSXElementConstructor<any>>,
-    isSidebarOpen: boolean
-  ) => {
-    if (isValidElement(children)) {
-      // Render the navbar, sidebar, and the children of the route
-      return (
-        <>
-          {navBar}
-          <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
-            <Sidebar isOpen={isSidebarOpen} />
-            <Box component="main" sx={{ flexGrow: 1 }}>
-              {cloneElement(children)}
-            </Box>
-          </Box>
-        </>
-      );
-    } else {
-      // If the children is not a valid React element, render the error page
-      return <ErrorPage />;
-    }
-  };
-
   // If the route does not require a user
   if (noUser) {
     // If there is no token in the redux store
@@ -117,6 +117,8 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
     // If the route is not accessible, render the error page
     return <ErrorPage />;
   }
+
+  return;
 };
 
 export default PrivateRouteWrapper;

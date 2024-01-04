@@ -23,6 +23,7 @@ type AutocompleteInputProps = {
   freeSolo?: boolean;
   multiple?: boolean;
   getOptionDisabled?: (option: string) => boolean;
+  helperText?: string;
 };
 
 const AutocompleteInput: FC<AutocompleteInputProps> = ({
@@ -37,6 +38,7 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
   freeSolo,
   multiple,
   getOptionDisabled,
+  helperText,
 }) => {
   return (
     <Autocomplete
@@ -51,17 +53,20 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
       value={value}
       renderTags={renderTags}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          variant="outlined"
-          label={label}
-          {...register(id)}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: autoComplete,
-            required: value && value.length === 0,
-          }}
-        />
+        <>
+          <TextField
+            {...params}
+            variant="outlined"
+            label={label}
+            helperText={helperText}
+            {...register(id)}
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: autoComplete,
+              required: value && value.length === 0,
+            }}
+          />
+        </>
       )}
     />
   );

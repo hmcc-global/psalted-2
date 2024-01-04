@@ -6,7 +6,7 @@ type SongEditorFields = {
   year: number;
   code: string;
   timeSignature: string;
-  simplifiedChords: string;
+  simplifiedChordLyrics: string;
   originalKey: string;
   recommendedKeys: Array<string>;
   chordLyrics: string;

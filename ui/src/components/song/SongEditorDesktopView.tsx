@@ -76,7 +76,7 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         year: data.year,
         code: data.code,
         timeSignature: timeSignature,
-        simplifiedChords: data.simplifiedChords,
+        simplifiedChordLyrics: data.simplifiedChordLyrics,
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
@@ -349,9 +349,9 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   id="simplified-chord-lyrics"
                   placeholder="Enter lyrics & chords here"
                   multiline
-                  error={!!errors.simplifiedChords}
-                  helperText={errors?.simplifiedChords?.message}
-                  {...register('simplifiedChords', { required: 'Required' })}
+                  error={!!errors.simplifiedChordLyrics}
+                  helperText={errors?.simplifiedChordLyrics?.message}
+                  {...register('simplifiedChordLyrics', { required: 'Required' })}
                   InputProps={{
                     inputComponent: TextareaAutosize,
                     inputProps: {

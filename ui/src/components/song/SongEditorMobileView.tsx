@@ -77,7 +77,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
         timeSignature: timeSignature,
-        simplifiedChords: data.simplifiedChords,
+        simplifiedChordLyrics: data.simplifiedChordLyrics,
         chordLyrics: data.chordLyrics,
         // TODO: figure out how to retrieve proper lyrics preview
         // make the preview from the start of the first # to right before the second #
@@ -341,9 +341,9 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 id="simplified-chord-lyrics"
                 placeholder="Enter lyrics & chords here"
                 multiline
-                error={!!errors.simplifiedChords}
-                helperText={errors?.simplifiedChords?.message}
-                {...register('simplifiedChords', { required: 'Required' })}
+                error={!!errors.simplifiedChordLyrics}
+                helperText={errors?.simplifiedChordLyrics?.message}
+                {...register('simplifiedChordLyrics', { required: 'Required' })}
                 InputProps={{
                   inputComponent: TextareaAutosize,
                   inputProps: {

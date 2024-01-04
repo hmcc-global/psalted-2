@@ -14,7 +14,7 @@ const songSchema = new Schema<SongSchema>(
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     timeSignature: [{ type: String, required: true }],
-    simplifiedChords: { type: String, required: false },
+    simplifiedChordLyrics: { type: String, required: false },
     isVerified: { type: Boolean, default: false },
     chordLyrics: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },

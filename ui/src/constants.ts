@@ -23,6 +23,9 @@ export const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code', 'T
 
 export const tempoOptions = ['Fast', 'Medium', 'Slow'];
 export const timeSignatureOptions = ['4/4', '3/4', '6/8', '2/4', '2/2', '9/8', '12/8', 'Others'];
+
+export const themeSelectionLimit = 3;
+
 // register/login form
 export const formSpacing = { xs: 2, sm: 2, md: 3, lg: 3, xl: 3 };
 

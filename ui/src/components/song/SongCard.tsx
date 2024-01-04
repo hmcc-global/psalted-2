@@ -1,5 +1,5 @@
 import { Box, Chip, Container, Popover, Stack, Typography } from '@mui/material';
-import { SongCardProps } from '../../types/song';
+import { SongCardProps } from '#/types/song.types';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
@@ -29,6 +29,7 @@ const SongCard = (props: SongCardProps) => {
     themes,
     artist,
     year,
+    timeSignature,
     code,
     lyricsPreview,
     filterData,
@@ -43,8 +44,8 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
   ];
-  const fieldData = [themes, tempo, originalKey, year, code];
-  const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
+  const fieldData = [themes, timeSignature, tempo, originalKey, year, code];
+  const CardFields = ['Themes', 'Time Signature', 'Tempo', 'Original Key', 'Year', 'Code'];
 
   // state for the popover, to detect whether mouse is hovering or not
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);

@@ -268,6 +268,15 @@ const ProfileMobileView: FC = (): ReactElement => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
+  const setUserInformationFields = useCallback(
+    (userData: UserEditorFields) => {
+      setValue('fullName', userData['fullName']);
+      setValue('email', userData['email']);
+      setValue('password', userData['password']);
+    },
+    [setValue]
+  );
+
   const fetchUserData = useCallback(async () => {
     if (user.id) {
       const { data, status } = await axios.get('/api/users/get', { params: { id: user.id } });
@@ -277,7 +286,7 @@ const ProfileMobileView: FC = (): ReactElement => {
         setUserInformationFields(data);
       }
     }
-  }, [user.id]);
+  }, [user.id, setUserInformationFields]);
 
   const handleEditUserInformation = async (data: UserEditorFields) => {
     data.id = user.id;
@@ -304,12 +313,6 @@ const ProfileMobileView: FC = (): ReactElement => {
     if (status === 200) {
       fetchUserData();
     }
-  };
-
-  const setUserInformationFields = (userData: UserEditorFields) => {
-    setValue('fullName', userData['fullName']);
-    setValue('email', userData['email']);
-    setValue('password', userData['password']);
   };
 
   const editProfileHandler = () => {

@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
-import { SongCardProps, SongSearchFilter } from '../../types/song';
+import { SongCardProps, SongSearchFilter } from '#/types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate } from 'react-router-dom';
@@ -53,6 +53,9 @@ const SongListContainer: FC = (): ReactElement => {
                 (filterData.search
                   ? song.themes && song.themes.includes(filterData.search)
                   : true)) &&
+              (filterData.timeSignature
+                ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
+                : true) &&
               (filterData.themes
                 ? filterData.themes.every((theme) => song.themes.includes(theme))
                 : true) &&

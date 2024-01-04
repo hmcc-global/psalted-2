@@ -14,9 +14,10 @@ import {
   Alert,
   Grid,
 } from '@mui/material';
-import { SongSearchProps, SongCardProps } from '../../types/song';
+import { SongSearchProps, SongCardProps } from '#/types/song.types';
 import { useState, useEffect, useCallback } from 'react';
 import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
+import { timeSignatureOptions } from '../../constants';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
@@ -25,6 +26,7 @@ const SongSearch = (props: SongSearchProps) => {
   const [tempoList, setTempoList] = useState<string[]>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [search, setSearch] = useState(prevFilter?.search ?? '');
+  const [timeSignature, setTimeSignature] = useState<string[]>(prevFilter?.timeSignature ?? []);
   const [tempo, setTempo] = useState<string[]>(prevFilter?.tempo ?? []);
   const [themes, setThemes] = useState<string[]>(prevFilter?.themes ?? []);
   const [displayResult, setDisplayResult] = useState(
@@ -52,13 +54,20 @@ const SongSearch = (props: SongSearchProps) => {
   };
 
   const handleSubmit = () => {
-    props.setFilterData({ search: search, tempo: tempo, themes: themes, display: displayResult });
+    props.setFilterData({
+      search: search,
+      timeSignature: timeSignature,
+      tempo: tempo,
+      themes: themes,
+      display: displayResult,
+    });
     props.onClose();
   };
 
   const handleClear = () => {
     props.setFilterData({
       search: undefined,
+      timeSignature: undefined,
       tempo: undefined,
       themes: undefined,
       display: {
@@ -71,6 +80,7 @@ const SongSearch = (props: SongSearchProps) => {
       },
     });
     setSearch('');
+    setTimeSignature([]);
     setTempo([]);
     setThemes([]);
     setDisplayResult({
@@ -126,6 +136,17 @@ const SongSearch = (props: SongSearchProps) => {
               }}
             />
           </Box>
+          <Autocomplete
+            multiple
+            id="timeSignature"
+            options={timeSignatureOptions}
+            value={timeSignature}
+            filterSelectedOptions
+            renderInput={(params) => (
+              <TextField {...params} label="Time Signature" placeholder="4/4" />
+            )}
+            onChange={handleValueChange(setTimeSignature)}
+          />
           <Autocomplete
             multiple
             id="tempo"

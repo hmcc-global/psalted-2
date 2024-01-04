@@ -12,14 +12,14 @@ const SongHelpDialog: FC = () => {
         content={
           <>
             <Typography color="primary" mb={2}>
-              Use hashtags “#” to indicate sections <br />
+              Use curly brackets “{`{ }`}” to indicate sections <br />
               Use square brackets “[ ]” to indicate chords
             </Typography>
             <Typography color="secondary.light" fontWeight="700">
               Example:
             </Typography>
             <Typography color="secondary.light">
-              #Verse 1 <br />
+              {`{Verse 1}`} <br />
               [D]When the music [A]fades, all is stripped [Em]away <br />
               And I simply [A]come <br />
               [D]Longing just to [A]bring something that's of [Em]worth <br />

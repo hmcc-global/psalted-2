@@ -179,6 +179,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 options={themesList}
                 label="Theme"
                 autoComplete="themes"
+                helperText="Choose up to 3 options"
                 value={themes}
                 onChange={(event, newValue) => {
                   setThemes(newValue);

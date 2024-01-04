@@ -18,7 +18,7 @@ import {
   Fade,
   Grid,
 } from '@mui/material';
-import { musicKeysOptions, tempoOptions } from '../../constants';
+import { musicKeysOptions, tempoOptions, timeSignatureOptions } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
 import SongHelpDialog from './SongHelpDialog';
@@ -31,11 +31,13 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import InfoIcon from '@mui/icons-material/Info';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // STATES
   const [themes, setThemes] = useState<string | string[] | null>([]);
   const [tempo, setTempo] = useState<string | string[] | null>([]);
+  const [timeSignature, setTimeSignature] = useState<string | string[] | null>([]);
   const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
   const [themesList, setThemesList] = useState<string[]>([]);
   const [tempoList, setTempoList] = useState<string[]>(tempoOptions);
@@ -72,6 +74,8 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
         tempo: tempo,
         year: data.year,
         code: data.code,
+        timeSignature: timeSignature,
+        simplifiedChordLyrics: data.simplifiedChordLyrics,
         originalKey: data.originalKey,
         recommendedKeys: recommendedKeys,
         chordLyrics: data.chordLyrics,
@@ -204,6 +208,22 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   />
                 </FormControl>
 
+                {/* Time Signature field */}
+                <FormControl fullWidth>
+                  <AutocompleteInput
+                    id="time-signature"
+                    options={timeSignatureOptions}
+                    label="Time Signature"
+                    autoComplete="time-signature"
+                    value={timeSignature}
+                    onChange={(event, newValue) => {
+                      setTimeSignature(newValue);
+                    }}
+                    register={register}
+                    multiple
+                  />
+                </FormControl>
+
                 {/* Tempo field */}
                 <FormControl fullWidth>
                   <AutocompleteInput
@@ -296,6 +316,41 @@ const SongEditorDesktopView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   error={!!errors.chordLyrics}
                   helperText={errors?.chordLyrics?.message}
                   {...register('chordLyrics', { required: 'Required' })}
+                  InputProps={{
+                    inputComponent: TextareaAutosize,
+                    inputProps: {
+                      minRows: 20,
+                      style: {
+                        resize: 'vertical',
+                      },
+                    },
+                  }}
+                />
+              </Stack>
+
+              {/* columns 2: simplified lyrics & chords */}
+
+              <Stack direction="column" spacing={2} marginTop="16px">
+                <Grid container direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography variant="h4" sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+                    <LibraryMusicIcon color="primary" />
+                    Simplified Lyrics & Chords
+                  </Typography>
+                  <Box display="flex" gap="8px">
+                    <Typography variant="body2" color="rgba(0,0,0,0.6)">
+                      Simplified version without the fancy chords (i.e. Cadd9/E) if available.
+                    </Typography>
+                    <HelpOutlineIcon color="secondary" />
+                  </Box>
+                </Grid>
+
+                <TextField
+                  id="simplified-chord-lyrics"
+                  placeholder="Enter lyrics & chords here"
+                  multiline
+                  error={!!errors.simplifiedChordLyrics}
+                  helperText={errors?.simplifiedChordLyrics?.message}
+                  {...register('simplifiedChordLyrics', { required: 'Required' })}
                   InputProps={{
                     inputComponent: TextareaAutosize,
                     inputProps: {

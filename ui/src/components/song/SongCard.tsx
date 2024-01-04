@@ -1,6 +1,6 @@
 import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
-import { SongCardProps } from '../../types/song';
 import { CardFields } from '../../constants';
+import { SongCardProps } from '#/types/song.types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -45,6 +45,7 @@ const SongCard = (props: SongCardProps) => {
     themes,
     artist,
     year,
+    timeSignature,
     code,
     lyricsPreview,
     filterData,
@@ -59,8 +60,8 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
   ];
-  const fieldData = [themes, tempo, originalKey, year, code];
-  const navigate = useNavigate();
+  const fieldData = [themes, timeSignature, tempo, originalKey, year, code];
+  const CardFields = ['Themes', 'Time Signature', 'Tempo', 'Original Key', 'Year', 'Code'];
 
   // state for the modal
   const [modalOpen, setModalOpen] = useState(false);

@@ -71,7 +71,7 @@ const getSongView: RequestHandler = async (req: Request, res: Response): Promise
     try {
       const data: SongDocument[] = await Song.find({ isDeleted: false })
         .select(
-          '_id title tempo originalKey themes artist year code lyricsPreview isVerified isDeleted createdAt updatedAt'
+          '_id title tempo originalKey themes artist year code lyricsPreview isVerified isDeleted createdAt updatedAt simplifiedChordLyrics timeSignature'
         )
         .exec();
 
@@ -110,7 +110,7 @@ const updateSong: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { id: songId } = req.params;
+  const { id: songId } = req.query;
 
   if (songId) {
     try {

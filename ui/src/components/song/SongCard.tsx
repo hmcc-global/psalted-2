@@ -85,46 +85,45 @@ const SongCard = (props: SongCardProps) => {
           </Typography>
           <Typography variant="subtitle1">{artist}</Typography>
         </Stack>
-        {filterData?.display?.lyricsPreview === true ||
-        filterData?.display?.lyricsPreview === undefined ? (
-          <>
-            <Box sx={{ height: '30px', width: '30px' }}>
-              <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
-            </Box>
-            <Modal open={modalOpen} onClose={handleClose}>
-              <Stack
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: 400,
-                  bgcolor: 'background.paper',
-                  boxShadow: 2,
-                  p: 4,
-                }}
-                spacing={1}
-              >
-                <Typography variant="h2">{title}</Typography>
-                <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
-                  {artist}
-                </Typography>
-                {lyricsPreview ? (
-                  <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
-                ) : null}
-                {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
-                <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
-                  <Button size="small" variant="text" onClick={handleClose}>
-                    CANCEL
-                  </Button>
-                  <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
-                    ADD SONG
-                  </Button>
-                </Stack>
+        <>
+          <Box sx={{ height: '30px', width: '30px' }}>
+            <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
+          </Box>
+          <Modal open={modalOpen} onClose={handleClose}>
+            <Stack
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                bgcolor: 'background.paper',
+                boxShadow: 2,
+                p: 4,
+              }}
+              spacing={1}
+            >
+              <Typography variant="h2" fontWeight={500}>
+                {title}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
+                {artist}
+              </Typography>
+              {lyricsPreview ? (
+                <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
+              ) : null}
+              {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
+              <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
+                <Button size="small" variant="text" onClick={handleClose}>
+                  CANCEL
+                </Button>
+                <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
+                  ADD SONG
+                </Button>
               </Stack>
-            </Modal>
-          </>
-        ) : null}
+            </Stack>
+          </Modal>
+        </>
       </Stack>
       <Stack direction={isDesktop ? 'row' : 'column'} spacing={isDesktop ? 4 : 1}>
         {CardFields &&

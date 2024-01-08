@@ -72,13 +72,13 @@ const SongCard = (props: SongCardProps) => {
     <Container
       sx={{
         borderRadius: '4px',
-        background: '#FAFAFA',
+        background: 'secondary.lighter',
         padding: '10px',
       }}
     >
       <Stack direction="row" display="flex" justifyContent="space-between">
         <Stack>
-          <Typography variant="h2" fontWeight={700} color={'primary.main'}>
+          <Typography variant="h2" color={'primary.main'}>
             {title}
           </Typography>
           <Typography variant="subtitle1">{artist}</Typography>
@@ -101,9 +101,7 @@ const SongCard = (props: SongCardProps) => {
               }}
               spacing={1}
             >
-              <Typography variant="h2" fontWeight={500}>
-                {title}
-              </Typography>
+              <Typography variant="h2">{title}</Typography>
               <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
                 {artist}
               </Typography>

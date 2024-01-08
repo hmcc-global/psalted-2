@@ -1,6 +1,6 @@
 import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
-import { CardFields } from '#/constants';
+import { CardFields } from '../../constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';

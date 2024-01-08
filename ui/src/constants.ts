@@ -19,8 +19,6 @@ export const musicKeysOptions = [
   'A♭',
 ];
 
-export const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code'];
-
 export const tempoOptions = ['Fast', 'Medium', 'Slow'];
 export const timeSignatureOptions = ['4/4', '3/4', '6/8', '2/4', '2/2', '9/8', '12/8', 'Others'];
 // register/login form

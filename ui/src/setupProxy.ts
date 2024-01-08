@@ -5,7 +5,7 @@ module.exports = function (app: Express) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:1337',
+      target: 'http://localhost:1338',
     })
   );
 };

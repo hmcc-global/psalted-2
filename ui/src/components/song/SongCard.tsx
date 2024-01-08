@@ -1,6 +1,5 @@
 import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
-import { CardFields } from '../../constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -103,9 +102,7 @@ const SongCard = (props: SongCardProps) => {
               }}
               spacing={1}
             >
-              <Typography variant="h2" fontWeight={500}>
-                {title}
-              </Typography>
+              <Typography variant="h2">{title}</Typography>
               <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
                 {artist}
               </Typography>

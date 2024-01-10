@@ -37,6 +37,7 @@ const SongSearch = (props: SongSearchProps) => {
       originalKey: true,
       year: true,
       code: true,
+      timeSignature: true,
     }
   );
 
@@ -77,6 +78,7 @@ const SongSearch = (props: SongSearchProps) => {
         originalKey: true,
         year: true,
         code: true,
+        timeSignature: true,
       },
     });
     setSearch('');
@@ -90,6 +92,7 @@ const SongSearch = (props: SongSearchProps) => {
       originalKey: true,
       year: true,
       code: true,
+      timeSignature: true,
     });
     props.onClose();
   };

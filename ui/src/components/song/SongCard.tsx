@@ -59,8 +59,9 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.originalKey ?? true,
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
+    filterData?.display?.timeSignature ?? true,
   ];
-  const fieldData = [themes, tempo, originalKey, year, code];
+  const fieldData = [themes, tempo, originalKey, year, code, timeSignature];
   const navigate = useNavigate();
 
   // state for the modal

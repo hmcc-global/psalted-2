@@ -23,6 +23,65 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
       lyricsLine.map((line) => (line.includes('{') && line.includes('}') ? para++ : null));
   };
 
+  const getColor = (label:any) => {
+    const regexPattern = /[A-G][#b]?(m)?/;
+    label.match(regexPattern)
+    
+    if (label === 'C') {
+      return '#FF7070'; 
+    } else if (label === 'C#' || label === 'Db') {
+      return '#FFA270'; 
+    } else if (label === 'D') {
+      return '#FFCD70'; 
+    } else if (label === 'D#' || label == 'Eb') {
+      return '#FFFA70'; 
+    } else if (label === 'E'){
+      return '#C9FF70';
+    } else if (label === 'F') {
+      return '#7FFF70'; 
+    } else if (label === 'F#' || label === 'Gb') {
+      return '#70FFC3'; 
+    } else if (label === 'G') {
+      return '#70FFF6'; 
+    } else if (label ==='G#' || label === 'Ab') {
+      return '#70C3FF'; 
+    } else if (label === 'A') {
+      return '#AA70FF';  
+    } else if (label === 'A#' || label === 'Bb') {
+      return '#E970FF'; 
+    } else if (label === 'B') {
+      return '#FF70D0'; 
+
+    } else if (label === 'Cm') {
+      return '#FFABAB'; 
+    } else if (label === 'C#m' || label === 'Dbm') {
+      return '#FFD7AB'; 
+    } else if (label === 'Dm') {
+      return '#FAFFAB'; 
+    } else if (label === 'D#m' || label == 'Ebm') {
+      return '#FFFA70'; 
+    } else if (label === 'Em'){
+      return '#D1FFAB';
+    } else if (label === 'Fm') {
+      return '#ABFFDC'; 
+    } else if (label === 'F#m' || label === 'Gbm') {
+      return '#70FFC3'; 
+    } else if (label === 'Gm') {
+      return '#ABFFF8'; 
+    } else if (label ==='G#m' || label === 'Abm') {
+      return '#ABCFFF'; 
+    } else if (label === 'Am') {
+      return '#B5ABFF';  
+    } else if (label === 'A#m' || label === 'Bbm') {
+      return '#EAABFF'; 
+    } else if (label === 'Bm') {
+      return '#FFABDE'; 
+    }
+    // Return 'default' color for other labels
+    return '#B9B9AA';
+  };
+
+
   const parseLyrics = useCallback(
     (inputSong: SongViewSchema | undefined, songChunk: string[]) => {
       const result: ReactNode[] = [];
@@ -38,7 +97,30 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
           if (line.includes('{') && line.includes('}')) {
             // return chip for verse, chorus, bridge
             const chipLabel = line.replace('{', '').replace('}', '');
-            return result.push(<Chip key={j} label={chipLabel} />);
+            return result.push(<Chip key={j} label={chipLabel}
+              variant="outlined"  
+              sx={{
+                height: '30px',
+                '& .MuiChip-label': {
+                  width: 'inline-flex',
+                  alignItems: 'center',
+                  whiteSpace: 'none',
+                  color: '#A9A9A9',
+                  fontWeight: 'bold',
+                  borderRadius: 4,
+                  backgroundColor: '#FAFAFA',
+                  border: '2',
+                  fontSize: '14px',
+              },
+              }}
+              style={{
+                borderRadius: 4,
+                backgroundColor:'primary',
+                marginBottom: '10px',
+                marginTop: '3px',
+                borderColor:'#A9A9A9'
+              }} 
+            />);
           } else if (line === '') {
             // return empty line
             return result.push(<br key={j} />);
@@ -65,10 +147,30 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                         : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
                       chord.slice(1);
                     const textLyrics = '\u00A0' + lyric.slice(endChord + 1);
+                    const chipColor = getColor(transpossedChord)
                     return (
                       <Box key={i}>
-                        {chordStatus ? <Chip label={transpossedChord} /> : null}
+                        {chordStatus ? <Chip  label={transpossedChord}
+                          size = 'small' 
+                          
+                         sx={{
+                          height: 'fit',
+                          '& .MuiChip-label': {
+                            alignItems: 'center',
+                            whiteSpace: 'none',
+                            fontWeight: 'bold',
+                            borderWidth: '2',
+                            
+                          },
+                        }}
+                        style={{
+                          borderRadius: 4,
+                          backgroundColor:chipColor,
+                          marginBottom: '5px',
+                          marginTop: '3px',
+                        }}/> : null}
                         <Typography>{textLyrics}</Typography>
+                        
                       </Box>
                     );
                   } else {

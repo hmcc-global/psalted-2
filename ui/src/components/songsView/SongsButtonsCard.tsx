@@ -104,6 +104,10 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
                 <Chip
                   label={useFlat ? flatMusicKeysOptions[count] : sharpMusicKeysOptions[count]}
                   color="primary"
+                  style={{
+                    marginBottom: '3px',
+                    marginTop: '3px',
+                  }} 
                 />
                 <Box bgcolor="primary.lightest">
                   <IconButton color="primary" aria-label="up" onClick={handleIncrement}>

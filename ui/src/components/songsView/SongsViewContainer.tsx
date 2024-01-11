@@ -1,4 +1,4 @@
-import { Container, Box } from '@mui/material';
+import { Container, Box, Grid } from '@mui/material';
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { SongViewSchema } from '../../types/song.types';
 import axios, { AxiosResponse } from 'axios';
@@ -29,14 +29,19 @@ const SongsViewContainer: FC = (): ReactElement => {
 
   return (
     <>
-      <Container maxWidth="lg">
-        <Box sx={{ bgcolor: 'white', width: '100%' }}>
-          <SongsTitleCard song={song} />
-        </Box>
-        <Box sx={{ marginBottom: '15vh', width: '100%' }}>
-          <SongsButtonCard song={song} />
-        </Box>
+      <Container maxWidth="lg" style={{ background: 'white' }}>
+        <Grid container justifyContent="left">
+        <Grid item xs={12} sm={12} md={15} lg={20}>
+          <Box sx={{ bgcolor: 'white', width: 'auto' }}>
+            <SongsTitleCard song={song} />
+          </Box>
+          <Box sx={{ marginBottom: '15vh', width: 'auto'}}>
+            <SongsButtonCard song={song} />
+          </Box>
+        </Grid>
+        </Grid>
       </Container>
+      
     </>
   );
 };

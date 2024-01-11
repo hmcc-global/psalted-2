@@ -57,7 +57,7 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
   return (
     <>
       <Container>
-        <Box sx={{ bgcolor: 'white', p: 2 }}>
+        <Box sx={{ bgcolor: 'white', marginTop: '6px' }}>
           <Box
             sx={{
               bgcolor: '#FAFAFA',
@@ -65,11 +65,13 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
               borderRadius: 0,
               p: 0,
               width: '100%',
-              padding: '12px',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              paddingLeft: '4px'
             }}
           >
-            <Stack direction="row" spacing={{ base: '0', xs: '1vh', sm: '1.5vh', md: '2vh' }}>
-              <Box justifyContent="left" bgcolor="white" padding="4px 12px" borderRadius="4px">
+            <Stack direction="row" spacing={{ base: '5px', xs: '4px', sm: '1.5vh', md: '2vh' }}>
+              <Box  fontSize={{ sm: '16px', md: '26px' }} justifyContent="left" bgcolor="white" padding="0px 0px 2px" sx={{width:'120px', height:'40px'}} paddingRight='10px'>
                 <FormGroup>
                   <FormControlLabel
                     labelPlacement="start"
@@ -78,6 +80,8 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
                         checked={chordStatus}
                         onChange={handleChange(setChordStatus)}
                         name="chord"
+                       
+                        
                       />
                     }
                     label="Chord"
@@ -86,17 +90,18 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
               </Box>
               <Stack
                 direction="row"
-                spacing={{ base: '0', xs: '0', sm: '1px', md: '2px' }}
+                spacing={{ base: '3px', xs: '3px', sm: '1px', md: '2px' }}
                 bgcolor="white"
-                padding="4px 12px"
-                borderRadius="4px"
+                padding="0px 0px"
+                height='40px'
+                paddingBottom='2px'
               >
-                <Box bgcolor={'white'}>
-                  <Typography alignItems={'center'} paddingTop="5px">
+                <Box bgcolor={'white'} justifyContent="center" padding="6px 6px" borderRadius="0px" sx={{width:'40px', height:'40px'}}>
+                  <Typography alignItems={'center'} paddingTop="0px">
                     Key
                   </Typography>
                 </Box>
-                <Box bgcolor="primary.lightest">
+                <Box bgcolor="primary.lightest" justifyContent="left" padding="0px 0px" borderRadius="0px" sx={{width:'40px', height:'40px'}}>
                   <IconButton color="primary" aria-label="down" onClick={handleDecrement}>
                     <KeyboardArrowDownIcon />
                   </IconButton>
@@ -105,20 +110,20 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
                   label={useFlat ? flatMusicKeysOptions[count] : sharpMusicKeysOptions[count]}
                   color="primary"
                 />
-                <Box bgcolor="primary.lightest">
+                <Box bgcolor="primary.lightest"  justifyContent="left" padding="0px 0px" borderRadius="0px" sx={{width:'40px', height:'40px'}}>
                   <IconButton color="primary" aria-label="up" onClick={handleIncrement}>
                     <KeyboardArrowUpIcon />
                   </IconButton>
                 </Box>
               </Stack>
-              <Box justifyContent="left" bgcolor="white" padding="4px 12px" borderRadius="4px">
+              <Box fontSize={{ sm: '16px', md: '26px' }} justifyContent="left" bgcolor="white" padding="0px 0px 2px" sx={{width:'120px', height:'40px'}} paddingRight='10px'>
                 <FormGroup>
                   <FormControlLabel
                     labelPlacement="start"
                     control={
                       <Switch checked={useFlat} onChange={handleChange(setUseFlat)} name="flat" />
                     }
-                    label="use Flat"
+                    label="Flat"
                   />
                 </FormGroup>
               </Box>
@@ -137,9 +142,9 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
                 </Box>
                 <Box
                   border="1px solid #FAFAFA"
-                  height="40px"
-                  width="40px"
-                  borderRadius="4px"
+                  height="30px"
+                  width="30px"
+                  borderRadius="2px"
                   onClick={handleSplit}
                 >
                   <Stack

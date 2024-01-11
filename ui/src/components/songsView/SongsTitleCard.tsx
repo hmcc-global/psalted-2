@@ -24,14 +24,14 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
             bgcolor: 'white',
             boxShadow: 0,
             borderRadius: 0,
-            p: 2,
+            p: 0,
             minWidth: 150,
           }}
         >
           <Box
             fontWeight={'Bold'}
             fontFamily={'Inter'}
-            sx={{ color: 'primary.main' }}
+            sx={{ color: 'primary.main', marginleft:'0px' }}
             fontSize={{ sm: '28px', md: '34px' }}
           >
             {song && song.title}
@@ -39,12 +39,12 @@ const SongsTitleCard = (props: SongTitleCardProps) => {
           <Box
             fontWeight={'Regular'}
             fontFamily={'Inter'}
-            sx={{ color: 'black' }}
+            sx={{ color: 'black', marginLeft:'0px' }}
             fontSize={{ sm: '16px', md: '26px' }}
           >
             {song && song.artist}
           </Box>
-          <Box>
+          <Box  sx={{paddingLeft:"5px" }}>
             <Accordion>
               <Box bgcolor="#FAFAFA">
                 <AccordionSummary

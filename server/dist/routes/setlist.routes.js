@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const setlist_controllers_1 = require("../controllers/setlist.controllers");
+const express_1 = require("express");
+const setlistRouter = (0, express_1.Router)();
+setlistRouter.post('/create', setlist_controllers_1.createSetlist);
+setlistRouter.get('/get', setlist_controllers_1.getSetlist);
+setlistRouter.put('/update', setlist_controllers_1.updateSetlist);
+setlistRouter.put('/delete', setlist_controllers_1.deleteSetlist);
+exports.default = setlistRouter;

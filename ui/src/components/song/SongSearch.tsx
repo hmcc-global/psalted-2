@@ -248,6 +248,18 @@ const SongSearch = (props: SongSearchProps) => {
                     label="Code"
                   />
                 </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.timeSignature}
+                        onChange={handleDisplayChange}
+                        name="timeSignature"
+                      />
+                    }
+                    label="Time Signature"
+                  />
+                </Grid>
               </Grid>
               <Alert severity="info">Song Title and Artist will be displayed by default</Alert>
             </FormGroup>

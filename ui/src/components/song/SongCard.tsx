@@ -73,7 +73,7 @@ const SongCard = (props: SongCardProps) => {
     <Container
       sx={{
         borderRadius: '4px',
-        background: 'secondary.lighter',
+        backgroundColor: 'secondary.lighter',
         padding: '10px',
       }}
     >

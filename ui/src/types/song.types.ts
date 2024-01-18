@@ -60,5 +60,6 @@ export type SongSearchFilter = {
     originalKey: boolean;
     year: boolean;
     code: boolean;
+    timeSignature: boolean;
   };
 };

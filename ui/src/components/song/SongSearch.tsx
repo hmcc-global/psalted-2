@@ -37,6 +37,7 @@ const SongSearch = (props: SongSearchProps) => {
       originalKey: true,
       year: true,
       code: true,
+      timeSignature: true,
     }
   );
 
@@ -77,6 +78,7 @@ const SongSearch = (props: SongSearchProps) => {
         originalKey: true,
         year: true,
         code: true,
+        timeSignature: true,
       },
     });
     setSearch('');
@@ -90,6 +92,7 @@ const SongSearch = (props: SongSearchProps) => {
       originalKey: true,
       year: true,
       code: true,
+      timeSignature: true,
     });
     props.onClose();
   };
@@ -243,6 +246,18 @@ const SongSearch = (props: SongSearchProps) => {
                       />
                     }
                     label="Code"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={displayResult.timeSignature}
+                        onChange={handleDisplayChange}
+                        name="timeSignature"
+                      />
+                    }
+                    label="Time Signature"
                   />
                 </Grid>
               </Grid>

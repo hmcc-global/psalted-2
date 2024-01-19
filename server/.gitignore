@@ -10,6 +10,7 @@ nbproject
 .vscode
 .node_history
 dump.rdb
+dist/
 
 npm-debug.log
 lib-cov

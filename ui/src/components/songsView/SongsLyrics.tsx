@@ -1,6 +1,6 @@
 import { Box, Chip, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { SongViewSchema } from '../../types/song.types';
-import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
+import { flatMusicKeysOptions, sharpMusicKeysOptions, ChordColors} from '../../constants';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 interface SongsLyricsProps {
@@ -23,64 +23,18 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
       lyricsLine.map((line) => (line.includes('{') && line.includes('}') ? para++ : null));
   };
 
+  const searchChordColor = (chord: string): string | undefined => {
+    const chordKey = Object.keys(ChordColors).find(key =>
+      key.toLowerCase() === chord.toLowerCase()
+    );
+    return chordKey ? ChordColors[chordKey] : undefined;
+  };
   
 
   const getColor = (label:any) => {
     const regexPattern = /[A-G][#b]?(m)?/;
     label.match(regexPattern)
-    
-    if (label === 'C') {
-      return '#FAFABE'; 
-    } else if (label === 'C#' || label === 'Db') {
-      return '#DAFABE'; 
-    } else if (label === 'D') {
-      return '#C1EBC0'; 
-    } else if (label === 'D#' || label == 'Eb') {
-      return '#C0EBE9'; 
-    } else if (label === 'E'){
-      return '#C7CAFF';
-    } else if (label === 'F') {
-      return '#CDABEB'; 
-    } else if (label === 'F#' || label === 'Gb') {
-      return '#EED9F3'; 
-    } else if (label === 'G') {
-      return '#F6C2F3'; 
-    } else if (label ==='G#' || label === 'Ab') {
-      return '#F39BBD'; 
-    } else if (label === 'A') {
-      return '#F09EA7';  
-    } else if (label === 'A#' || label === 'Bb') {
-      return '#F6BA94'; 
-    } else if (label === 'B') {
-      return '#F6CA94'; 
-    }
-    else if (label === 'Cm') {
-      return '#FAFABE90'; 
-    } else if (label === 'C#m' || label === 'Dbm') {
-      return '#DAFABE90'; 
-    } else if (label === 'Dm') {
-      return '#C1EBC090'; 
-    } else if (label === 'D#m' || label == 'Ebm') {
-      return '#C0EBE990'; 
-    } else if (label === 'Em'){
-      return '#C7CAFF90';
-    } else if (label === 'Fm') {
-      return '#CDABEB90'; 
-    } else if (label === 'F#m' || label === 'Gbm') {
-      return '#EED9F390'; 
-    } else if (label === 'Gm') {
-      return '#F6C2F390'; 
-    } else if (label ==='G#m' || label === 'Abm') {
-      return '#F39BBD90'; 
-    } else if (label === 'Am') {
-      return '#F09EA790';  
-    } else if (label === 'A#m' || label === 'Bbm') {
-      return '#F6BA9490'; 
-    } else if (label === 'Bm') {
-      return '#F6CA9490'; 
-    }
-    // Return 'default' color for other labels
-    return '#B9B9AA';
+    return searchChordColor(label)
   };
 
 

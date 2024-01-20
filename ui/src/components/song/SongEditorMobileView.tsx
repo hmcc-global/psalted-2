@@ -21,7 +21,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { SongEditorFields, SongEditorProps } from '#/types/song.types';
-import { tempoOptions, musicKeysOptions, timeSignatureOptions } from '../../constants';
+import {
+  tempoOptions,
+  musicKeysOptions,
+  timeSignatureOptions,
+  themeSelectionLimit,
+} from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 
@@ -183,6 +188,7 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 options={themesList}
                 label="Theme"
                 autoComplete="themes"
+                helperText="Choose up to 3 options"
                 value={themes}
                 onChange={(event, newValue) => {
                   setThemes(newValue);
@@ -190,6 +196,9 @@ const SongEditorMobileView: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 register={register}
                 multiple
                 freeSolo
+                getOptionDisabled={(option) =>
+                  themes?.length === themeSelectionLimit || themes?.includes(option) ? true : false
+                }
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
                     <Chip variant="outlined" label={option} {...getTagProps({ index })} />

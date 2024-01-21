@@ -72,6 +72,7 @@ const SongCard = (props: SongCardProps) => {
 
   return (
     <Container
+      onClick = {() => navigate(`/songs/${_id}`)}
       sx={{
         borderRadius: '4px',
         backgroundColor: 'secondary.lighter',

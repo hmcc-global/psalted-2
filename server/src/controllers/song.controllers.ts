@@ -31,7 +31,7 @@ const createSong: RequestHandler = async (req: Request, res: Response): Promise<
 };
 
 const getSong: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { id: songId } = req.params;
+  const { id: songId } = req.query;
 
   if (songId) {
     try {

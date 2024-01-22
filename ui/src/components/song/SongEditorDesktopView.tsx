@@ -25,7 +25,7 @@ import {
   themeSelectionLimit,
 } from '../../constants';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SongEditorFields, SongEditorProps } from '#/types/song.types';
+import { SongEditorFields, SongEditorProps } from '../../types/song.types';
 import SongHelpDialog from './SongHelpDialog';
 import AutocompleteInput from '../custom/AutocompleteInput';
 import axios from 'axios';

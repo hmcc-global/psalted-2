@@ -1,3 +1,5 @@
+import { UserEditorFields } from './user.types';
+
 type SongEditorFields = {
   artist: string;
   title: string;
@@ -62,4 +64,23 @@ export type SongSearchFilter = {
     code: boolean;
     timeSignature: boolean;
   };
+};
+
+export type SongViewSchema = {
+  _id: string;
+  title: string;
+  tempo: string[];
+  originalKey: string;
+  themes: string[];
+  artist: string;
+  year: string;
+  code: string;
+  lyricsPreview: string;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
+  isVerified: boolean;
+  chordLyrics: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };

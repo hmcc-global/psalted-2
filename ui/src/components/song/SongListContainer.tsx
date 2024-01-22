@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
-import { SongCardProps, SongSearchFilter } from '#/types/song.types';
+import { SongCardProps, SongSearchFilter } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate } from 'react-router-dom';
@@ -105,7 +105,7 @@ const SongListContainer: FC = (): ReactElement => {
             variant="outlined"
             sx={{ borderWidth: '2px', padding: '10px 25px' }}
             startIcon={<AddIcon />}
-            onClick={() => navigate('/song/add')}
+            onClick={() => navigate('/songs/add')}
           >
             <Typography fontWeight="500">NEW SONG</Typography>
           </Button>

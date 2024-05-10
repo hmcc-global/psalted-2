@@ -1439,6 +1439,16 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.1.6.tgz#22958c042e10b67463997bd6ea7115fe28cbcaf9"
   integrity sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==
 
+"@fontsource/dm-sans@^5.0.21":
+  version "5.0.21"
+  resolved "https://registry.yarnpkg.com/@fontsource/dm-sans/-/dm-sans-5.0.21.tgz#c0947f794784809c296f3fb4c20e9f6c282cbcd1"
+  integrity sha512-ydUs1ZAf6fqZfvmEb4EdT7RehZvFBLEOVz6Mn9kmoaVsYR1Ql3kkQvaAGEyMrcCuoBklwPaCqnq6PkHyYzIx6Q==
+
+"@fontsource/work-sans@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@fontsource/work-sans/-/work-sans-5.0.18.tgz#47d08b9af12531a761ad49cc5bd5692ac8bd95e9"
+  integrity sha512-kFZEEPfWhALOweNTc+J60Jnok1bNuKC/L6wbM05f716pZFU9AAlKl0zmOYbJSkY4yhpHsYDL/X7A4zF9vPpE2g==
+
 "@hookform/resolvers@^3.3.2":
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.3.2.tgz#5c40f06fe8137390b071d961c66d27ee8f76f3bc"

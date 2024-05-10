@@ -1,9 +1,15 @@
 import { createTheme } from '@mui/material/styles';
+import '@fontsource/work-sans';
+import '@fontsource/dm-sans';
 
 const PRIMARY_MAIN = '#4B50B4';
 const PRIMARY_LIGHT = '#C9CDFF';
 const PRIMARY_LIGHTER = '#DDE0FF';
-const PRIMARY_LIGHTEST = '#EEEFFF';
+// const PRIMARY_LIGHTEST = '#EEEFFF';
+const PRIMARY_LIGHTEST = '#EADDFF';
+const PRIMARY_DARK = '#6750A4';
+const PRIMARY_DARKER = '#1D192B';
+const PRIMARY_DARKEST = '#141218';
 
 const SECONDARY_MAIN = '#9E9E9E';
 const SECONDARY_LIGHT = '#999999';
@@ -15,6 +21,9 @@ declare module '@mui/material/styles' {
     light?: string;
     lighter?: string;
     lightest?: string;
+    dark?: string;
+    darker?: string;
+    darkest?: string;
   }
 }
 
@@ -25,11 +34,20 @@ const customTheme = createTheme({
       light: PRIMARY_LIGHT,
       lighter: PRIMARY_LIGHTER,
       lightest: PRIMARY_LIGHTEST,
+      dark: PRIMARY_DARK,
+      darker: PRIMARY_DARKER,
+      darkest: PRIMARY_DARKEST,
     },
     secondary: {
       main: SECONDARY_MAIN,
       light: SECONDARY_LIGHT,
       lighter: SECONDARY_LIGHTER,
+    },
+    background: {
+      default: '#171717',
+    },
+    text: {
+      primary: '#fff',
     },
   },
   typography: {
@@ -46,6 +64,8 @@ const customTheme = createTheme({
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
+      'Work Sans',
+      'DM Sans',
     ].join(','),
     h1: {
       fontSize: '2rem', // Equivalent to 32px (16 * 2)

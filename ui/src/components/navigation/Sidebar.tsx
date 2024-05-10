@@ -49,6 +49,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
             width: drawerWidth,
             boxSizing: 'border-box',
             ...(isDesktop && { position: 'relative' }),
+            backgroundColor: 'primary.darkest',
           },
         }}
         // drawer only open in desktop/ clicked on mobile
@@ -63,7 +64,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
               disablePadding
               sx={{
                 ...(selectedItem === item.text && {
-                  backgroundColor: 'primary.lighter',
+                  backgroundColor: 'primary.darkest',
                 }),
               }}
             >
@@ -72,7 +73,11 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
                 selected={selectedItem === item.text}
                 onClick={() => handleClick(item.text, item.path)}
               >
-                <ListItemIcon sx={{ color: selectedItem === item.text ? 'primary.main' : '' }}>
+                <ListItemIcon
+                  sx={{
+                    color: selectedItem === item.text ? 'primary.lightest' : 'primary.lightest',
+                  }}
+                >
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText

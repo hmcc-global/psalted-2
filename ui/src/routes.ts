@@ -8,6 +8,7 @@ import SongEditorContainer from './components/song/SongEditorContainer';
 import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
 import SongsViewContainer from './components/songsView/SongsViewContainer';
+import HomePage from './components/home/HomePage';
 
 // interface
 interface Route {
@@ -68,7 +69,7 @@ export const routes: Array<Route> = [
     path: '/songs/add',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['user']
+    permissions: ['user'],
   },
   {
     key: 'song-edit-route',
@@ -76,7 +77,7 @@ export const routes: Array<Route> = [
     path: '/songs/edit/:id',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['user']
+    permissions: ['user'],
   },
   {
     key: 'profile-route',
@@ -117,6 +118,16 @@ export const routes: Array<Route> = [
     path: '/songs/:id',
     enabled: true,
     component: SongsViewContainer,
-    permissions: ['user']
+    permissions: ['user'],
+  },
+
+  // M3
+  {
+    key: 'home-route',
+    title: 'Home',
+    path: '/home',
+    enabled: true,
+    component: HomePage,
+    permissions: ['noUser'],
   },
 ];

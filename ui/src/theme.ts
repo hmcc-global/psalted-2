@@ -4,7 +4,8 @@ import '@fontsource/dm-sans';
 
 const PRIMARY_MAIN = '#4B50B4';
 const PRIMARY_LIGHT = '#C9CDFF';
-const PRIMARY_LIGHTER = '#DDE0FF';
+// const PRIMARY_LIGHTER = '#DDE0FF';
+const PRIMARY_LIGHTER = '#E6E0E9';
 // const PRIMARY_LIGHTEST = '#EEEFFF';
 const PRIMARY_LIGHTEST = '#EADDFF';
 const PRIMARY_DARK = '#6750A4';
@@ -91,6 +92,7 @@ const customTheme = createTheme({
       fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)
       fontWeight: 500,
     },
+
     body1: {
       fontSize: '1rem', // Equivalent to 16px (16 * 1)
       fontWeight: 400,

@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "beercss": "^3.5.5",
-    "material-dynamic-colors": "^1.1.0",
     "typescript": "^5.1.6",
     "yarn": "^1.22.19"
   },

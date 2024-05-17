@@ -33,7 +33,7 @@ const HomeContainer: FC = (): ReactElement => {
             }}
             position="relative"
           >
-            <Typography variant="h1" sx={{ pb: 2 }}>
+            <Typography variant="h1" sx={{ pb: 2, fontSize: '40px' }}>
               Welcome to
               <br />
               Ripple Worship

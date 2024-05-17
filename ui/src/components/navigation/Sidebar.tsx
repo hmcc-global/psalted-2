@@ -15,6 +15,7 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import Language from '@mui/icons-material/Language';
+import Person from '@mui/icons-material/Person';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     { icon: <QueueMusicIcon />, text: 'Setlists', path: 'setlist' },
     { icon: <SupervisedUserCircleIcon />, text: 'Groups', path: 'group' },
     { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },
+    { icon: <Person />, text: 'Profile', path: 'profile' },
   ];
 
   const handleClick = (text: string, path: string) => {

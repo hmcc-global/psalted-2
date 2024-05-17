@@ -12,39 +12,30 @@ const NavBar: FC = (): ReactElement => {
       <AppBar
         position="fixed"
         elevation={0}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: 'white' }}
+        sx={{ bgcolor: '#171717', alignItems: 'center', py: 1 }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" component="div" color="primary">
-            Psalted 2.0
-          </Typography>
           <Box
             sx={{
               alignItems: 'center',
               justifyContent: 'center',
-              border: '1px solid',
-              borderColor: 'grey.500',
-              borderRadius: '0.5rem',
               boxShadow:
                 '0px 1px 2px 0px rgba(0, 0, 0, 0.20), 0px 0.1px 0.3px 0px rgba(0, 0, 0, 0.10)',
-              width: '50vw',
-              background: '#FFF',
+              width: '40vw',
+              background: '#2B2930',
+              borderRadius: '100px',
             }}
           >
             {/* TODO: Add search functionality */}
             <IconButton size="medium" edge="end">
-              <SearchIcon />
+              <SearchIcon sx={{ mx: 2, color: '#CAC4D0' }} />
             </IconButton>
-            <InputBase placeholder="Search..." sx={{ ml: 1 }} />
+            <InputBase
+              placeholder="Search..."
+              sx={{ my: 1.5, color: '#CAC4D0', background: '#2B2930' }}
+            />
           </Box>
-          <IconButton size="medium" edge="end" onClick={() => navigate('/profile')}>
-            <PersonIcon color="primary" />
-          </IconButton>
         </Toolbar>
-        <Divider
-          variant="middle"
-          sx={{ backgroundColor: 'grey', width: '110vw', marginX: '-2vw' }}
-        />
       </AppBar>
     </Box>
   );

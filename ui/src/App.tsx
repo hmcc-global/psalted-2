@@ -26,12 +26,12 @@ function App() {
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
         <BrowserRouter>
-          {navBar}
-
-          <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
+          <Box display="flex" flexDirection="row" height="100vh">
             <Sidebar isOpen={isSidebarOpen} />
 
             <Box component="main" sx={{ flexGrow: 1 }}>
+              {navBar}
+
               <Routes>
                 {appRoutes.map((route) => (
                   // TODO: Uncomment this when PrivateRouteWrapper is implemented and delete the navbar here

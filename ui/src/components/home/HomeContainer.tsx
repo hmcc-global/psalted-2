@@ -18,7 +18,7 @@ const HomeContainer: FC = (): ReactElement => {
         alignItems: 'flex-start',
         margin: 'auto',
         paddingBottom: '1em',
-        paddingTop: '3em',
+        paddingTop: '5em',
       }}
     >
       <Stack direction={'column'}>
@@ -69,7 +69,7 @@ const HomeContainer: FC = (): ReactElement => {
         <Box sx={{ pt: 5 }}>
           <Typography variant="h2">Recommended Songs</Typography>
 
-          <Stack direction={'row'} sx={{ py: 5 }} gap={3}>
+          <Stack direction={'row'} sx={{ py: 2 }} gap={3}>
             {/* TODO: API to generate recommended or newly added songs */}
             <RecommendedSongCard songTitle="Living With A Fire" artistName="Jesus Culture" />
             <RecommendedSongCard

@@ -74,7 +74,8 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
                 <ListItemIcon
                   sx={{
                     color: 'primary.lighter',
-                    backgroundColor: selectedItem === item.text ? 'primary.darkest' : '',
+                    backgroundColor: selectedItem === item.text ? 'primary.main' : '',
+                    borderRadius: '100px',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}

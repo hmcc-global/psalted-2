@@ -2,7 +2,8 @@ import { createTheme } from '@mui/material/styles';
 import '@fontsource/work-sans';
 import '@fontsource/dm-sans';
 
-const PRIMARY_MAIN = '#4B50B4';
+// const PRIMARY_MAIN = '#4B50B4';
+const PRIMARY_MAIN = '#4F378B';
 const PRIMARY_LIGHT = '#C9CDFF';
 // const PRIMARY_LIGHTER = '#DDE0FF';
 const PRIMARY_LIGHTER = '#E6E0E9';

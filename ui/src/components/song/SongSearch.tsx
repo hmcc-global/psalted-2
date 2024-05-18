@@ -13,18 +13,34 @@ import {
   Button,
   Alert,
   Grid,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Chip,
 } from '@mui/material';
 import { SongSearchProps, SongCardProps } from '../../types/song.types';
 import { useState, useEffect, useCallback } from 'react';
-import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
-import { timeSignatureOptions } from '../../constants';
+import {
+  timeSignatureOptions,
+  tempoOptions,
+  themeOptions,
+  displayResultOptions,
+} from '../../constants';
+import { Info, Refresh, Tune } from '@mui/icons-material';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
   const prevFilter = props.filterData;
   const isDesktop = props.isDesktop;
+
   const [tempoList, setTempoList] = useState<string[]>([]);
-  const [themesList, setThemesList] = useState<string[]>([]);
+  const [disabledTempo, setDisabledTempo] = useState<string[]>(tempoOptions);
+  const [themeList, setThemeList] = useState<string[]>([]);
+  const [disabledTheme, setDisabledTheme] = useState<string[]>(themeOptions);
+  const [displayResultList, setDisplayResultList] = useState<string[]>([]);
+  const [disabledDisplayResult, setDisabledDisplayResult] =
+    useState<string[]>(displayResultOptions);
+
   const [search, setSearch] = useState(prevFilter?.search ?? '');
   const [timeSignature, setTimeSignature] = useState<string[]>(prevFilter?.timeSignature ?? []);
   const [tempo, setTempo] = useState<string[]>(prevFilter?.tempo ?? []);
@@ -97,182 +113,147 @@ const SongSearch = (props: SongSearchProps) => {
     props.onClose();
   };
 
-  const getSelectOptions = useCallback(() => {
-    const tempTempo: string[] = [];
-    const tempThemes: string[] = [];
-    Songs &&
-      Songs.map((song) => {
-        tempTempo.push(...song.tempo);
-        tempThemes.push(...song.themes);
-        return 0;
-      });
-    setTempoList(Array.from(new Set(tempTempo)));
-    setThemesList(Array.from(new Set(tempThemes)));
-  }, [Songs]);
+  const handleDeleteTempo = (chipToDelete: string) => () => {
+    setTempoList((chips) => chips.filter((chip) => chip !== chipToDelete));
+    setDisabledTempo((prevDisabledChips) => [...prevDisabledChips, chipToDelete]);
+  };
 
-  useEffect(() => {
-    getSelectOptions();
-  }, [getSelectOptions]);
+  const handleReactivateTempo = (chipToActivate: string) => () => {
+    setTempoList((prevTempoList) => [...prevTempoList, chipToActivate]);
+    setDisabledTempo((prevDisabledChips) =>
+      prevDisabledChips.filter((chip) => chip !== chipToActivate)
+    );
+  };
+
+  const handleDeleteTheme = (chipToDelete: string) => () => {
+    setThemeList((chips) => chips.filter((chip) => chip !== chipToDelete));
+    setDisabledTheme((prevDisabledChips) => [...prevDisabledChips, chipToDelete]);
+  };
+
+  const handleReactivateTheme = (chipToActivate: string) => () => {
+    setThemeList((prevTempoList) => [...prevTempoList, chipToActivate]);
+    setDisabledTheme((prevDisabledChips) =>
+      prevDisabledChips.filter((chip) => chip !== chipToActivate)
+    );
+  };
+
+  const handleDeleteDisplayResult = (chipToDelete: string) => () => {
+    setDisplayResultList((chips) => chips.filter((chip) => chip !== chipToDelete));
+    setDisabledDisplayResult((prevDisabledChips) => [...prevDisabledChips, chipToDelete]);
+  };
+
+  const handleReactivateDisplayResult = (chipToActivate: string) => () => {
+    setDisplayResultList((prevTempoList) => [...prevTempoList, chipToActivate]);
+    setDisabledDisplayResult((prevDisabledChips) =>
+      prevDisabledChips.filter((chip) => chip !== chipToActivate)
+    );
+  };
 
   return (
-    <>
-      <Container>
-        <Stack direction="row" display={isDesktop ? 'none' : 'flex'} justifyContent="space-between">
-          <Typography variant="h2" color="primary.main" marginBottom="16px">
-            SEARCH SONGS
-          </Typography>
-          <Box sx={{ height: '24px', width: '16px' }}>
-            <AudiotrackRoundedIcon sx={{ color: 'primary.main' }} />
-          </Box>
-        </Stack>
-        <Stack spacing={2}>
-          <Box component="form" noValidate autoComplete="off">
-            <TextField
-              id="search-bar"
-              label="Search"
-              variant="outlined"
-              value={search}
-              fullWidth
-              onChange={(e) => {
-                setSearch(e.target.value);
-                props.setSearch(e.target.value);
-              }}
-            />
-          </Box>
-          <Autocomplete
-            multiple
-            id="timeSignature"
-            options={timeSignatureOptions}
-            value={timeSignature}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <TextField {...params} label="Time Signature" placeholder="4/4" />
-            )}
-            onChange={handleValueChange(setTimeSignature)}
-          />
-          <Autocomplete
-            multiple
-            id="tempo"
-            options={tempoList}
-            value={tempo}
-            filterSelectedOptions
-            renderInput={(params) => <TextField {...params} label="Tempo" placeholder="tempo" />}
-            onChange={handleValueChange(setTempo)}
-          />
-          <Autocomplete
-            multiple
-            id="themes"
-            options={themesList}
-            value={themes}
-            filterSelectedOptions
-            renderInput={(params) => <TextField {...params} label="Themes" placeholder="theme" />}
-            onChange={handleValueChange(setThemes)}
-          />
-          <FormControl
-            sx={{ m: 1, border: '2px solid #DDE0FF', borderRadius: 4, p: 2 }}
-            component="fieldset"
-            variant="standard"
+    <Container sx={{ py: '2em', background: '#000', borderRadius: '16px' }}>
+      <Box sx={{ color: 'secondary.main' }}>
+        {/* filter heading and reset button */}
+        <Stack direction="row" alignItems="center" pb={3} gap={1} spacing="space-between">
+          <Tune />
+          <Typography variant="h3">Filter</Typography>
+          <Button
+            sx={{
+              padding: '10px 25px',
+              borderRadius: '16px',
+              backgroundColor: '#000',
+              color: '#D0BCFF',
+              textTransform: 'none',
+              width: '10em',
+            }}
+            startIcon={<Refresh />}
+            onClick={handleClear}
           >
-            <FormLabel component="legend">Display Results Details (optional)</FormLabel>
-            <FormGroup>
-              <Grid container columns={8}>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.tempo}
-                        onChange={handleDisplayChange}
-                        name="tempo"
-                      />
-                    }
-                    label="Tempo"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.lyricsPreview}
-                        onChange={handleDisplayChange}
-                        name="lyricsPreview"
-                      />
-                    }
-                    label="Lyrics Preview"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.year}
-                        onChange={handleDisplayChange}
-                        name="year"
-                      />
-                    }
-                    label="Year"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.themes}
-                        onChange={handleDisplayChange}
-                        name="themes"
-                      />
-                    }
-                    label="Themes"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.originalKey}
-                        onChange={handleDisplayChange}
-                        name="originalKey"
-                      />
-                    }
-                    label="Original Key"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.code}
-                        onChange={handleDisplayChange}
-                        name="code"
-                      />
-                    }
-                    label="Code"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={displayResult.timeSignature}
-                        onChange={handleDisplayChange}
-                        name="timeSignature"
-                      />
-                    }
-                    label="Time Signature"
-                  />
-                </Grid>
-              </Grid>
-              <Alert severity="info">Song Title and Artist will be displayed by default</Alert>
-            </FormGroup>
-          </FormControl>
-          <Button variant="contained" onClick={handleSubmit}>
-            SEARCH
-          </Button>
-          <Button sx={{ backgroundColor: '#666666' }} variant="contained" onClick={handleClear}>
-            CLEAR
+            Reset All
           </Button>
         </Stack>
-      </Container>
-    </>
+
+        <Stack direction="column" gap={2.5}>
+          <Box>
+            <Typography variant="h4" sx={{ pb: 1 }}>
+              Tempo
+            </Typography>
+            {tempoOptions.map((item) => (
+              <Chip
+                sx={{
+                  backgroundColor: disabledTempo.includes(item)
+                    ? 'secondary.lighter'
+                    : 'primary.dark',
+                  borderRadius: '8px',
+                  m: 0.5,
+                }}
+                key={item}
+                label={item}
+                onDelete={disabledTempo.includes(item) ? undefined : handleDeleteTempo(item)}
+                onClick={disabledTempo.includes(item) ? handleReactivateTempo(item) : undefined}
+              />
+            ))}
+          </Box>
+
+          <Box>
+            <Typography variant="h4" sx={{ pb: 1 }}>
+              Themes
+            </Typography>
+            {themeOptions.map((item) => (
+              <Chip
+                sx={{
+                  backgroundColor: disabledTheme.includes(item)
+                    ? 'secondary.lighter'
+                    : 'primary.dark',
+                  borderRadius: '8px',
+                  m: 0.5,
+                }}
+                key={item}
+                label={item}
+                onDelete={disabledTheme.includes(item) ? undefined : handleDeleteTheme(item)}
+                onClick={disabledTheme.includes(item) ? handleReactivateTheme(item) : undefined}
+              />
+            ))}
+          </Box>
+
+          <Box>
+            <Typography variant="h4" sx={{ pb: 1 }}>
+              Display Results Details
+            </Typography>
+            {displayResultOptions.map((item) => (
+              <Chip
+                sx={{
+                  backgroundColor: disabledDisplayResult.includes(item)
+                    ? 'secondary.lighter'
+                    : 'primary.dark',
+                  borderRadius: '8px',
+                  m: 0.5,
+                }}
+                key={item}
+                label={item}
+                onDelete={
+                  disabledDisplayResult.includes(item) ? undefined : handleDeleteDisplayResult(item)
+                }
+                onClick={
+                  disabledDisplayResult.includes(item)
+                    ? handleReactivateDisplayResult(item)
+                    : undefined
+                }
+              />
+            ))}
+          </Box>
+
+          <Stack
+            sx={{ border: 1, p: 1, borderRadius: '4px', borderColor: '#625B71' }}
+            direction="row"
+            alignItems="center"
+            gap={1}
+          >
+            <Info sx={{ color: '#E8DEF8' }} />
+            <Typography variant="body1">Song Title will be displayed by default</Typography>
+          </Stack>
+        </Stack>
+      </Box>
+    </Container>
   );
 };
 

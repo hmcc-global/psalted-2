@@ -15,9 +15,9 @@ import { SongCardProps, SongSearchFilter } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate } from 'react-router-dom';
-import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
+import MusicNote from '@mui/icons-material/MusicNote';
 
 const SongListContainer: FC = (): ReactElement => {
   const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
@@ -85,7 +85,7 @@ const SongListContainer: FC = (): ReactElement => {
 
   return (
     <>
-      <Container fixed sx={{ padding: '0 24px 24px', height: '100%' }}>
+      <Container fixed sx={{ padding: '5em 24px 24px', height: '100%' }}>
         {/* Toolbar at the top */}
         <Stack
           direction="row"
@@ -95,19 +95,36 @@ const SongListContainer: FC = (): ReactElement => {
           pl={{ base: '0', md: '15px' }}
         >
           {/* Title */}
-          <Typography variant="h2" color="primary" sx={{ display: 'flex', alignItems: 'center' }}>
-            <AudiotrackRoundedIcon color="primary" fontSize="large" />
-            SONGS
+          <Typography variant="h1" color="white" sx={{ display: 'flex', alignItems: 'center' }}>
+            <MusicNote
+              sx={{
+                color: 'primary.light',
+                backgroundColor: 'primary.dark',
+                borderRadius: '50%',
+                width: '2em',
+                height: '2em',
+                padding: '0.5em',
+                mr: 3,
+              }}
+            />
+            Songs
           </Typography>
 
           {/* Add new song button */}
           <Button
             variant="outlined"
-            sx={{ borderWidth: '2px', padding: '10px 25px' }}
+            sx={{
+              borderWidth: '2px',
+              padding: '10px 25px',
+              borderRadius: '40px',
+              backgroundColor: 'rgba(208, 188, 255, 0.12)',
+              color: '#D0BCFF',
+              textTransform: 'none',
+            }}
             startIcon={<AddIcon />}
             onClick={() => navigate('/songs/add')}
           >
-            <Typography fontWeight="500">NEW SONG</Typography>
+            <Typography variant="subtitle1">New Song</Typography>
           </Button>
         </Stack>
 

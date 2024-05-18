@@ -14,8 +14,8 @@ const PRIMARY_DARKER = '#1D192B';
 const PRIMARY_DARKEST = '#141218';
 
 const SECONDARY_MAIN = '#9E9E9E';
-const SECONDARY_LIGHT = '#999999';
-const SECONDARY_LIGHTER = '#FAFAFA';
+const SECONDARY_LIGHT = '#CAC4D0'; // grey
+const SECONDARY_LIGHTER = '#4A4458'; // purple grey
 
 declare module '@mui/material/styles' {
   interface PaletteColorOptions {

@@ -34,7 +34,6 @@ import {
 // ICONS
 import InfoIcon from '@mui/icons-material/Info';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AutocompleteInput from '../custom/AutocompleteInput';
 
 const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
@@ -132,7 +131,61 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
   return (
     <Container sx={{ pt: '5em' }}>
       {/* TODO: Mobile view */}
-      {/* <Box display={{ base: 'block', md: 'none' }}></Box> */}
+      <Box display={{ base: 'block', md: 'none' }}>
+        <Toolbar>{editorMode(actionOnEditor)}</Toolbar>
+
+        <Box>
+          {/* Error message */}
+          {invalidSong ? (
+            <Typography variant={'body2'} color={'error'}>
+              {invalidSong}
+            </Typography>
+          ) : null}
+          {/* Success message */}
+          <Snackbar
+            open={successSnackbarOpen}
+            onClose={handleCloseSuccessSnackbar}
+            autoHideDuration={6000}
+            TransitionComponent={Fade}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="success" onClose={handleCloseSuccessSnackbar}>
+              <AlertTitle>Success</AlertTitle>
+              Song successfully saved!
+            </Alert>
+          </Snackbar>
+
+          <form onSubmit={handleSubmit(handleSaveSong)}>
+            {/* fields */}
+
+            {/* buttons */}
+            <Button
+              fullWidth
+              type={'submit'}
+              color="secondary"
+              variant="contained"
+              sx={{
+                my: 1,
+                textTransform: 'none',
+                borderRadius: '100px',
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              fullWidth
+              color={'secondary'}
+              sx={{
+                textTransform: 'none',
+                borderRadius: '100px',
+                border: 1,
+              }}
+            >
+              Cancel
+            </Button>
+          </form>
+        </Box>
+      </Box>
 
       {/* Desktop view */}
       <Box display={isDesktop ? 'block' : 'none'}>
@@ -390,8 +443,9 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 </Stack>
 
                 {/* columns 2: simplified lyrics & chords */}
-
-                <Stack direction="column" spacing={2} marginTop="16px">
+                {/* TODO: Can we not use this textbox and instead have a logic 
+                that can translate and simplify the chords itself? */}
+                {/* <Stack direction="column" spacing={2} marginTop="16px">
                   <Grid
                     container
                     direction="row"
@@ -430,7 +484,7 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                       },
                     }}
                   />
-                </Stack>
+                </Stack> */}
               </Box>
             </Stack>
           </Box>

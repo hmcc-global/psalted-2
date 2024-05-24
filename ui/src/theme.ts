@@ -101,9 +101,9 @@ const customTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: '#E6E0E9',
+          color: PRIMARY_LIGHTER,
           '&.Mui-focused': {
-            color: '#E6E0E9',
+            color: 'PRIMARY_LIGHTER',
           },
         },
       },
@@ -123,26 +123,26 @@ const customTheme = createTheme({
       styleOverrides: {
         root: {
           '& label': {
-            color: '#E6E0E9',
+            color: PRIMARY_LIGHTER,
             '&.Mui-focused': {
-              color: '#E6E0E9',
+              color: PRIMARY_LIGHTER,
             },
           },
         },
         paper: {
           backgroundColor: '#1D1B20',
-          color: '#E6E0E9',
+          color: PRIMARY_LIGHTER,
         },
         popupIndicator: {
-          color: '#E6E0E9',
+          color: PRIMARY_LIGHTER,
         },
         option: {
           '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
             backgroundColor: 'rgba(255, 255, 255, 0.16)',
-            color: '#E6E0E9',
+            color: PRIMARY_LIGHTER,
           },
           '& ::placeholder': {
-            color: '#E6E0E9',
+            color: PRIMARY_LIGHTER,
           },
         },
       },

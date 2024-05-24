@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import customTheme from './theme';
 import NavBarMobile from './components/navigation/NavBarMobile';
 import Sidebar from './components/navigation/Sidebar';
-import NavBar from './components/navigation/NavBar';
+import SearchBar from './components/navigation/SearchBar';
 import './styles.css';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <NavBar />;
+  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <SearchBar />;
 
   return (
     <Provider store={store}>

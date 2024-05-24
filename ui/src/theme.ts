@@ -13,7 +13,7 @@ const PRIMARY_DARK = '#6750A4';
 const PRIMARY_DARKER = '#1D192B';
 const PRIMARY_DARKEST = '#141218';
 
-const SECONDARY_MAIN = '#9E9E9E';
+const SECONDARY_MAIN = '#D0BCFF';
 const SECONDARY_LIGHT = '#CAC4D0'; // grey
 const SECONDARY_LIGHTER = '#4A4458'; // purple grey
 
@@ -54,21 +54,7 @@ const customTheme = createTheme({
   },
   typography: {
     htmlFontSize: 16,
-    fontFamily: [
-      'Roboto',
-      'Inter',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-      'Work Sans',
-      'DM Sans',
-    ].join(','),
+    fontFamily: ['Work Sans', 'DM Sans'].join(','),
     h1: {
       fontSize: '2rem', // Equivalent to 32px (16 * 2)
       fontWeight: 700,
@@ -115,8 +101,37 @@ const customTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          background: '#fff',
+          background: '#1D1B20',
           border: '1px solid {theme.palette.primary.main}',
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'white',
+          },
+          '& .MuiOutlinedInput-root': {
+            color: 'white',
+            '& input': {
+              color: 'white',
+            },
+            '& label': {
+              color: 'white',
+            },
+            '& placeholder': {
+              color: 'white',
+            },
+          },
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#1D1B20',
+          color: 'white',
+        },
+        option: {
+          '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
+            backgroundColor: 'rgba(255, 255, 255, 0.16)',
+            color: 'white',
+          },
         },
       },
     },

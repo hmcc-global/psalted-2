@@ -51,7 +51,7 @@ export type SongSearchProps = {
 };
 
 export type SongSearchFilter = {
-  search?: string;
+  search?: string | null | undefined;
   timeSignature?: string[];
   tempo?: string[];
   themes?: string[];

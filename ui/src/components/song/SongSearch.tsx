@@ -151,7 +151,7 @@ const SongSearch = (props: SongSearchProps) => {
 
   return (
     <Container sx={{ py: '2em', background: '#000', borderRadius: '16px' }}>
-      <Box sx={{ color: 'secondary.main' }}>
+      <Box sx={{ color: '#9E9E9E' }}>
         {/* filter heading and reset button */}
         <Stack direction="row" alignItems="center" pb={3} gap={1} spacing="space-between">
           <Tune />
@@ -161,7 +161,7 @@ const SongSearch = (props: SongSearchProps) => {
               padding: '10px 25px',
               borderRadius: '16px',
               backgroundColor: '#000',
-              color: '#D0BCFF',
+              color: 'secondary.main',
               textTransform: 'none',
               width: '10em',
             }}

@@ -98,39 +98,51 @@ const customTheme = createTheme({
     },
   },
   components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: '#E6E0E9',
+          '&.Mui-focused': {
+            color: '#E6E0E9',
+          },
+        },
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {
           background: '#1D1B20',
           border: '1px solid {theme.palette.primary.main}',
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'white',
-          },
-          '& .MuiOutlinedInput-root': {
-            color: 'white',
-            '& input': {
-              color: 'white',
-            },
-            '& label': {
-              color: 'white',
-            },
-            '& placeholder': {
-              color: 'white',
-            },
+            borderColor: '#938F99',
           },
         },
       },
     },
     MuiAutocomplete: {
       styleOverrides: {
+        root: {
+          '& label': {
+            color: '#E6E0E9',
+            '&.Mui-focused': {
+              color: '#E6E0E9',
+            },
+          },
+        },
         paper: {
           backgroundColor: '#1D1B20',
-          color: 'white',
+          color: '#E6E0E9',
+        },
+        popupIndicator: {
+          color: '#E6E0E9',
         },
         option: {
           '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
             backgroundColor: 'rgba(255, 255, 255, 0.16)',
-            color: 'white',
+            color: '#E6E0E9',
+          },
+          '& ::placeholder': {
+            color: '#E6E0E9',
           },
         },
       },

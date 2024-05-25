@@ -147,6 +147,13 @@ const customTheme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: PRIMARY_LIGHTER,
+        },
+      },
+    },
   },
 });
 

@@ -74,7 +74,7 @@ const SongCard = (props: SongCardProps) => {
 
   return (
     <Container
-      onClick={() => navigate(`/songs/${_id}`)}
+      onClick={() => navigate(`/song/${_id}`)}
       sx={{
         borderRadius: '8px',
         border: 1,

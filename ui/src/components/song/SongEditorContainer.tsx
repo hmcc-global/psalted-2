@@ -35,10 +35,12 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import AutocompleteInput from '../custom/AutocompleteInput';
+import { useNavigate } from 'react-router-dom';
 
 const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
   // hook to detect the window size
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const navigate = useNavigate();
 
   // STATES
   const [timeSignature, setTimeSignature] = useState<string | string[] | null>([]);
@@ -56,7 +58,7 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
   const { register, handleSubmit, formState } = useForm<SongEditorFields>();
   const { errors } = formState;
 
-  // editor mode is either ADD NEW or EDIT. default is ADD NEW
+  // editor mode is either NEW or EDIT. default is NEW
   const editorMode = (actionOnEditor: string): ReactElement => {
     return (
       <Typography variant="h3" color="white" sx={{ flexGrow: 1 }} gap={1} mx={2}>
@@ -141,6 +143,7 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
               {invalidSong}
             </Typography>
           ) : null}
+
           {/* Success message */}
           <Snackbar
             open={successSnackbarOpen}
@@ -180,6 +183,7 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 borderRadius: '100px',
                 border: 1,
               }}
+              onClick={() => navigate('/song')}
             >
               Cancel
             </Button>
@@ -213,6 +217,7 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                 border: 1,
                 px: 2,
               }}
+              onClick={() => navigate('/song')}
             >
               Cancel
             </Button>

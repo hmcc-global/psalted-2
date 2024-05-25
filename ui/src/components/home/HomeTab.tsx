@@ -1,20 +1,28 @@
 import { Box, Typography, Stack } from '@mui/material';
 import { ElementType, FC, ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type HomeTabProps = {
   title: string;
   description: string;
   Icon: ElementType;
+  route: string;
 };
 
-const HomeTab: FC<HomeTabProps> = ({ title, description, Icon }): ReactElement => {
+const HomeTab: FC<HomeTabProps> = ({ title, description, Icon, route }): ReactElement => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
         padding: '2em',
         borderRadius: '40px',
         backgroundColor: 'primary.darker',
+        '&:hover': {
+          backgroundColor: 'primary.main',
+        },
       }}
+      onClick={() => navigate(route)}
     >
       <Stack direction={'row'} alignItems="center" justifyContent="space-between">
         <Stack direction="column" spacing={1}>

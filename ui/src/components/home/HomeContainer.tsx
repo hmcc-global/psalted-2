@@ -51,18 +51,26 @@ const HomeContainer: FC = (): ReactElement => {
               title="Songs"
               description="Find, add, view worship songs with lyrics and chords"
               Icon={MusicNoteIcon}
+              route="/song"
             />
             <HomeTab
               title="My Setlists"
               description="Create setlists for your worship sessions"
               Icon={QueueMusicIcon}
+              route="/setlist"
             />
             <HomeTab
               title="My Groups"
               description="Create setlists with other people in your groups"
               Icon={SupervisedUserCircleIcon}
+              route="/group"
             />
-            <HomeTab title="Resources" description="All things resources" Icon={TextSnippetIcon} />
+            <HomeTab
+              title="Resources"
+              description="All things resources"
+              Icon={TextSnippetIcon}
+              route="/resource"
+            />
           </Stack>
         </Stack>
 

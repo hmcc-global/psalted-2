@@ -116,7 +116,7 @@ const SongListContainer: FC = (): ReactElement => {
               textTransform: 'none',
             }}
             startIcon={<AddIcon />}
-            onClick={() => navigate('/songs/add')}
+            onClick={() => navigate('/song/add')}
           >
             <Typography variant="subtitle1">New Song</Typography>
           </Button>

@@ -44,7 +44,7 @@ const SongsViewContainer: FC = (): ReactElement => {
             color: '#D0BCFF',
             textTransform: 'none',
           }}
-          onClick={() => navigate(`/songs/edit/${id}`)}
+          onClick={() => navigate(`/song/edit/${id}`)}
         >
           <Typography variant="subtitle1">Edit Song</Typography>
         </Button>

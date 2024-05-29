@@ -40,6 +40,9 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
   const [addedSongs, setAddedSongs] = useState<string[]>([]);
   const [showDetails, setShowDetails] = useState<boolean>(true);
 
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
+  const [invalidSetlist, setInvalidSetlist] = useState<string>('');
+
   // FORM HANDLER
   const { register, handleSubmit, formState } = useForm<SetlistEditorFields>();
   const { errors } = formState;
@@ -55,7 +58,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
 
   const getSongResults = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('http://localhost:1338/api/songs/get');
+      const { data, status } = await axios.get('/api/songs/get');
       if (status === 200) {
         setAllSongs(data);
 
@@ -86,7 +89,29 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
 
   const filteredSongResults = songResults.filter((song) => addedSongs.includes(song._id));
 
-  const handleSaveSetlist: SubmitHandler<SetlistEditorFields> = async (data) => {};
+  const handleSaveSetlist: SubmitHandler<SetlistEditorFields> = async (data) => {
+    try {
+      const payload = await axios.post('/api/setlists/create', {
+        name: data.name,
+        date: date,
+        songs: addedSongs,
+      });
+
+      if (payload.status === 200) {
+        setInvalidSetlist('');
+        setSuccessSnackbarOpen(true);
+        // TODO: redirect to setlist view page after saving
+        return payload.data;
+      }
+
+      setInvalidSetlist('Error saving setlist');
+      setSuccessSnackbarOpen(false);
+    } catch (error: any) {
+      setInvalidSetlist(error.response.data);
+      setSuccessSnackbarOpen(false);
+      console.log(error);
+    }
+  };
 
   return (
     <Container sx={{ pt: '5em' }}>

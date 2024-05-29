@@ -25,7 +25,7 @@ const SongListContainer: FC = (): ReactElement => {
 
   const getSongResults = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('http://localhost:1338/api/songs/get');
+      const { data, status } = await axios.get('/api/songs/get');
       if (status === 200) {
         setAllSongs(data);
         const searchQuery = new URLSearchParams(location.search).get('q');

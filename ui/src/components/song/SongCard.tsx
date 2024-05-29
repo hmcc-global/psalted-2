@@ -1,43 +1,11 @@
-import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
+import { Button, Box, Container, Modal, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
 import { CardFields } from '../../constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-type FieldArrayProps = {
-  data: string[] | string;
-};
-
-const FieldArray = ({ data }: FieldArrayProps) => {
-  if (Array.isArray(data)) {
-    if (data.length === 0) return <Typography color={'#CCC2DC'}>-</Typography>;
-    return (
-      <Stack spacing={1} direction="row">
-        {data.map((item: string, i: number) => {
-          return (
-            <Chip size="small" key={i} label={item} sx={{ bgcolor: '#2B2930', color: '#CCC2DC' }} />
-          );
-        })}
-      </Stack>
-    );
-  }
-  return null;
-};
-
-const TagArray = ({ data }: FieldArrayProps) => {
-  if (Array.isArray(data)) {
-    if (data.length === 0) return <Typography>-</Typography>;
-    return (
-      <Stack spacing={1} direction="row">
-        {data.map((item: string, i: number) => {
-          return <Chip sx={{ bgcolor: 'primary.light' }} size="medium" key={i} label={item} />;
-        })}
-      </Stack>
-    );
-  }
-  return null;
-};
+import SongFieldArray from './SongFieldArray';
+import SongTagArray from './SongTagArray';
 
 const SongCard = (props: SongCardProps) => {
   const {
@@ -117,7 +85,7 @@ const SongCard = (props: SongCardProps) => {
               {lyricsPreview ? (
                 <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
               ) : null}
-              {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
+              {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
               <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
                 <Button size="small" variant="text" onClick={handleClose}>
                   CANCEL
@@ -142,7 +110,7 @@ const SongCard = (props: SongCardProps) => {
                       {field}
                     </Typography>
                     {Array.isArray(fieldData[i]) ? (
-                      <FieldArray data={fieldData[i]} />
+                      <SongFieldArray data={fieldData[i]} />
                     ) : (
                       <Typography variant="body2" color={'#CCC2DC'}>
                         {fieldData[i] ?? '-'}

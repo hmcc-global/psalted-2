@@ -1,3 +1,4 @@
+import { SetlistFolderProps } from '#/types/setlist.types';
 import { Add, QueueMusic } from '@mui/icons-material';
 import {
   Box,
@@ -9,8 +10,14 @@ import {
   Tabs,
   Tab,
   Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material';
 import axios from 'axios';
+import React, { Fragment } from 'react';
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +38,7 @@ const SetlistTabPanel = (props: TabPanelProps) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 };
@@ -41,13 +48,13 @@ const SetlistListContainer: FC = (): ReactElement => {
   const navigate = useNavigate();
 
   const [tab, setTab] = useState(0);
-  const [allSetlists, setAllSetlists] = useState([]);
+  const [allSetlists, setAllSetlists] = useState<SetlistFolderProps[]>([]);
   const [personalSetlists, setPersonalSetlists] = useState([]);
   const [sharedSetlists, setSharedSetlists] = useState([]);
 
   const getSetlists = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('/api/setlists/get');
+      const { data, status } = await axios.get('http://localhost:1338/api/setlists/get');
       if (status === 200) {
         setAllSetlists(data);
 
@@ -108,56 +115,85 @@ const SetlistListContainer: FC = (): ReactElement => {
         </Button>
       </Stack>
 
-      <Box>
-        <Stack direction={'row'}>
-          <Tabs selectionFollowsFocus value={tab} onChange={(e, newValue) => setTab(newValue)}>
-            <Tab label="All"></Tab>
-            <Tab label="Personal"></Tab>
-            <Tab label="Shared"></Tab>
+      <Stack direction="row">
+        {/* list out all existing setlists */}
+        <Box width={'35%'}>
+          <Tabs
+            selectionFollowsFocus
+            variant="fullWidth"
+            value={tab}
+            onChange={(e, newValue) => setTab(newValue)}
+          >
+            <Tab sx={{ textTransform: 'none' }} label="All"></Tab>
+            <Tab sx={{ textTransform: 'none' }} label="Folders"></Tab>
+            <Tab sx={{ textTransform: 'none' }} label="Setlists"></Tab>
           </Tabs>
 
-          <Divider />
+          <Divider sx={{ borderColor: '#49454F' }} />
 
-          {/* TODO: Display individual setlist */}
-          <Box></Box>
-        </Stack>
+          <SetlistTabPanel value={tab} index={0}>
+            <List>
+              {allSetlists.length > 0 ? (
+                allSetlists.map((setlist, i) => (
+                  <Fragment key={i}>
+                    <ListItem disablePadding>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography>{setlist.name}</Typography>
+                          <Typography>{setlist.date.toString()}</Typography>
+                        </ListItemText>
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider sx={{ borderColor: '#49454F' }} />
+                  </Fragment>
+                ))
+              ) : (
+                <ListItem>
+                  <Typography variant="subtitle1" color="primary.main">
+                    No Setlists Found
+                  </Typography>
+                </ListItem>
+              )}
+            </List>
+          </SetlistTabPanel>
 
-        <SetlistTabPanel value={tab} index={0}>
-          {allSetlists.length > 0 ? (
-            allSetlists.map((setlist, i) => <Box></Box>)
-          ) : (
-            <Box>
-              <Typography variant="subtitle1" color="primary.main">
-                No Setlists Found
-              </Typography>
-            </Box>
-          )}
-        </SetlistTabPanel>
+          <SetlistTabPanel value={tab} index={1}>
+            <List>
+              {personalSetlists.length > 0 ? (
+                personalSetlists.map((setlist, i) => <ListItem></ListItem>)
+              ) : (
+                <ListItem>
+                  <Typography variant="subtitle1" color="primary.main">
+                    No Folders Found
+                  </Typography>
+                </ListItem>
+              )}
+            </List>
+          </SetlistTabPanel>
 
-        <SetlistTabPanel value={tab} index={1}>
-          {personalSetlists.length > 0 ? (
-            personalSetlists.map((setlist, i) => <Box></Box>)
-          ) : (
-            <Box>
-              <Typography variant="subtitle1" color="primary.main">
-                No Personal Setlists Found
-              </Typography>
-            </Box>
-          )}
-        </SetlistTabPanel>
+          <SetlistTabPanel value={tab} index={2}>
+            <List>
+              {sharedSetlists.length > 0 ? (
+                sharedSetlists.map((setlist, i) => <ListItem></ListItem>)
+              ) : (
+                <ListItem>
+                  <Typography variant="subtitle1" color="primary.main">
+                    No Personal Setlists Found
+                  </Typography>
+                </ListItem>
+              )}
+            </List>
+          </SetlistTabPanel>
+        </Box>
 
-        <SetlistTabPanel value={tab} index={2}>
-          {sharedSetlists.length > 0 ? (
-            sharedSetlists.map((setlist, i) => <Box></Box>)
-          ) : (
-            <Box>
-              <Typography variant="subtitle1" color="primary.main">
-                No Shared Setlists Found
-              </Typography>
-            </Box>
-          )}
-        </SetlistTabPanel>
-      </Box>
+        <Divider orientation="vertical" variant="fullWidth" sx={{ borderColor: '#D9D9D980' }} />
+
+        {/* display setlist details & preview */}
+        <Box></Box>
+      </Stack>
     </Container>
   );
 };

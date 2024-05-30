@@ -1,12 +1,16 @@
 import { SetlistEditorFields, SetlistEditorProps } from '#/types/setlist.types';
 import { SongCardProps, SongSearchFilter } from '#/types/song.types';
-import { Add, Check, Info, MoreVert, MusicNote, Search } from '@mui/icons-material';
+import { Info, MoreVert, MusicNote, Search } from '@mui/icons-material';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Container,
+  Fade,
   IconButton,
   InputBase,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -58,7 +62,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
 
   const getSongResults = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('/api/songs/get');
+      const { data, status } = await axios.get('http://localhost:1338/api/songs/get');
       if (status === 200) {
         setAllSongs(data);
 
@@ -87,11 +91,12 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
     setAddedSongs(result);
   };
 
-  const filteredSongResults = songResults.filter((song) => addedSongs.includes(song._id));
+  // To render the songs that are added to setlist
+  const addedSongList = songResults.filter((song) => addedSongs.includes(song._id));
 
   const handleSaveSetlist: SubmitHandler<SetlistEditorFields> = async (data) => {
     try {
-      const payload = await axios.post('/api/setlists/create', {
+      const payload = await axios.post('http://localhost:1338/api/setlists/create', {
         name: data.name,
         date: date,
         songs: addedSongs,
@@ -101,6 +106,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
         setInvalidSetlist('');
         setSuccessSnackbarOpen(true);
         // TODO: redirect to setlist view page after saving
+        navigate(`/setlist`);
         return payload.data;
       }
 
@@ -113,9 +119,34 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
     }
   };
 
+  const handleCloseSuccessSnackbar = () => {
+    setSuccessSnackbarOpen(false);
+  };
+
   return (
     <Container sx={{ pt: '5em' }}>
       <Box>
+        {/* Error message */}
+        {invalidSetlist ? (
+          <Typography variant={'body2'} color={'error'}>
+            {invalidSetlist}
+          </Typography>
+        ) : null}
+
+        {/* Success message */}
+        <Snackbar
+          open={successSnackbarOpen}
+          onClose={handleCloseSuccessSnackbar}
+          autoHideDuration={6000}
+          TransitionComponent={Fade}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="success" onClose={handleCloseSuccessSnackbar}>
+            <AlertTitle>Success</AlertTitle>
+            Song successfully saved!
+          </Alert>
+        </Snackbar>
+
         <form onSubmit={handleSubmit(handleSaveSetlist)}>
           <Toolbar>
             {editorMode(actionOnEditor)}
@@ -207,7 +238,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
                         </TableHead>
                         <TableBody>
                           {addedSongs.length > 0 ? (
-                            filteredSongResults.map((song, i) => (
+                            addedSongList.map((song, i) => (
                               <TableRow key={song._id} sx={{ '& td': { border: 0 } }}>
                                 {/* reorder icon */}
 

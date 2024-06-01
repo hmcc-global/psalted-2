@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { Setlist } from '../models/setlist.model';
 import { SetlistDocument } from '../types/setlist.types';
+import { nanoid } from 'nanoid';
 
 const sendResponse = (
   res: Response,
@@ -16,21 +17,18 @@ const createSetlist: RequestHandler = async (req: Request, res: Response): Promi
 
   if (Object.keys(toCreate).length > 0) {
     try {
-      const tempData: SetlistDocument = await Setlist.create(toCreate);
-      const tempId = tempData._id.toString();
+      const urlSafeId = nanoid(10);
 
       // this is to set the default url of the public link to setlist/:id,
       // and to setlist/custom-name if the user define a custom link name
       const setlistUrl = toCreate.publicLink
         ? defaultUrl + toCreate.publicLink
-        : defaultUrl + tempId;
-      const data = await Setlist.updateOne(
-        { _id: tempId, isDeleted: false },
-        {
-          ...toCreate,
-          publicLink: setlistUrl,
-        }
-      );
+        : defaultUrl + urlSafeId;
+
+      const data: SetlistDocument = await Setlist.create({
+        ...toCreate,
+        publicLink: setlistUrl,
+      });
 
       if (data) {
         sendResponse(res, 200, 'Setlist created');

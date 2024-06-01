@@ -8,6 +8,9 @@ import SongEditorContainer from './components/song/SongEditorContainer';
 import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
 import SongsViewContainer from './components/songsView/SongsViewContainer';
+import SetlistListContainer from './components/setlist/SetlistListContainer';
+import GroupListContainer from './components/group/GroupListContainer';
+import SetlistEditorContainer from './components/setlist/SetlistEditorContainer';
 
 // interface
 interface Route {
@@ -63,22 +66,6 @@ export const routes: Array<Route> = [
     permissions: ['user'],
   },
   {
-    key: 'song-add-route',
-    title: 'Add New Song',
-    path: '/songs/add',
-    enabled: true,
-    component: SongEditorContainer,
-    permissions: ['user']
-  },
-  {
-    key: 'song-edit-route',
-    title: 'Edit Song',
-    path: '/songs/edit/:id',
-    enabled: true,
-    component: SongEditorContainer,
-    permissions: ['user']
-  },
-  {
     key: 'profile-route',
     title: 'Profile',
     path: '/profile',
@@ -87,6 +74,14 @@ export const routes: Array<Route> = [
     permissions: ['user'],
   },
   // Song routes
+  {
+    key: 'song-route',
+    title: 'Song',
+    path: '/song',
+    enabled: true,
+    component: SongListContainer,
+    permissions: ['user'],
+  },
   {
     key: 'song-add-route',
     title: 'Add New Song',
@@ -104,19 +99,37 @@ export const routes: Array<Route> = [
     permissions: ['user'],
   },
   {
-    key: 'song-route',
-    title: 'Song',
-    path: '/song',
+    key: 'songsView-route',
+    title: 'songsView',
+    path: '/song/:id',
     enabled: true,
-    component: SongListContainer,
+    component: SongsViewContainer,
+    permissions: ['user'],
+  },
+  // Setlist routes
+  {
+    key: 'setlist-route',
+    title: 'Setlist',
+    path: '/setlist',
+    enabled: true,
+    component: SetlistListContainer,
     permissions: ['user'],
   },
   {
-    key: 'songsView-route',
-    title: 'songsView',
-    path: '/songs/:id',
+    key: 'setlist-add-route',
+    title: 'Add New Setlist',
+    path: '/setlist/add',
     enabled: true,
-    component: SongsViewContainer,
-    permissions: ['user']
+    component: SetlistEditorContainer,
+    permissions: ['user'],
+  },
+  // Group routes
+  {
+    key: 'group-route',
+    title: 'Group',
+    path: '/group',
+    enabled: true,
+    component: GroupListContainer,
+    permissions: ['user'],
   },
 ];

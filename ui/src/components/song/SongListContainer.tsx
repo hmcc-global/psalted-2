@@ -1,27 +1,16 @@
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  Typography,
-  TextField,
-  IconButton,
-  Modal,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Button, Container, Stack, Typography, Modal, useMediaQuery } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
 import { SongCardProps, SongSearchFilter } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
-import { useNavigate } from 'react-router-dom';
-import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import TuneIcon from '@mui/icons-material/Tune';
+import MusicNote from '@mui/icons-material/MusicNote';
 
 const SongListContainer: FC = (): ReactElement => {
   const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
-  const [songView, setSongView] = useState<SongCardProps[]>([]);
+  const [songResults, setSongResults] = useState<SongCardProps[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -29,17 +18,22 @@ const SongListContainer: FC = (): ReactElement => {
 
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const getSongView = useCallback(async () => {
+  const getSongResults = useCallback(async () => {
     try {
       const { data, status } = await axios.get('/api/songs/get');
       if (status === 200) {
         setAllSongs(data);
+        const searchQuery = new URLSearchParams(location.search).get('q');
+        setFilterData({ ...filterData, search: searchQuery });
+
         if (filterData) {
           const songs: SongCardProps[] = data;
+
           // filter the song based on data
           const filteredSong = songs.filter(
             (song) =>
@@ -63,8 +57,8 @@ const SongListContainer: FC = (): ReactElement => {
                 ? filterData.tempo.every((tempo) => song.tempo.includes(tempo))
                 : true)
           );
-          setSongView(filteredSong);
-        } else setSongView(data);
+          setSongResults(filteredSong);
+        } else setSongResults(data);
       }
     } catch (error) {
       console.log(error);
@@ -80,12 +74,12 @@ const SongListContainer: FC = (): ReactElement => {
   };
 
   useEffect(() => {
-    getSongView();
-  }, [getSongView, filterData]);
+    getSongResults();
+  }, [getSongResults, filterData]);
 
   return (
     <>
-      <Container fixed sx={{ padding: '0 24px 24px', height: '100%' }}>
+      <Container fixed sx={{ padding: '5em 24px 24px', height: '100%' }}>
         {/* Toolbar at the top */}
         <Stack
           direction="row"
@@ -95,67 +89,44 @@ const SongListContainer: FC = (): ReactElement => {
           pl={{ base: '0', md: '15px' }}
         >
           {/* Title */}
-          <Typography variant="h2" color="primary" sx={{ display: 'flex', alignItems: 'center' }}>
-            <AudiotrackRoundedIcon color="primary" fontSize="large" />
-            SONGS
+          <Typography variant="h1" color="white" sx={{ display: 'flex', alignItems: 'center' }}>
+            <MusicNote
+              sx={{
+                color: 'primary.light',
+                backgroundColor: 'primary.dark',
+                borderRadius: '50%',
+                width: '2em',
+                height: '2em',
+                padding: '0.5em',
+                mr: 3,
+              }}
+            />
+            Songs
           </Typography>
 
           {/* Add new song button */}
           <Button
             variant="outlined"
-            sx={{ borderWidth: '2px', padding: '10px 25px' }}
+            sx={{
+              borderWidth: '2px',
+              padding: '10px 25px',
+              borderRadius: '40px',
+              backgroundColor: 'rgba(208, 188, 255, 0.12)',
+              color: '#D0BCFF',
+              textTransform: 'none',
+            }}
             startIcon={<AddIcon />}
-            onClick={() => navigate('/songs/add')}
+            onClick={() => navigate('/song/add')}
           >
-            <Typography fontWeight="500">NEW SONG</Typography>
+            <Typography variant="subtitle1">New Song</Typography>
           </Button>
         </Stack>
 
-        {/* Mobile Search bar and filters */}
-        <Box display={{ base: 'block', md: 'none' }}>
-          <Stack
-            spacing={2}
-            direction="row"
-            display="flex"
-            justifyContent="space-between"
-            marginTop="12px"
-          >
-            <TextField
-              id="search-bar"
-              label="Search"
-              variant="filled"
-              placeholder="Search by title, artist, lyrics, or theme"
-              fullWidth
-              sx={{
-                backgroundColor: 'primary.lightest',
-                borderRadius: '8px',
-              }}
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setFilterData({ ...filterData, search: e.target.value });
-              }}
-            />
-            <IconButton
-              onClick={handleOpen}
-              sx={{ backgroundColor: '#4B50B4', borderRadius: 2.5, width: '60px', height: '60px' }}
-            >
-              <TuneIcon sx={{ color: 'white' }} />
-            </IconButton>
-          </Stack>
-
-          {/* Show song details or not (option only shows in mobile) */}
-          <Button
-            variant="outlined"
-            sx={{ borderWidth: '2px', margin: '5px 0 15px 0' }}
-            onClick={() => setShowDetails(!showDetails)}
-          >
-            <Typography variant="caption">SHOW DETAILS</Typography>
-          </Button>
-        </Box>
+        {/* TODO: Mobile Search bar and filters */}
+        <Box display={{ base: 'block', md: 'none' }}></Box>
 
         {/* Desktop search bar and filters */}
-        <Stack direction="row" width="100%">
+        <Stack direction="row" width="100%" gap={3}>
           <Box display={isDesktop ? 'block' : 'none'}>
             <SongSearch
               filterData={filterData}
@@ -169,8 +140,8 @@ const SongListContainer: FC = (): ReactElement => {
 
           {/* Song cards search results */}
           <Stack direction="column" spacing={3} height="100%" width="100%">
-            {songView.length > 0 ? (
-              songView.map((song, i) => {
+            {songResults.length > 0 ? (
+              songResults.map((song, i) => {
                 return (
                   <SongCard
                     key={i}

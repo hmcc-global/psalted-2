@@ -20,6 +20,10 @@ interface SongEditorProps {
 
 export type { SongEditorFields, SongEditorProps };
 
+export type FieldArrayProps = {
+  data: string[] | string;
+};
+
 export type SongCardProps = {
   _id: string;
   title: string;
@@ -51,7 +55,7 @@ export type SongSearchProps = {
 };
 
 export type SongSearchFilter = {
-  search?: string;
+  search?: string | null | undefined;
   timeSignature?: string[];
   tempo?: string[];
   themes?: string[];

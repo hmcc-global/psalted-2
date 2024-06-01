@@ -6,7 +6,7 @@ import axios from 'axios';
 import { updateAxiosClient } from './customAxios';
 
 import ErrorPage from './ErrorPage';
-import NavBar from '../navigation/NavBar';
+import SearchBar from '../navigation/SearchBar';
 import NavBarMobile from '../navigation/NavBarMobile';
 import Sidebar from '../navigation/Sidebar';
 
@@ -51,7 +51,7 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <NavBar />;
+  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <SearchBar />;
 
   const checkIfTokenExists = async (toVerify: any) => {
     try {

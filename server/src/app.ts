@@ -3,6 +3,7 @@ import { connectToDB } from './mongoose';
 import { getRoutes } from './routes';
 import * as path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 const app = express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 1338; // development port is 1338
@@ -14,6 +15,7 @@ dotenv.config();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(cors());
 app.use(express.json());
 app.use('/api', getRoutes());
 if (!isDevelopment) {

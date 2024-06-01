@@ -11,7 +11,7 @@ const sendResponse = (
 };
 
 const createGroup: RequestHandler = async (req: Request, res: Response) => {
-  const { ...toCreate } = req.body;
+  const { ...toCreate }: GroupDocument = req.body;
 
   // Check if any fields are present. MongoDB will throw an error
   // if no fields are present or if a required field is missing
@@ -27,8 +27,9 @@ const createGroup: RequestHandler = async (req: Request, res: Response) => {
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
-  sendResponse(res, 400, 'Missing required fields');
 };
 
 const getGroup: RequestHandler = async (req: Request, res: Response) => {
@@ -84,8 +85,9 @@ const updateGroup: RequestHandler = async (req: Request, res: Response) => {
     } catch (error: any) {
       sendResponse(res, 500, error?.message);
     }
+  } else {
+    sendResponse(res, 400, 'Missing required fields');
   }
-  sendResponse(res, 400, 'Missing required fields');
 };
 
 const deleteGroup: RequestHandler = async (req: Request, res: Response) => {

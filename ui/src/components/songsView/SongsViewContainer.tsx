@@ -1,11 +1,15 @@
-import { Container, Box, Grid } from '@mui/material';
+import { Container, Box, Grid, Stack, Typography, Button } from '@mui/material';
 import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SongViewSchema } from '../../types/song.types';
 import axios, { AxiosResponse } from 'axios';
 import SongsTitleCard from './SongsTitleCard';
 import SongsButtonCard from './SongsButtonsCard';
+import SongsInfoCard from './SongsInfoCard';
 
 const SongsViewContainer: FC = (): ReactElement => {
+  const navigate = useNavigate();
+
   const id: string = window.location.pathname.split('/')[2];
   const [song, setSong] = useState<SongViewSchema>();
 
@@ -29,19 +33,41 @@ const SongsViewContainer: FC = (): ReactElement => {
 
   return (
     <>
-      <Container maxWidth="lg" style={{ background: 'white' }}>
+      <Container style={{ paddingTop: '5em', width: '100%' }}>
+        <Button
+          variant="outlined"
+          sx={{
+            borderWidth: '2px',
+            padding: '10px 25px',
+            borderRadius: '40px',
+            backgroundColor: 'rgba(208, 188, 255, 0.12)',
+            color: '#D0BCFF',
+            textTransform: 'none',
+          }}
+          onClick={() => navigate(`/song/edit/${id}`)}
+        >
+          <Typography variant="subtitle1">Edit Song</Typography>
+        </Button>
+
         <Grid container justifyContent="left">
-        <Grid item xs={12} sm={12} md={15} lg={20}>
-          <Box sx={{ bgcolor: 'white', width: 'auto' }}>
-            <SongsTitleCard song={song} />
-          </Box>
-          <Box sx={{ marginBottom: '15vh', width: 'auto'}}>
-            <SongsButtonCard song={song} />
-          </Box>
-        </Grid>
+          <Grid item>
+            {/* song title and artist */}
+            <Box sx={{ width: '100' }}>
+              <SongsTitleCard song={song} />
+            </Box>
+
+            <Stack direction={['row']}>
+              <Box sx={{ marginBottom: '15vh' }}>
+                <SongsButtonCard song={song} />
+              </Box>
+
+              <Box width={['25%']}>
+                <SongsInfoCard song={song} />
+              </Box>
+            </Stack>
+          </Grid>
         </Grid>
       </Container>
-      
     </>
   );
 };

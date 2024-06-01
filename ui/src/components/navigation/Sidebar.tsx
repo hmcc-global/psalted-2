@@ -10,28 +10,30 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import Language from '@mui/icons-material/Language';
+import Person from '@mui/icons-material/Person';
 
 interface SidebarProps {
   isOpen: boolean;
 }
 
-const drawerWidth = 240;
+const drawerWidth = 100;
 
 const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
   const menuItems = [
-    { icon: <HomeIcon />, text: 'Home', path: '' },
+    { icon: <Language />, text: 'Home', path: '' },
     { icon: <MusicNoteIcon />, text: 'Songs', path: 'song' },
-    { icon: <QueueMusicIcon />, text: 'My Setlists', path: 'setlist' },
+    { icon: <QueueMusicIcon />, text: 'Setlists', path: 'setlist' },
     { icon: <SupervisedUserCircleIcon />, text: 'Groups', path: 'group' },
     { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },
+    { icon: <Person />, text: 'Profile', path: 'profile' },
   ];
 
   const handleClick = (text: string, path: string) => {
@@ -49,6 +51,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
             width: drawerWidth,
             boxSizing: 'border-box',
             ...(isDesktop && { position: 'relative' }),
+            backgroundColor: 'primary.darkest',
           },
         }}
         // drawer only open in desktop/ clicked on mobile
@@ -58,27 +61,36 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
       >
         <List sx={{ marginTop: { xs: '4em', md: '0' } }}>
           {menuItems.map((item, index) => (
-            <ListItem
-              key={index}
-              disablePadding
-              sx={{
-                ...(selectedItem === item.text && {
-                  backgroundColor: 'primary.lighter',
-                }),
-              }}
-            >
+            <ListItem key={index} disablePadding>
               <ListItemButton
                 // highlight selected item
                 selected={selectedItem === item.text}
                 onClick={() => handleClick(item.text, item.path)}
+                sx={{
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  px: 1,
+                }}
               >
-                <ListItemIcon sx={{ color: selectedItem === item.text ? 'primary.main' : '' }}>
+                <ListItemIcon
+                  sx={{
+                    color: 'primary.lighter',
+                    backgroundColor: selectedItem === item.text ? 'primary.main' : '',
+                    borderRadius: '100px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   {item.icon}
                 </ListItemIcon>
+
                 <ListItemText
-                  // primaryTypographyProps is  the only way to change listItemText styling
+                  // primaryTypographyProps is the only way to change listItemText styling
                   primaryTypographyProps={{
-                    sx: { color: selectedItem === item.text ? 'primary.main' : '' },
+                    sx: { color: 'primary.lighter' },
+                    variant: 'subtitle2',
+                    fontWeight: 700,
                   }}
                   primary={item.text}
                 />

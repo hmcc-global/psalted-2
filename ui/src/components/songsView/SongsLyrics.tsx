@@ -1,6 +1,6 @@
 import { Box, Chip, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import { SongViewSchema } from '../../types/song.types';
-import { flatMusicKeysOptions, sharpMusicKeysOptions, ChordColors} from '../../constants';
+import { flatMusicKeysOptions, sharpMusicKeysOptions, ChordColors } from '../../constants';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 interface SongsLyricsProps {
@@ -24,19 +24,17 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
   };
 
   const searchChordColor = (chord: string): string | undefined => {
-    const chordKey = Object.keys(ChordColors).find(key =>
-      key.toLowerCase() === chord.toLowerCase()
+    const chordKey = Object.keys(ChordColors).find(
+      (key) => key.toLowerCase() === chord.toLowerCase()
     );
     return chordKey ? ChordColors[chordKey] : undefined;
   };
-  
 
-  const getColor = (label:any) => {
+  const getColor = (label: any) => {
     const regexPattern = /[A-G][#b]?(m)?/;
-    label.match(regexPattern)
-    return searchChordColor(label)
+    label.match(regexPattern);
+    return searchChordColor(label);
   };
-
 
   const parseLyrics = useCallback(
     (inputSong: SongViewSchema | undefined, songChunk: string[]) => {
@@ -47,37 +45,41 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
           : sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C');
       const transpossedChordIndex = changeKey - originalChordIndex;
       const lyricsLine = songChunk;
+
       // render the lyrics
       lyricsLine &&
         lyricsLine.map((line, j) => {
           if (line.includes('{') && line.includes('}')) {
             // return chip for verse, chorus, bridge
             const chipLabel = line.replace('{', '').replace('}', '');
-            return result.push(<Chip key={j} label={chipLabel} 
-              variant="outlined"  
-              sx={{
-                height: '30px',
-                '& .MuiChip-label': {
-                  width: 'inline-flex',
-                  alignItems: 'center',
-                  whiteSpace: 'none',
-                  color: '#A9A9A9',
-                  fontWeight: 'bold',
+            return result.push(
+              <Chip
+                key={j}
+                label={chipLabel}
+                variant="outlined"
+                sx={{
+                  height: '30px',
+                  '& .MuiChip-label': {
+                    width: 'inline-flex',
+                    alignItems: 'center',
+                    whiteSpace: 'none',
+                    color: '#A9A9A9',
+                    fontWeight: 'bold',
+                    borderRadius: 4,
+                    backgroundColor: '#FAFAFA',
+                    border: '2',
+                    fontSize: '14px',
+                  },
+                }}
+                style={{
                   borderRadius: 4,
-                  backgroundColor: '#FAFAFA',
-                  border: '2',
-                  fontSize: '14px',
-              },
-              }}
-              style={{
-                borderRadius: 4,
-                backgroundColor:'primary',
-                marginBottom: '10px',
-                marginTop: '3px',
-                borderColor:'#A9A9A9'
-              }} 
-            
-            />);
+                  backgroundColor: 'primary',
+                  marginBottom: '10px',
+                  marginTop: '3px',
+                  borderColor: '#A9A9A9',
+                }}
+              />
+            );
           } else if (line === '') {
             // return empty line
             return result.push(<br key={j} />);
@@ -104,27 +106,30 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                         : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
                       chord.slice(1);
                     const textLyrics = '\u00A0' + lyric.slice(endChord + 1);
-                    const chipColor = getColor(transpossedChord)
+                    const chipColor = getColor(transpossedChord);
                     return (
                       <Box key={i}>
-                        {chordStatus ? <Chip  label={transpossedChord}
-                          size = 'small' 
-                         sx={{
-                          height: 'fit',
-                          '& .MuiChip-label': {
-                            alignItems: 'center',
-                            whiteSpace: 'none',
-                            fontWeight: 'bold',
-                            borderWidth: '0',
-                            fontSize: '11px',
-                          },
-                        }}
-                        style={{
-                          borderRadius: 4,
-                          backgroundColor:chipColor,
-                          marginBottom: '5px',
-                          marginTop: '3px',
-                        }}/> : null}
+                        {chordStatus ? (
+                          <Chip
+                            label={transpossedChord}
+                            size="small"
+                            sx={{
+                              height: 'fit',
+                              '& .MuiChip-label': {
+                                alignItems: 'center',
+                                whiteSpace: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '11px',
+                              },
+                            }}
+                            style={{
+                              borderRadius: 4,
+                              backgroundColor: chipColor,
+                              marginBottom: '5px',
+                              marginTop: '3px',
+                            }}
+                          />
+                        ) : null}
                         <Typography>{textLyrics}</Typography>
                       </Box>
                     );
@@ -186,9 +191,10 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     const res = groupLyricsToParagraphs(song);
     setFinalLyrics(res);
   }, [parseLyrics, song, groupLyricsToParagraphs]);
+
   return (
     <>
-      <Grid container>
+      <Grid container width={'100%'}>
         {finalLyrics &&
           finalLyrics.map((chunk, i) => {
             return (

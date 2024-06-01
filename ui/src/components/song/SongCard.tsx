@@ -1,41 +1,11 @@
-import { Button, Box, Chip, Container, Modal, Stack, Typography } from '@mui/material';
+import { Button, Box, Container, Modal, Stack, Typography } from '@mui/material';
 import { SongCardProps } from '#/types/song.types';
 import { CardFields } from '../../constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-type FieldArrayProps = {
-  data: string[] | string;
-};
-
-const FieldArray = ({ data }: FieldArrayProps) => {
-  if (Array.isArray(data)) {
-    if (data.length === 0) return <Typography>-</Typography>;
-    return (
-      <Stack spacing={1} direction="row">
-        {data.map((item: string, i: number) => {
-          return <Chip size="small" key={i} label={item} />;
-        })}
-      </Stack>
-    );
-  }
-  return null;
-};
-
-const TagArray = ({ data }: FieldArrayProps) => {
-  if (Array.isArray(data)) {
-    if (data.length === 0) return <Typography>-</Typography>;
-    return (
-      <Stack spacing={1} direction="row">
-        {data.map((item: string, i: number) => {
-          return <Chip sx={{ bgcolor: 'primary.light' }} size="medium" key={i} label={item} />;
-        })}
-      </Stack>
-    );
-  }
-  return null;
-};
+import SongFieldArray from './SongFieldArray';
+import SongTagArray from './SongTagArray';
 
 const SongCard = (props: SongCardProps) => {
   const {
@@ -72,23 +42,27 @@ const SongCard = (props: SongCardProps) => {
 
   return (
     <Container
-      onClick = {() => navigate(`/songs/${_id}`)}
+      onClick={() => navigate(`/song/${_id}`)}
       sx={{
-        borderRadius: '4px',
-        backgroundColor: 'secondary.lighter',
-        padding: '10px',
+        borderRadius: '8px',
+        border: 1,
+        borderColor: '#49454F',
+        backgroundColor: 'primary.darkest',
+        py: 2,
       }}
     >
       <Stack direction="row" display="flex" justifyContent="space-between">
         <Stack>
-          <Typography variant="h2" color={'primary.main'}>
+          <Typography variant="h2" color={'secondary.main'}>
             {title}
           </Typography>
-          <Typography variant="subtitle1">{artist}</Typography>
+          <Typography variant="subtitle1" color={'secondary.main'}>
+            {artist}
+          </Typography>
         </Stack>
         <>
           <Box sx={{ height: '30px', width: '30px' }}>
-            <VisibilityIcon onClick={handleOpen} sx={{ color: 'primary.main' }} />
+            <VisibilityIcon onClick={handleOpen} sx={{ color: 'secondary.main' }} />
           </Box>
           <Modal open={modalOpen} onClose={handleClose}>
             <Stack
@@ -98,7 +72,7 @@ const SongCard = (props: SongCardProps) => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 width: 400,
-                bgcolor: 'background.paper',
+                bgcolor: 'background.',
                 boxShadow: 2,
                 p: 4,
               }}
@@ -111,7 +85,7 @@ const SongCard = (props: SongCardProps) => {
               {lyricsPreview ? (
                 <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
               ) : null}
-              {Array.isArray(fieldData[0]) ? <TagArray data={fieldData[0]} /> : null}
+              {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
               <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
                 <Button size="small" variant="text" onClick={handleClose}>
                   CANCEL
@@ -132,17 +106,13 @@ const SongCard = (props: SongCardProps) => {
               <Stack direction="row" display="flex" key={i} spacing={1}>
                 {displayData[i] ? (
                   <>
-                    <Typography
-                      variant="body2"
-                      color={'secondary.main'}
-                      width={isDesktop ? '100%' : '40%'}
-                    >
+                    <Typography variant="body2" color="#9E9E9E" width={isDesktop ? '100%' : '40%'}>
                       {field}
                     </Typography>
                     {Array.isArray(fieldData[i]) ? (
-                      <FieldArray data={fieldData[i]} />
+                      <SongFieldArray data={fieldData[i]} />
                     ) : (
-                      <Typography variant="body2" color={''}>
+                      <Typography variant="body2" color={'#CCC2DC'}>
                         {fieldData[i] ?? '-'}
                       </Typography>
                     )}

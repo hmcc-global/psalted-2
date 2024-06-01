@@ -1,12 +1,12 @@
 import { Request, RequestHandler, Response } from 'express';
 import { User } from '../models/user.model';
-import { UserDocument } from '../types/user.types';
+import { UserDocument, UserPublicDocument } from '../types/user.types';
 import { hashInput, validateInput } from '../utils/auth.utils';
 
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserDocument[] | UserDocument | string
+  payload: UserPublicDocument[] | UserPublicDocument | string
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -37,7 +37,10 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
 
   if (userId) {
     try {
-      const data: UserDocument | null = await User.findOne({ _id: userId, isDeleted: false });
+      const data: UserPublicDocument | null = await User.findOne({
+        _id: userId,
+        isDeleted: false,
+      });
 
       if (data) {
         sendResponse(res, 200, data);
@@ -49,7 +52,7 @@ const getUser: RequestHandler = async (req: Request, res: Response): Promise<voi
     }
   } else {
     try {
-      const data: UserDocument[] = await User.find({ isDeleted: false });
+      const data: UserPublicDocument[] = await User.find({ isDeleted: false }).select('-password');
 
       if (data) {
         sendResponse(res, 200, data);

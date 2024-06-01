@@ -154,6 +154,37 @@ const customTheme = createTheme({
         },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: PRIMARY_DARKEST, // Set the background color of the menu
+          color: PRIMARY_LIGHTER, // Set the text color of the menu
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: PRIMARY_DARK, // Set the hover background color of the menu items
+          },
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#2B2930', // Set the background color of the drawer
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#2B2930', // Set the background color of the dialog
+        },
+      },
+    },
   },
 });
 

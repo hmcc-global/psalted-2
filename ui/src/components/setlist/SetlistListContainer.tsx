@@ -1,5 +1,5 @@
-import { SetlistFolder } from '#/types/setlist.types';
-import { KeyboardArrowDown, QueueMusic } from '@mui/icons-material';
+import { Setlist, SetlistFolder } from '#/types/setlist.types';
+import { ExpandLess, ExpandMore, Folder, KeyboardArrowDown, QueueMusic } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import {
   ListItemText,
   MenuItem,
   Menu,
+  Collapse,
 } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useState, useEffect, useCallback, Fragment, MouseEvent } from 'react';
@@ -50,9 +51,8 @@ const SetlistListContainer: FC = (): ReactElement => {
   const navigate = useNavigate();
 
   const [tab, setTab] = useState(0);
-  const [allSetlists, setAllSetlists] = useState<SetlistFolder[]>([]);
-  const [personalSetlists, setPersonalSetlists] = useState([]);
-  const [setlistFolders, setSetlistFolders] = useState([]);
+  const [allSetlists, setAllSetlists] = useState<Setlist[]>([]);
+  const [allFolders, setAllFolders] = useState<SetlistFolder[]>([]);
 
   // handle create setlist/folder button
   const [createAnchorEl, setCreateAnchorEl] = useState<null | HTMLElement>(null);
@@ -72,15 +72,25 @@ const SetlistListContainer: FC = (): ReactElement => {
     setOpenDrawer(newOpen);
   };
 
-  const getSetlists = useCallback(async () => {
-    try {
-      const { data, status } = await axios.get('http://localhost:1338/api/setlists/get');
-      if (status === 200) {
-        setAllSetlists(data);
+  // handle each folder's expansion
+  const [openFolders, setOpenFolders] = useState<string[]>([]);
+  const toggleOpenFolder = (id: string) => {
+    let result = openFolders.includes(id)
+      ? openFolders.filter((add) => add != id)
+      : [...openFolders, id];
+    setOpenFolders(result);
+  };
 
-        // TODO: Set data for personal and shared setlists
-        // setPersonalSetlists();
-        // setSetlistFolders();
+  const getSetlistsAndFolders = useCallback(async () => {
+    try {
+      const setlistRes = await axios.get('http://localhost:1338/api/setlists/get');
+      if (setlistRes.status === 200) {
+        setAllSetlists(setlistRes.data);
+      }
+
+      const folderRes = await axios.get('http://localhost:1338/api/groups/get');
+      if (folderRes.status === 200) {
+        setAllFolders(folderRes.data);
       }
     } catch (error) {
       console.log(error);
@@ -88,8 +98,8 @@ const SetlistListContainer: FC = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    getSetlists();
-  }, [getSetlists]);
+    getSetlistsAndFolders();
+  }, [getSetlistsAndFolders]);
 
   return (
     <Container style={{ paddingTop: '5em', width: '100%', height: '100%' }}>
@@ -170,6 +180,122 @@ const SetlistListContainer: FC = (): ReactElement => {
 
           <SetlistTabPanel value={tab} index={0}>
             <List>
+              {allSetlists.length > 0 || allFolders.length > 0 ? (
+                <>
+                  {allFolders.map((folder, i) => (
+                    <Fragment key={i}>
+                      <ListItemButton onClick={() => toggleOpenFolder(folder._id)}>
+                        <ListItemIcon>
+                          <Folder sx={{ color: 'secondary.main' }} fontSize="large" />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography>{folder.groupName}</Typography>
+                        </ListItemText>
+                        {openFolders.includes(folder._id) ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
+                      <Collapse in={openFolders.includes(folder._id)} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                          {folder.setlistIds.length > 0 ? (
+                            folder.setlistIds.map((subSetlist, i) => (
+                              <ListItemButton sx={{ pl: 9 }}>
+                                <ListItemIcon>
+                                  <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
+                                </ListItemIcon>
+                                <ListItemText>
+                                  <Typography>{subSetlist}</Typography>
+                                  <Typography>{i}</Typography>
+                                </ListItemText>
+                              </ListItemButton>
+                            ))
+                          ) : (
+                            <ListItem sx={{ pl: 9 }}>
+                              <Typography variant="subtitle2" color="secondary.light">
+                                No setlists in this folder
+                              </Typography>
+                            </ListItem>
+                          )}
+                        </List>
+                      </Collapse>
+                    </Fragment>
+                  ))}
+                  {allSetlists.map((setlist, i) => (
+                    <Fragment key={i}>
+                      <ListItem disablePadding>
+                        <ListItemButton>
+                          <ListItemIcon>
+                            <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography>{setlist.name}</Typography>
+                            <Typography>{setlist.date.toString()}</Typography>
+                          </ListItemText>
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider sx={{ borderColor: '#49454F' }} />
+                    </Fragment>
+                  ))}
+                </>
+              ) : (
+                <ListItem>
+                  <Typography variant="subtitle1" color="primary.main">
+                    No Setlists or Folders Found
+                  </Typography>
+                </ListItem>
+              )}
+            </List>
+          </SetlistTabPanel>
+
+          <SetlistTabPanel value={tab} index={1}>
+            <List>
+              {allFolders.length > 0 ? (
+                allFolders.map((folder, i) => (
+                  <Fragment key={i}>
+                    <ListItemButton onClick={() => toggleOpenFolder(folder._id)}>
+                      <ListItemIcon>
+                        <Folder sx={{ color: 'secondary.main' }} fontSize="large" />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography>{folder.groupName}</Typography>
+                      </ListItemText>
+                      {openFolders.includes(folder._id) ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openFolders.includes(folder._id)} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        {folder.setlistIds.length > 0 ? (
+                          folder.setlistIds.map((subSetlist, i) => (
+                            <ListItemButton sx={{ pl: 9 }}>
+                              <ListItemIcon>
+                                <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
+                              </ListItemIcon>
+                              <ListItemText>
+                                <Typography>{subSetlist}</Typography>
+                                <Typography>{i}</Typography>
+                              </ListItemText>
+                            </ListItemButton>
+                          ))
+                        ) : (
+                          <ListItem sx={{ pl: 9 }}>
+                            <Typography variant="subtitle2" color="secondary.light">
+                              No setlists in this folder
+                            </Typography>
+                          </ListItem>
+                        )}
+                      </List>
+                    </Collapse>
+                  </Fragment>
+                ))
+              ) : (
+                <ListItem>
+                  <Typography variant="subtitle1" color="primary.main">
+                    No Folders Found
+                  </Typography>
+                </ListItem>
+              )}
+            </List>
+          </SetlistTabPanel>
+
+          <SetlistTabPanel value={tab} index={2}>
+            <List>
               {allSetlists.length > 0 ? (
                 allSetlists.map((setlist, i) => (
                   <Fragment key={i}>
@@ -187,34 +313,6 @@ const SetlistListContainer: FC = (): ReactElement => {
                     <Divider sx={{ borderColor: '#49454F' }} />
                   </Fragment>
                 ))
-              ) : (
-                <ListItem>
-                  <Typography variant="subtitle1" color="primary.main">
-                    No Setlists Found
-                  </Typography>
-                </ListItem>
-              )}
-            </List>
-          </SetlistTabPanel>
-
-          <SetlistTabPanel value={tab} index={1}>
-            <List>
-              {setlistFolders.length > 0 ? (
-                setlistFolders.map((setlist, i) => <ListItem></ListItem>)
-              ) : (
-                <ListItem>
-                  <Typography variant="subtitle1" color="primary.main">
-                    No Folders Found
-                  </Typography>
-                </ListItem>
-              )}
-            </List>
-          </SetlistTabPanel>
-
-          <SetlistTabPanel value={tab} index={2}>
-            <List>
-              {personalSetlists.length > 0 ? (
-                personalSetlists.map((setlist, i) => <ListItem></ListItem>)
               ) : (
                 <ListItem>
                   <Typography variant="subtitle1" color="primary.main">

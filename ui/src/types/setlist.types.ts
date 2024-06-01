@@ -33,11 +33,18 @@ export type SetlistSongCardProps = {
   addedSongs: string[];
 };
 
-export type SetlistFolder = {
+export type Setlist = {
   _id: string;
   name: string;
   date: Date;
   sharedUserIds: string[];
+};
+
+export type SetlistFolder = {
+  _id: string;
+  groupName: string;
+  userIds: string[];
+  setlistIds: string[];
 };
 
 export type SetlistFolderMember = {

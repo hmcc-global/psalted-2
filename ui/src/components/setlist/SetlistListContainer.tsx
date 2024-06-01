@@ -1,14 +1,5 @@
-import { SetlistFolder, SetlistFolderMember } from '#/types/setlist.types';
-import {
-  Add,
-  Check,
-  Close,
-  Delete,
-  Folder,
-  GroupAdd,
-  KeyboardArrowDown,
-  QueueMusic,
-} from '@mui/icons-material';
+import { SetlistFolder } from '#/types/setlist.types';
+import { KeyboardArrowDown, QueueMusic } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -26,21 +17,11 @@ import {
   ListItemText,
   MenuItem,
   Menu,
-  Drawer,
-  TextField,
-  InputBase,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Alert,
-  AlertTitle,
-  Fade,
-  Snackbar,
 } from '@mui/material';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { FC, ReactElement, useState, useEffect, useCallback, Fragment, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SetlistFolderDrawer from './SetlistFolderDrawer';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -87,20 +68,9 @@ const SetlistListContainer: FC = (): ReactElement => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [folderId, setFolderId] = useState<string>('');
   const [folderName, setFolderName] = useState<string>('');
-  const toggleFolderDrawer = (newOpen: boolean) => () => {
+  const toggleFolderDrawer = (newOpen: boolean) => {
     setOpenDrawer(newOpen);
   };
-
-  // handle add people modal
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [allPeople, setAllPeople] = useState<SetlistFolderMember[]>([]);
-  const [addedPeople, setAddedPeople] = useState<string[]>([]);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
-  // handle snackbar and error in folder handling
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
-  const [invalidFolder, setInvalidFolder] = useState<string>('');
 
   const getSetlists = useCallback(async () => {
     try {
@@ -117,88 +87,12 @@ const SetlistListContainer: FC = (): ReactElement => {
     }
   }, []);
 
-  const getPeople = useCallback(async () => {
-    try {
-      const { data, status } = await axios.get('http://localhost:1338/api/users/get');
-      if (status === 200) setAllPeople(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
   useEffect(() => {
     getSetlists();
-    getPeople();
-  }, [getSetlists, getPeople]);
-
-  // To render the songs that are added to setlist
-  const addedPeopleList = allPeople.filter((person) => addedPeople.includes(person._id));
-  const handleAddPerson = (id: string) => {
-    let result = addedPeople.includes(id)
-      ? addedPeople.filter((add) => add != id)
-      : [...addedPeople, id];
-    setAddedPeople(result);
-  };
-
-  const handleSaveFolder = async () => {
-    try {
-      let payload: AxiosResponse;
-      if (folderId) {
-        payload = await axios.put('http://localhost:1338/api/groups/update', {
-          id: folderId,
-          groupName: folderName,
-          userIds: addedPeople,
-        });
-      } else {
-        payload = await axios.post('http://localhost:1338/api/groups/create', {
-          groupName: folderName,
-          userIds: addedPeople,
-        });
-      }
-
-      if (payload.status === 200) {
-        handleCloseModal();
-        setInvalidFolder('');
-        setSuccessSnackbarOpen(true);
-        return payload.data;
-      }
-
-      setInvalidFolder('Error saving setlist');
-      setSuccessSnackbarOpen(false);
-    } catch (error: any) {
-      setInvalidFolder(error.response.data);
-      setSuccessSnackbarOpen(false);
-      console.log(error);
-    }
-  };
-
-  const handleCloseSuccessSnackbar = () => {
-    setSuccessSnackbarOpen(false);
-  };
+  }, [getSetlists]);
 
   return (
     <Container style={{ paddingTop: '5em', width: '100%', height: '100%' }}>
-      {/* Error message */}
-      {invalidFolder ? (
-        <Typography variant={'body2'} color={'error'}>
-          {invalidFolder}
-        </Typography>
-      ) : null}
-
-      {/* Success message */}
-      <Snackbar
-        open={successSnackbarOpen}
-        onClose={handleCloseSuccessSnackbar}
-        autoHideDuration={6000}
-        TransitionComponent={Fade}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert severity="success" onClose={handleCloseSuccessSnackbar}>
-          <AlertTitle>Success</AlertTitle>
-          Folder successfully saved!
-        </Alert>
-      </Snackbar>
-
       {/* Toolbar at the top */}
       <Stack
         direction="row"
@@ -253,7 +147,7 @@ const SetlistListContainer: FC = (): ReactElement => {
           }}
         >
           <MenuItem onClick={() => navigate('/setlist/add')}>Create Setlist</MenuItem>
-          <MenuItem onClick={toggleFolderDrawer(true)}>Create Folder</MenuItem>
+          <MenuItem onClick={() => toggleFolderDrawer(true)}>Create Folder</MenuItem>
         </Menu>
       </Stack>
 
@@ -338,186 +232,14 @@ const SetlistListContainer: FC = (): ReactElement => {
         <Box></Box>
       </Stack>
 
-      {/* Folder settings */}
-      <Drawer
-        anchor={'right'}
-        open={openDrawer}
-        onClose={toggleFolderDrawer(false)}
-        PaperProps={{
-          sx: { width: '25%' },
-        }}
-      >
-        <Box>
-          <Stack direction="row" spacing={1} padding={2}>
-            <Folder sx={{ color: 'primary.light' }} />
-            <Typography variant="h4">Folder Info</Typography>
-          </Stack>
-
-          <Divider sx={{ borderColor: '#49454F' }} />
-
-          {/* folder name field */}
-          <Box sx={{ p: 2 }}>
-            <Typography variant="subtitle1">Folder Name</Typography>
-            <TextField fullWidth id="folderName" onChange={(e) => setFolderName(e.target.value)} />
-          </Box>
-
-          <Divider sx={{ borderColor: '#49454F' }} />
-
-          {/* folder members list */}
-          <Box sx={{ p: 2 }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Typography variant="h3" sx={{ color: 'secondary.main' }}>
-                Members
-              </Typography>
-              <Button
-                startIcon={<GroupAdd />}
-                onClick={handleOpenModal}
-                sx={{ color: 'primary.light' }}
-              >
-                Add people
-              </Button>
-            </Stack>
-
-            <List>
-              {addedPeopleList.length > 0 ? (
-                addedPeopleList.map((person, i) => (
-                  <ListItem
-                    key={i}
-                    secondaryAction={
-                      <IconButton edge="end">
-                        <Delete sx={{ color: '#EFB8C8' }} />
-                      </IconButton>
-                    }
-                  >
-                    <Stack direction="column">
-                      <Typography variant="subtitle1">{person.fullName}</Typography>
-                      <Typography variant="body2">{person.email}</Typography>
-                    </Stack>
-                  </ListItem>
-                ))
-              ) : (
-                <ListItem>
-                  <Typography variant="subtitle1" color="primary.lighter">
-                    No members added
-                  </Typography>
-                </ListItem>
-              )}
-            </List>
-          </Box>
-
-          {/* save and cancel button for drawer */}
-          <Box sx={{ position: 'absolute', bottom: 12, width: '100%' }}>
-            <Stack direction="row" spacing={2} px={2} width={'100%'}>
-              <Button
-                sx={{
-                  width: '50%',
-                  backgroundColor: 'secondary.main',
-                  color: 'primary.main',
-                  borderRadius: '40px',
-                  textTransform: 'none',
-                }}
-                onClick={() => handleSaveFolder()}
-              >
-                Save
-              </Button>
-              <Button
-                sx={{
-                  width: '50%',
-                  backgroundColor: 'primary.dark',
-                  color: 'secondary.light',
-                  borderRadius: '40px',
-                  textTransform: 'none',
-                }}
-                onClick={toggleFolderDrawer(false)}
-              >
-                Cancel
-              </Button>
-            </Stack>
-          </Box>
-        </Box>
-      </Drawer>
-
-      {/* Add people modal */}
-      <Dialog
-        open={openModal}
-        onClose={handleCloseModal}
-        PaperProps={{ sx: { width: '30rem', height: '30rem' } }}
-      >
-        <DialogTitle>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <GroupAdd sx={{ color: 'primary.light' }} />
-            <Typography variant="h3">Add People</Typography>
-          </Stack>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleCloseModal}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <Close />
-        </IconButton>
-        <InputBase
-          placeholder="Search name or email"
-          sx={{
-            alignSelf: 'center',
-            width: '90%',
-            py: 1,
-            px: 2,
-            color: 'secondary.light',
-            backgroundColor: 'secondary.lighter',
-            borderRadius: '28px',
-          }}
-        />
-        <DialogContent sx={{ pt: 0 }}>
-          <List>
-            {allPeople.length > 0 ? (
-              allPeople.map((person, i) => (
-                <ListItem
-                  key={i}
-                  secondaryAction={
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleAddPerson(person._id)}
-                      sx={{
-                        width: '30px',
-                        height: '30px',
-                        border: 1,
-                        borderRadius: '50%',
-                        borderWidth: '2px',
-                        color: 'primary.lighter',
-                        '&:hover': { color: 'secondary.main' },
-                        '&.Mui-selected': {
-                          backgroundColor: 'secondary.main',
-                          color: 'primary.darkest',
-                        },
-                      }}
-                      className={addedPeople.includes(person._id) ? 'Mui-selected' : ''}
-                    >
-                      {addedPeople.includes(person._id) ? <Check /> : <Add />}
-                    </IconButton>
-                  }
-                >
-                  <Stack direction="column">
-                    <Typography variant="subtitle1">{person.fullName}</Typography>
-                    <Typography variant="body2">{person.email}</Typography>
-                  </Stack>
-                </ListItem>
-              ))
-            ) : (
-              <ListItem>
-                <Typography variant="subtitle1" color="primary.lighter">
-                  No users exist or failed retrieving users
-                </Typography>
-              </ListItem>
-            )}
-          </List>
-        </DialogContent>
-      </Dialog>
+      <SetlistFolderDrawer
+        openDrawer={openDrawer}
+        toggleFolderDrawer={toggleFolderDrawer}
+        setFolderId={setFolderId}
+        setFolderName={setFolderName}
+        folderId={folderId}
+        folderName={folderName}
+      />
     </Container>
   );
 };

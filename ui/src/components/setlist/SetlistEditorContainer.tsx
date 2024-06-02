@@ -30,6 +30,7 @@ import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import SetlistSongCard from './SetlistSongCard';
+import HeaderWithIcon from '../common/HeaderWithIcon';
 
 const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -66,7 +67,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
       if (status === 200) {
         setAllSongs(data);
 
-        // TODO: filter logic
+        // TODO: filter logic with allSongs, setFilterData, and setShowDetails
         if (search !== '') {
           const songs: SongCardProps[] = data;
 
@@ -181,17 +182,12 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
             {/* setlist details and info */}
             <Box display="flex" justifyContent="center" width={'35vw'}>
               <Stack direction="column" spacing={2} width={'100%'}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  sx={{ color: 'primary.light' }}
-                >
-                  <Info />
-                  <Typography variant="h3" alignItems="center">
-                    Details
-                  </Typography>
-                </Stack>
+                <HeaderWithIcon
+                  Icon={Info}
+                  headerText="Details"
+                  headerVariant="h3"
+                  iconColor="primary.light"
+                />
 
                 {/* Setlist Name Field */}
                 <TextField

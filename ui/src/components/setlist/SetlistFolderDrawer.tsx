@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import HeaderWithIcon from '../common/HeaderWithIcon';
 
 type SetlistFolderDrawerProps = {
   openDrawer: boolean;
@@ -149,10 +150,12 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
         }}
       >
         <Box>
-          <Stack direction="row" spacing={1} padding={2}>
-            <Folder sx={{ color: 'primary.light' }} />
-            <Typography variant="h4">Folder Info</Typography>
-          </Stack>
+          <HeaderWithIcon
+            Icon={Folder}
+            headerText="Folder Info"
+            headerVariant="h4"
+            iconColor="primary.light"
+          />
 
           <Divider sx={{ borderColor: '#49454F' }} />
 
@@ -237,6 +240,7 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
           </Box>
         </Box>
       </Drawer>
+
       {/* Add people modal */}
       <Dialog
         open={openModal}
@@ -244,10 +248,12 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
         PaperProps={{ sx: { width: '30rem', height: '30rem' } }}
       >
         <DialogTitle>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <GroupAdd sx={{ color: 'primary.light' }} />
-            <Typography variant="h3">Add People</Typography>
-          </Stack>
+          <HeaderWithIcon
+            Icon={GroupAdd}
+            headerText="Add People"
+            headerVariant="h3"
+            iconColor="primary.light"
+          />
         </DialogTitle>
         <IconButton
           aria-label="close"

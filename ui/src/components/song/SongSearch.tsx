@@ -27,6 +27,7 @@ import {
   displayResultOptions,
 } from '../../constants';
 import { Info, Refresh, Tune } from '@mui/icons-material';
+import HeaderWithIcon from '../common/HeaderWithIcon';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
@@ -154,8 +155,7 @@ const SongSearch = (props: SongSearchProps) => {
       <Box sx={{ color: '#9E9E9E' }}>
         {/* filter heading and reset button */}
         <Stack direction="row" alignItems="center" pb={3} gap={1} spacing="space-between">
-          <Tune />
-          <Typography variant="h3">Filter</Typography>
+          <HeaderWithIcon Icon={Tune} headerText="Filter" headerVariant="h3" />
           <Button
             sx={{
               padding: '10px 25px',

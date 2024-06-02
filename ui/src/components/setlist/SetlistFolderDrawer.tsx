@@ -150,12 +150,14 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
         }}
       >
         <Box>
-          <HeaderWithIcon
-            Icon={Folder}
-            headerText="Folder Info"
-            headerVariant="h4"
-            iconColor="primary.light"
-          />
+          <Box sx={{ p: 2 }}>
+            <HeaderWithIcon
+              Icon={Folder}
+              headerText="Folder Info"
+              headerVariant="h4"
+              iconColor="primary.light"
+            />
+          </Box>
 
           <Divider sx={{ borderColor: '#49454F' }} />
 

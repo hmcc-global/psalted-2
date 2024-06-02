@@ -12,7 +12,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import Language from '@mui/icons-material/Language';
 import Person from '@mui/icons-material/Person';
@@ -31,7 +30,6 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     { icon: <Language />, text: 'Home', path: '' },
     { icon: <MusicNoteIcon />, text: 'Songs', path: 'song' },
     { icon: <QueueMusicIcon />, text: 'Setlists', path: 'setlist' },
-    { icon: <SupervisedUserCircleIcon />, text: 'Groups', path: 'group' },
     { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },
     { icon: <Person />, text: 'Profile', path: 'profile' },
   ];

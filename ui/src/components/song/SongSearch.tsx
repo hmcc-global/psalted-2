@@ -27,7 +27,7 @@ import {
   displayResultOptions,
 } from '../../constants';
 import { Info, Refresh, Tune } from '@mui/icons-material';
-import HeaderWithIcon from '../common/HeaderWithIcon';
+import HeaderWithIcon from '../custom/HeaderWithIcon';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;

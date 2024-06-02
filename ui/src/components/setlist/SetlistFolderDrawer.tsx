@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import HeaderWithIcon from '../common/HeaderWithIcon';
+import HeaderWithIcon from '../custom/HeaderWithIcon';
 
 type SetlistFolderDrawerProps = {
   openDrawer: boolean;

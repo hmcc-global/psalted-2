@@ -30,7 +30,7 @@ import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import SetlistSongCard from './SetlistSongCard';
-import HeaderWithIcon from '../common/HeaderWithIcon';
+import HeaderWithIcon from '../custom/HeaderWithIcon';
 
 const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
   const isDesktop = useMediaQuery('(min-width: 768px)');

@@ -60,12 +60,6 @@ const HomeContainer: FC = (): ReactElement => {
               route="/setlist"
             />
             <HomeTab
-              title="My Groups"
-              description="Create setlists with other people in your groups"
-              Icon={SupervisedUserCircleIcon}
-              route="/group"
-            />
-            <HomeTab
               title="Resources"
               description="All things resources"
               Icon={TextSnippetIcon}

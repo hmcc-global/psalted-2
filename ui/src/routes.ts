@@ -9,7 +9,6 @@ import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
 import SongsViewContainer from './components/songsView/SongsViewContainer';
 import SetlistListContainer from './components/setlist/SetlistListContainer';
-import GroupListContainer from './components/group/GroupListContainer';
 import SetlistEditorContainer from './components/setlist/SetlistEditorContainer';
 
 // interface
@@ -121,15 +120,6 @@ export const routes: Array<Route> = [
     path: '/setlist/add',
     enabled: true,
     component: SetlistEditorContainer,
-    permissions: ['user'],
-  },
-  // Group routes
-  {
-    key: 'group-route',
-    title: 'Group',
-    path: '/group',
-    enabled: true,
-    component: GroupListContainer,
     permissions: ['user'],
   },
 ];

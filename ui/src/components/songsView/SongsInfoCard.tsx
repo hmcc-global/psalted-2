@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import InfoIcon from '@mui/icons-material/Info';
+import { useState } from 'react';
 
 type SongTitleCardProps = {
   song: SongViewSchema | undefined;
@@ -18,11 +19,17 @@ type SongTitleCardProps = {
 
 const SongsInfoCard = (props: SongTitleCardProps) => {
   const song = props.song;
+  const [open, setOpen] = useState(false);
 
   return (
     <Container>
       <Box>
-        <Accordion sx={{ backgroundColor: 'primary.darkest', borderRadius: '8px' }}>
+        <Accordion
+          disableGutters
+          sx={{ backgroundColor: 'primary.darkest', borderRadius: '8px 8px 0 0' }}
+          expanded={open}
+          onChange={() => setOpen(!open)}
+        >
           <Box>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon color="primary" />}
@@ -36,7 +43,16 @@ const SongsInfoCard = (props: SongTitleCardProps) => {
             </AccordionSummary>
           </Box>
 
-          <AccordionDetails>
+          <AccordionDetails
+            sx={{
+              position: 'absolute',
+              backgroundColor: 'primary.darkest',
+              borderRadius: '0px 0px 8px 8px',
+              maxHeight: open ? '500px' : '0',
+              overflow: 'hidden',
+              transition: 'max-height 0.5s ease-in-out',
+            }}
+          >
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2}>
                 <Grid item xs={3} md={4}>

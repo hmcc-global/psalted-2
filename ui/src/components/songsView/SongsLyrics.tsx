@@ -21,6 +21,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     let para = 0;
     lyricsLine &&
       lyricsLine.map((line) => (line.includes('{') && line.includes('}') ? para++ : null));
+    return para;
   };
 
   const searchChordColor = (chord: string): string | undefined => {
@@ -91,7 +92,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
             const regex = new RegExp(`(?=${escapedSplitChar})`);
             const lyrics = line.split(regex);
             return result.push(
-              <Stack key={j} direction="row">
+              <Stack key={j} flexDirection="row" flexWrap="wrap">
                 {lyrics.map((lyric, i) => {
                   if (lyric.includes('[') && lyric.includes(']')) {
                     const startChord = lyric.indexOf('[');
@@ -105,7 +106,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                         ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
                         : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
                       chord.slice(1);
-                    const textLyrics = '\u00A0' + lyric.slice(endChord + 1);
+                    const textLyrics = lyric.slice(endChord + 1);
                     const chipColor = getColor(transpossedChord);
                     return (
                       <Box key={i}>
@@ -130,14 +131,14 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                             }}
                           />
                         ) : null}
-                        <Typography>{textLyrics}</Typography>
+                        <Typography style={{ whiteSpace: 'pre-wrap' }}>{textLyrics}</Typography>
                       </Box>
                     );
                   } else {
                     return (
                       <Box key={i}>
                         {chordStatus ? <Chip sx={{ visibility: 'hidden' }} /> : null}
-                        <Typography>{lyric}</Typography>
+                        <Typography style={{ whiteSpace: 'pre-wrap' }}>{lyric}</Typography>
                       </Box>
                     );
                   }
@@ -191,10 +192,10 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     const res = groupLyricsToParagraphs(song);
     setFinalLyrics(res);
   }, [parseLyrics, song, groupLyricsToParagraphs]);
-
+  console.log(finalLyrics);
   return (
     <>
-      <Grid container width={'100%'}>
+      <Grid container width={'100%'} spacing={2}>
         {finalLyrics &&
           finalLyrics.map((chunk, i) => {
             return (

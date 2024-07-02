@@ -20,6 +20,7 @@ import SongsLyrics from './SongsLyrics';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import PlaylistAdd from '@mui/icons-material/PlaylistAdd';
 import { Share } from '@mui/icons-material';
+import SongsInfoCard from './SongsInfoCard';
 
 type SongsButtonCardProps = {
   song: SongViewSchema | undefined;
@@ -207,6 +208,11 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
             <IconButton>
               <Share aria-label="share" sx={{ color: 'secondary.main' }} />
             </IconButton>
+          </Box>
+
+          {/* about song */}
+          <Box>
+            <SongsInfoCard song={song} />
           </Box>
         </Stack>
       </Box>

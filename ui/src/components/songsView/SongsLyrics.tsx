@@ -98,14 +98,22 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                     const startChord = lyric.indexOf('[');
                     const endChord = lyric.indexOf(']');
                     const chord = lyric.slice(startChord + 1, endChord);
+
+                    let cleanedChord = chord.slice(0, 2);
+                    if (cleanedChord.length > 1 && !['#', 'b'].includes(cleanedChord[1])) {
+                      cleanedChord = cleanedChord[0];
+                    }
+                    cleanedChord = cleanedChord[0].toUpperCase() + cleanedChord.slice(1);
                     const chordIndex = useFlat
-                      ? flatMusicKeysOptions.indexOf(chord[0])
-                      : sharpMusicKeysOptions.indexOf(chord[0]);
+                      ? flatMusicKeysOptions.indexOf(cleanedChord)
+                      : sharpMusicKeysOptions.indexOf(cleanedChord);
+
+                    const transpossedChordBase = useFlat
+                      ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
+                      : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12];
                     const transpossedChord =
-                      (useFlat
-                        ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
-                        : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
-                      chord.slice(1);
+                      transpossedChordBase + chord.slice(cleanedChord.length);
+
                     const textLyrics = lyric.slice(endChord + 1);
                     const chipColor = getColor(transpossedChord);
                     return (
@@ -192,7 +200,6 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     const res = groupLyricsToParagraphs(song);
     setFinalLyrics(res);
   }, [parseLyrics, song, groupLyricsToParagraphs]);
-  console.log(finalLyrics);
   return (
     <>
       <Grid container width={'100%'} spacing={2}>

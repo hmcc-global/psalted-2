@@ -1,22 +1,22 @@
 // song constants
 export const musicKeysOptions = [
   'A',
-  'A♯',
-  'B♭',
+  'A#',
+  'Bb',
   'B',
   'C',
-  'C♯',
-  'D♭',
+  'C#',
+  'Db',
   'D',
-  'D♯',
-  'E♭',
+  'D#',
+  'Eb',
   'E',
   'F',
-  'F♯',
-  'G♭',
+  'F#',
+  'Gb',
   'G',
-  'G♯',
-  'A♭',
+  'G#',
+  'Ab',
 ];
 
 export const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code', 'Time'];

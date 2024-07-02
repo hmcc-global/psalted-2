@@ -61,7 +61,7 @@ const SongsViewContainer: FC = (): ReactElement => {
                 <SongsButtonCard song={song} />
               </Box>
 
-              <Box width={['25%']}>
+              <Box width={['30%']}>
                 <SongsInfoCard song={song} />
               </Box>
             </Stack>

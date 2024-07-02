@@ -63,7 +63,7 @@ const SongListContainer: FC = (): ReactElement => {
     } catch (error) {
       console.log(error);
     }
-  }, [location.search, filterData]);
+  }, [location.search]);
 
   const modalSearchStyle = {
     position: 'absolute',
@@ -75,7 +75,7 @@ const SongListContainer: FC = (): ReactElement => {
 
   useEffect(() => {
     getSongResults();
-  },[]);
+  },[getSongResults]);
 
   return (
     <>

@@ -39,25 +39,27 @@ const SongsInfoCard = (props: SongTitleCardProps) => {
           <AccordionDetails>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2}>
-                <Grid item xs={3} md={2}>
+                <Grid item xs={3} md={4}>
                   <Typography color={'#938F99'}>Themes</Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid container item xs={9} md={8} spacing={1}>
                   {song &&
                     song.themes.map((themes: string, i: number) => {
                       return (
-                        <Chip
-                          sx={{ background: '#2B2930', color: '#CCC2DC', mx: 0.5 }}
-                          label={themes}
-                          key={i}
-                        />
+                        <Grid item xs={12}>
+                          <Chip
+                            sx={{ background: '#2B2930', color: '#CCC2DC', mx: 0.5 }}
+                            label={themes}
+                            key={i}
+                          />
+                        </Grid>
                       );
                     })}
                 </Grid>
-                <Grid item xs={3} md={2}>
+                <Grid item xs={3} md={4}>
                   <Typography color={'#938F99'}>Tempo</Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid item xs={9} md={8}>
                   {song &&
                     song.tempo.map((themes: string, i: number) => {
                       return (
@@ -69,28 +71,30 @@ const SongsInfoCard = (props: SongTitleCardProps) => {
                       );
                     })}
                 </Grid>
-                <Grid item xs={3} md={2}>
+                <Grid item xs={3} md={4}>
                   <Typography color={'#938F99'}>Original Key</Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid item xs={9} md={8}>
                   <Typography color="#CCC2DC">{song && song.originalKey}</Typography>
                 </Grid>
-                <Grid item xs={3} md={2}>
-                  <Typography color={'#938F99'}>Suggested Key(s)</Typography>
+                <Grid item xs={3} md={4}>
+                  <Typography style={{ wordWrap: 'break-word' }} color={'#938F99'}>
+                    Suggested Key(s)
+                  </Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid item xs={9} md={8}>
                   <Typography color="#CCC2DC">{song && song.originalKey}</Typography>
                 </Grid>
-                <Grid item xs={3} md={2}>
+                <Grid item xs={3} md={4}>
                   <Typography color={'#938F99'}>Year</Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid item xs={9} md={8}>
                   <Typography color="#CCC2DC">{song && song.year}</Typography>
                 </Grid>
-                <Grid item xs={3} md={2}>
+                <Grid item xs={3} md={4}>
                   <Typography color={'#938F99'}>Code</Typography>
                 </Grid>
-                <Grid item xs={9} md={10}>
+                <Grid item xs={9} md={8}>
                   <Typography color="#CCC2DC">{song && song.code}</Typography>
                 </Grid>
               </Grid>

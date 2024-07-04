@@ -13,6 +13,7 @@ import {
   IconButton,
   useMediaQuery,
   Button,
+  Divider,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -24,10 +25,11 @@ import SongsInfoCard from './SongsInfoCard';
 
 type SongsButtonCardProps = {
   song: SongViewSchema | undefined;
+  userView?: boolean;
+  userHeader?: boolean;
 };
 
-const SongsButtonsCard = (props: SongsButtonCardProps) => {
-  const { song } = props;
+const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsButtonCardProps) => {
   const [chordStatus, setChordStatus] = useState(false);
   const [useFlat, setUseFlat] = useState(false);
   const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
@@ -184,41 +186,46 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           </Stack>
 
           {/* add to setlist button */}
-          <Button
-            variant="outlined"
-            sx={{
-              borderWidth: '1px',
-              borderColor: '#332D41',
-              padding: '10px 25px',
-              borderRadius: '40px',
-              color: 'secondary.main',
-              textTransform: 'none',
-            }}
-            startIcon={<PlaylistAdd />}
-          >
-            <Typography variant="subtitle1">Add to Setlist</Typography>
-          </Button>
+          {userView ? null : (
+            <Button
+              variant="outlined"
+              sx={{
+                borderWidth: '1px',
+                borderColor: '#332D41',
+                padding: '10px 25px',
+                borderRadius: '40px',
+                color: 'secondary.main',
+                textTransform: 'none',
+              }}
+              startIcon={<PlaylistAdd />}
+            >
+              <Typography variant="subtitle1">Add to Setlist</Typography>
+            </Button>
+          )}
 
           {/* share button */}
-          <Box
-            alignItems="center"
-            justifyContent="center"
-            display="flex"
-            border="1px solid #332D41"
-            sx={{ borderRadius: '100px', p: 1 }}
-          >
-            <IconButton>
-              <Share aria-label="share" sx={{ color: 'secondary.main' }} />
-            </IconButton>
-          </Box>
-
-          {/* about song */}
-          <Box>
-            <SongsInfoCard song={song} />
-          </Box>
+          {userView ? null : (
+            <Box
+              alignItems="center"
+              justifyContent="center"
+              border="1px solid #332D41"
+              sx={{ borderRadius: '100px', p: 1 }}
+            >
+              <IconButton>
+                <Share aria-label="share" sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Box>
+          )}
         </Stack>
       </Box>
-
+      {/* render header */}
+      {userHeader ? (
+        <Box sx={{ width: '100%' }}>
+          <Typography>{song?.title}</Typography>
+          <Typography>{song?.artist}</Typography>
+          <Divider />
+        </Box>
+      ) : null}
       {/* render lyrics */}
       <Box sx={{ width: '100%' }}>
         <SongsLyrics

@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { routes as appRoutes } from './routes';
+import { routes as appRoutes, userRoutes } from './routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import customTheme from './theme';
 import NavBarMobile from './components/navigation/NavBarMobile';
@@ -14,6 +14,7 @@ import './styles.css';
 
 function App() {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isUserView = window.location.pathname.includes('/view');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -28,27 +29,37 @@ function App() {
         <CssBaseline />
         <BrowserRouter>
           <CustomAppContainer>
-            <Sidebar isOpen={isSidebarOpen} />
-
-            <Box component="main" sx={{ flexGrow: 1 }}>
-              {navBar}
-
+            {isUserView ? (
               <Routes>
-                {appRoutes.map((route) => (
-                  // TODO: Uncomment this when PrivateRouteWrapper is implemented and delete the navbar here
-                  // <Route
-                  //   key={route.key}
-                  //   path={route.path}
-                  //   element={
-                  //     <PrivateRouteWrapper permissions={route.permissions}>
-                  //       <route.component />
-                  //     </PrivateRouteWrapper>
-                  //   }
-                  // />
+                {userRoutes.map((route) => (
                   <Route key={route.key} path={route.path} element={<route.component />} />
                 ))}
               </Routes>
-            </Box>
+            ) : (
+              <>
+                <Sidebar isOpen={isSidebarOpen} />
+
+                <Box component="main" sx={{ flexGrow: 1 }}>
+                  {navBar}
+
+                  <Routes>
+                    {appRoutes.map((route) => (
+                      // TODO: Uncomment this when PrivateRouteWrapper is implemented and delete the navbar here
+                      // <Route
+                      //   key={route.key}
+                      //   path={route.path}
+                      //   element={
+                      //     <PrivateRouteWrapper permissions={route.permissions}>
+                      //       <route.component />
+                      //     </PrivateRouteWrapper>
+                      //   }
+                      // />
+                      <Route key={route.key} path={route.path} element={<route.component />} />
+                    ))}
+                  </Routes>
+                </Box>
+              </>
+            )}
           </CustomAppContainer>
         </BrowserRouter>
       </ThemeProvider>

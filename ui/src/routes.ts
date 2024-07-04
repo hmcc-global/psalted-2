@@ -10,6 +10,7 @@ import ProfileContainer from './components/profile/ProfileContainer';
 import SongsViewContainer from './components/songsView/SongsViewContainer';
 import SetlistListContainer from './components/setlist/SetlistListContainer';
 import SetlistEditorContainer from './components/setlist/SetlistEditorContainer';
+import SetlistViewContainer from './components/setlistView/SetlistViewContainer';
 
 // interface
 interface Route {
@@ -121,5 +122,14 @@ export const routes: Array<Route> = [
     enabled: true,
     component: SetlistEditorContainer,
     permissions: ['user'],
-  },
+  },  
 ];
+
+export const userRoutes: Array<Route> = [  {
+  key: 'setlist-view-route',
+  title: 'View Setlist',
+  path: '/setlist/view/:id',
+  enabled: true,
+  component: SetlistViewContainer,
+  permissions: ['user'],
+},]

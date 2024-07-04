@@ -37,6 +37,7 @@ export type Setlist = {
   _id: string;
   name: string;
   date: Date;
+  songs: string[];
   sharedUserIds: string[];
 };
 

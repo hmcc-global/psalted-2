@@ -104,9 +104,10 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                       cleanedChord = cleanedChord[0];
                     }
                     cleanedChord = cleanedChord[0].toUpperCase() + cleanedChord.slice(1);
-                    const chordIndex = useFlat
-                      ? flatMusicKeysOptions.indexOf(cleanedChord)
-                      : sharpMusicKeysOptions.indexOf(cleanedChord);
+                    const chordIndex =
+                      flatMusicKeysOptions.indexOf(cleanedChord) === -1
+                        ? sharpMusicKeysOptions.indexOf(cleanedChord)
+                        : flatMusicKeysOptions.indexOf(cleanedChord);
 
                     const transpossedChordBase = useFlat
                       ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]

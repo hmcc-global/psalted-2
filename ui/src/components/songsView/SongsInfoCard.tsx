@@ -62,7 +62,7 @@ const SongsInfoCard = (props: SongTitleCardProps) => {
                   {song &&
                     song.themes.map((themes: string, i: number) => {
                       return (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} key={i}>
                           <Chip
                             sx={{ background: '#2B2930', color: '#CCC2DC', mx: 0.5 }}
                             label={themes}

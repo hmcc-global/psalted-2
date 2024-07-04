@@ -32,9 +32,16 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
   const [useFlat, setUseFlat] = useState(false);
   const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
   const [split, setSplit] = useState(1);
-  
+
   const isDesktop = useMediaQuery('(min-width:768px)');
   const navigate = useNavigate();
+  const buttonClass = {
+    display: 'flex',
+    justifyContent: 'center',
+    background: '#141218',
+    padding: '1px 12px',
+    borderRadius: '4px',
+  };
 
   const handleChange = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     return (event: React.ChangeEvent<{}>, value: boolean) => {
@@ -103,11 +110,8 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           </Stack>
 
           {/* chords toggle */}
-          <Box
-            fontSize={{ sm: '16px', md: '26px' }}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
-          >
-            <FormGroup>
+          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
+            <FormGroup style={{ justifyContent: 'center' }}>
               <FormControlLabel
                 labelPlacement="start"
                 sx={{ color: 'secondary.main' }}
@@ -124,11 +128,8 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           </Box>
 
           {/* flat toggle */}
-          <Box
-            fontSize={{ sm: '16px', md: '26px' }}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
-          >
-            <FormGroup>
+          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
+            <FormGroup style={{ justifyContent: 'center' }}>
               <FormControlLabel
                 labelPlacement="start"
                 sx={{ color: 'secondary.main' }}
@@ -202,6 +203,7 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           <Box
             alignItems="center"
             justifyContent="center"
+            display="flex"
             border="1px solid #332D41"
             sx={{ borderRadius: '100px', p: 1 }}
           >

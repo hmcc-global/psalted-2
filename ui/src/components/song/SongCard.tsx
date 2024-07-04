@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SongFieldArray from './SongFieldArray';
 import SongTagArray from './SongTagArray';
+import { getLyricsPreview } from '../../helpers/song';
 
 const SongCard = (props: SongCardProps) => {
   const {
@@ -18,6 +19,7 @@ const SongCard = (props: SongCardProps) => {
     year,
     timeSignature,
     code,
+    chordLyrics,
     lyricsPreview,
     filterData,
     showDetails,
@@ -122,9 +124,11 @@ const SongCard = (props: SongCardProps) => {
           <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
             {artist}
           </Typography>
-          {lyricsPreview ? (
-            <Typography sx={{ color: 'secondary.light' }}>{lyricsPreview}</Typography>
-          ) : null}
+          <Typography sx={{ color: 'secondary.light' }}>
+            {lyricsPreview && !lyricsPreview.includes('[')
+              ? lyricsPreview
+              : getLyricsPreview(chordLyrics)}
+          </Typography>
           {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
           <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
             <Button size="small" variant="text" onClick={handleClose}>

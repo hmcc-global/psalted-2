@@ -67,14 +67,12 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                     color: '#A9A9A9',
                     fontWeight: 'bold',
                     borderRadius: 4,
-                    backgroundColor: '#FAFAFA',
                     border: '2',
                     fontSize: '14px',
                   },
                 }}
                 style={{
                   borderRadius: 4,
-                  backgroundColor: 'primary',
                   marginBottom: '10px',
                   marginTop: '3px',
                   borderColor: '#A9A9A9',

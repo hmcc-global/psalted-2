@@ -1,9 +1,41 @@
 import { Setlist } from '#/types/setlist.types';
 import { SongViewSchema } from '#/types/song.types';
-import { Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography, styled } from '@mui/material';
 import axios, { AxiosResponse } from 'axios';
-import { MouseEvent, FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import SongsButtonsCard from '../songsView/SongsButtonsCard';
+
+const HeaderSetlistView = styled(Box)({
+  borderRadius: '16px',
+  padding: '24px 0px',
+  margin: '24px',
+  display: 'flex',
+  justifyContent: 'center',
+  background:
+    'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
+});
+
+const SongSelectTable = styled(Stack)(({ theme }) => ({
+  border: `1px solid ${theme.palette.secondary.dark}`,
+  borderRadius: '16px',
+  '& div:last-child': {
+    borderBottom: 'none',
+  },
+}));
+
+const SongSelectRow = styled(Box)(({ theme }) => ({
+  padding: '16px 24px',
+  borderBottom: `1px solid ${theme.palette.secondary.dark}`,
+}));
+
+const SetlistViewFooter = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  background: theme.palette.background.paper,
+  width: '100%',
+  padding: '16px',
+  marginTop: '16px',
+}));
 
 const SetlistViewContainer: FC = (): ReactElement => {
   const setlistId = window.location.pathname.split('/').reverse()[0];
@@ -60,36 +92,43 @@ const SetlistViewContainer: FC = (): ReactElement => {
 
   // TO-DO: add option to redirect to a selected song from link
   return (
-    <Container maxWidth="lg">
-      {setlist && songs ? (
-        <Stack>
-          {/* Header */}
-          <Typography>{setlist.name}</Typography>
-          {/* Setlist body */}
-          <Grid container>
-            {/* Song choice */}
-            <Grid item xs={3}>
-              <Stack>
-                {songs.map((song) => {
-                  return (
-                    <Typography onClick={() => handleSelectSong(song)} key={song._id}>
-                      {song.title}
-                    </Typography>
-                  );
-                })}
-              </Stack>
+    <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0' }}>
+      <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+        {setlist && songs ? (
+          <Container maxWidth="lg">
+            {/* Header */}
+            <HeaderSetlistView>
+              <Typography variant="h3">{setlist.name}</Typography>
+            </HeaderSetlistView>
+            {/* Setlist body */}
+            <Grid container>
+              {/* Song choice */}
+              <Grid item xs={3}>
+                <SongSelectTable>
+                  {songs.map((song) => {
+                    return (
+                      <SongSelectRow onClick={() => handleSelectSong(song)} key={song._id}>
+                        {song.title}
+                      </SongSelectRow>
+                    );
+                  })}
+                </SongSelectTable>
+              </Grid>
+              {/* Song lyrics */}
+              <Grid item xs={9}>
+                <Stack>
+                  <SongsButtonsCard song={selectedSong} userView={true} userHeader={true} />
+                </Stack>
+              </Grid>
             </Grid>
-            {/* Song lyrics */}
-            <Grid item xs={9}>
-              <Stack>
-                <SongsButtonsCard song={selectedSong} userView={true} userHeader={true} />
-              </Stack>
-            </Grid>
-          </Grid>
-        </Stack>
-      ) : (
-        'loading'
-      )}
+          </Container>
+        ) : (
+          'loading'
+        )}
+        <SetlistViewFooter>
+          <Typography>Created by HMCC T3CH</Typography>
+        </SetlistViewFooter>
+      </Box>
     </Container>
   );
 };

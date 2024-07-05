@@ -14,6 +14,7 @@ import {
   useMediaQuery,
   Button,
   Divider,
+  useTheme,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -34,6 +35,7 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
   const [useFlat, setUseFlat] = useState(false);
   const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
   const [split, setSplit] = useState(1);
+  const theme = useTheme();
 
   const isDesktop = useMediaQuery('(min-width:768px)');
   const navigate = useNavigate();
@@ -220,10 +222,15 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
       </Box>
       {/* render header */}
       {userHeader ? (
-        <Box sx={{ width: '100%' }}>
-          <Typography>{song?.title}</Typography>
-          <Typography>{song?.artist}</Typography>
-          <Divider />
+        <Box sx={{ width: '100%', padding: '12px 12px 12px 0' }}>
+          <Typography variant="h2">{song?.title}</Typography>
+          <Typography
+            variant="subtitle2"
+            style={{ color: theme.palette.secondary.main, margin: '8px 0' }}
+          >
+            {song?.artist}
+          </Typography>
+          <Divider style={{ borderColor: theme.palette.secondary.dark }} />
         </Box>
       ) : null}
       {/* render lyrics */}

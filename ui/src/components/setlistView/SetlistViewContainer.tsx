@@ -1,47 +1,26 @@
 import { Setlist } from '#/types/setlist.types';
 import { SongViewSchema } from '#/types/song.types';
-import { Box, Container, Grid, Stack, Typography, styled } from '@mui/material';
+import { Box, Button, Container, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import axios, { AxiosResponse } from 'axios';
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import SongsButtonsCard from '../songsView/SongsButtonsCard';
-
-const HeaderSetlistView = styled(Box)({
-  borderRadius: '16px',
-  padding: '24px 0px',
-  margin: '24px',
-  display: 'flex',
-  justifyContent: 'center',
-  background:
-    'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
-});
-
-const SongSelectTable = styled(Stack)(({ theme }) => ({
-  border: `1px solid ${theme.palette.secondary.dark}`,
-  borderRadius: '16px',
-  '& div:last-child': {
-    borderBottom: 'none',
-  },
-}));
-
-const SongSelectRow = styled(Box)(({ theme }) => ({
-  padding: '16px 24px',
-  borderBottom: `1px solid ${theme.palette.secondary.dark}`,
-}));
-
-const SetlistViewFooter = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  background: theme.palette.background.paper,
-  width: '100%',
-  padding: '16px',
-  marginTop: '16px',
-}));
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+  HeaderSetlistView,
+  SongSelectRow,
+  SongSelectTable,
+  SetlistViewFooter,
+} from './SetlistViewPaper';
+import SetlistViewMenu from './SetlistViewMenu';
 
 const SetlistViewContainer: FC = (): ReactElement => {
-  const setlistId = window.location.pathname.split('/').reverse()[0];
   const [setlist, setSetlist] = useState<Setlist>();
   const [songs, setSongs] = useState<SongViewSchema[]>();
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [selectedSong, setSelectedSong] = useState<SongViewSchema>();
+
+  const setlistId = window.location.pathname.split('/').reverse()[0];
+  const openMenu = Boolean(menuAnchor);
 
   const getSetlist = useCallback(async () => {
     try {
@@ -74,6 +53,14 @@ const SetlistViewContainer: FC = (): ReactElement => {
     setSelectedSong(song);
   };
 
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setMenuAnchor(null);
+  };
+
   useEffect(() => {
     getSetlist();
   }, []);
@@ -98,7 +85,12 @@ const SetlistViewContainer: FC = (): ReactElement => {
           <Container maxWidth="lg">
             {/* Header */}
             <HeaderSetlistView>
+              <Box />
               <Typography variant="h3">{setlist.name}</Typography>
+              <Button onClick={handleOpenMenu} color="secondary">
+                <MoreVertIcon />
+              </Button>
+              <SetlistViewMenu anchorEl={menuAnchor} open={openMenu} onClose={handleCloseMenu} />
             </HeaderSetlistView>
             {/* Setlist body */}
             <Grid container>
@@ -123,7 +115,7 @@ const SetlistViewContainer: FC = (): ReactElement => {
             </Grid>
           </Container>
         ) : (
-          'loading'
+          <Skeleton>loading ...</Skeleton>
         )}
         <SetlistViewFooter>
           <Typography>Created by HMCC T3CH</Typography>

@@ -79,10 +79,24 @@ const SetlistViewContainer: FC = (): ReactElement => {
 
   // TO-DO: add option to redirect to a selected song from link
   return (
-    <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0' }}>
+    <Container
+      style={{
+        maxWidth: '100vw',
+        width: '100vw',
+        padding: '0',
+      }}
+    >
       <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
         {setlist && songs ? (
-          <Container maxWidth="lg">
+          <Container
+            maxWidth="xl"
+            style={{
+              height: '100vh',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             {/* Header */}
             <HeaderSetlistView>
               <Box />
@@ -93,7 +107,7 @@ const SetlistViewContainer: FC = (): ReactElement => {
               <SetlistViewMenu anchorEl={menuAnchor} open={openMenu} onClose={handleCloseMenu} />
             </HeaderSetlistView>
             {/* Setlist body */}
-            <Grid container>
+            <Grid container height="85%">
               {/* Song choice */}
               <Grid item xs={3}>
                 <SongSelectTable>
@@ -107,8 +121,8 @@ const SetlistViewContainer: FC = (): ReactElement => {
                 </SongSelectTable>
               </Grid>
               {/* Song lyrics */}
-              <Grid item xs={9}>
-                <Stack>
+              <Grid item xs={9} height="100%">
+                <Stack height="100%">
                   <SongsButtonsCard song={selectedSong} userView={true} userHeader={true} />
                 </Stack>
               </Grid>

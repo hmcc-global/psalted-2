@@ -73,7 +73,7 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
   }, [song]);
 
   return (
-    <Container>
+    <Container style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Box
         sx={{
           width: '100%',
@@ -234,7 +234,7 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
         </Box>
       ) : null}
       {/* render lyrics */}
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', display: 'flex', overflow: 'auto' }}>
         <SongsLyrics
           useFlat={useFlat}
           chordStatus={chordStatus}

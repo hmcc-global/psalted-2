@@ -1,8 +1,9 @@
 import { Setlist } from '#/types/setlist.types';
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import SongsTable from './SongsTable';
 
 const SetlistViewContainer: FC = (): ReactElement | null => {
   const { id } = useParams();
@@ -27,11 +28,24 @@ const SetlistViewContainer: FC = (): ReactElement | null => {
   useEffect(() => {
     getSetlist();
   }, [getSetlist, id]);
-  console.log(setlist);
+
+  const date = setlist ? new Date(setlist.date).toISOString().split('T')[0] : '';
   return id && setlist ? (
     <Container maxWidth="lg">
+      {/* Header */}
       <Box>
         <Typography>{setlist.name}</Typography>
+        <Typography>Created on {date}</Typography>
+      </Box>
+      {/* Setlist button */}
+      <Box>
+        <Button>Edit Setlist</Button>
+        <Button>Copy Link</Button>
+        <Button>View in Browser</Button>
+      </Box>
+      {/* Songs Table */}
+      <Box>
+        <SongsTable songs={setlist.songs} />
       </Box>
     </Container>
   ) : null;

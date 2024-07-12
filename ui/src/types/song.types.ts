@@ -89,3 +89,10 @@ export type SongViewSchema = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+// TODO-YY: Figure out which fields are optimal for search bar filtering
+export type SongSearchModalProps = {
+  _id: string;
+  title: string;
+  // artist: string;
+};

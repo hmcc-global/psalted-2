@@ -20,6 +20,10 @@ const RecommendedSongCard: FC<RecommendedSongCardProps> = ({
         borderColor: '#49454F',
         p: 3,
         width: '38%',
+        '&:hover': {
+          cursor: 'pointer',
+          backgroundColor: '#1E1B26',
+        },
       }}
     >
       <Stack direction={'row'} alignItems="center" gap={2}>

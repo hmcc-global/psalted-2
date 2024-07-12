@@ -17,6 +17,9 @@ import {
   AccordionSummary,
   AccordionDetails,
   Chip,
+  Icon,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
 import { SongSearchProps, SongCardProps } from '../../types/song.types';
 import { useState, useEffect, useCallback } from 'react';
@@ -26,92 +29,31 @@ import {
   themeOptions,
   displayResultOptions,
 } from '../../constants';
-import { Info, Refresh, Tune } from '@mui/icons-material';
+import { ArrowDropDown, Info, Refresh, Tune } from '@mui/icons-material';
 import HeaderWithIcon from '../custom/HeaderWithIcon';
+import { useLocation } from 'react-router-dom';
 
 const SongSearch = (props: SongSearchProps) => {
   const Songs: SongCardProps[] = props.songs;
   const prevFilter = props.filterData;
   const isDesktop = props.isDesktop;
 
+  const [searchString, setSearchString] = useState<string>('');
   const [tempoList, setTempoList] = useState<string[]>([]);
   const [disabledTempo, setDisabledTempo] = useState<string[]>(tempoOptions);
   const [themeList, setThemeList] = useState<string[]>([]);
   const [disabledTheme, setDisabledTheme] = useState<string[]>(themeOptions);
-  const [displayResultList, setDisplayResultList] = useState<string[]>([]);
-  const [disabledDisplayResult, setDisabledDisplayResult] =
-    useState<string[]>(displayResultOptions);
+  const [displayResultList, setDisplayResultList] = useState<string[]>(displayResultOptions);
+  const [disabledDisplayResult, setDisabledDisplayResult] = useState<string[]>([]);
 
-  const [search, setSearch] = useState(prevFilter?.search ?? '');
-  const [timeSignature, setTimeSignature] = useState<string[]>(prevFilter?.timeSignature ?? []);
-  const [tempo, setTempo] = useState<string[]>(prevFilter?.tempo ?? []);
-  const [themes, setThemes] = useState<string[]>(prevFilter?.themes ?? []);
-  const [displayResult, setDisplayResult] = useState(
-    prevFilter?.display ?? {
-      tempo: true,
-      themes: true,
-      lyricsPreview: true,
-      originalKey: true,
-      year: true,
-      code: true,
-      timeSignature: true,
-    }
-  );
-
-  const handleValueChange = (setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-    return (event: React.ChangeEvent<{}>, value: string[]) => {
-      setter(value);
-    };
-  };
-
-  const handleDisplayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDisplayResult({
-      ...displayResult,
-      [event.target.name]: event.target.checked,
-    });
-  };
-
-  const handleSubmit = () => {
-    props.setFilterData({
-      search: search,
-      timeSignature: timeSignature,
-      tempo: tempo,
-      themes: themes,
-      display: displayResult,
-    });
-    props.onClose();
-  };
-
-  const handleClear = () => {
-    props.setFilterData({
-      search: undefined,
-      timeSignature: undefined,
-      tempo: undefined,
-      themes: undefined,
-      display: {
-        tempo: true,
-        themes: true,
-        lyricsPreview: true,
-        originalKey: true,
-        year: true,
-        code: true,
-        timeSignature: true,
-      },
-    });
-    setSearch('');
-    setTimeSignature([]);
-    setTempo([]);
-    setThemes([]);
-    setDisplayResult({
-      tempo: true,
-      themes: true,
-      lyricsPreview: true,
-      originalKey: true,
-      year: true,
-      code: true,
-      timeSignature: true,
-    });
-    props.onClose();
+  const handleResetFilters = () => {
+    setSearchString('');
+    setTempoList([]);
+    setDisabledTempo(tempoOptions);
+    setThemeList([]);
+    setDisabledTheme(themeOptions);
+    setDisplayResultList(displayResultOptions);
+    setDisabledDisplayResult([]);
   };
 
   const handleDeleteTempo = (chipToDelete: string) => () => {
@@ -150,106 +92,271 @@ const SongSearch = (props: SongSearchProps) => {
     );
   };
 
+  // TODO-YY: If not necessary, remove
+  // useEffect(() => {
+  //   if (Songs.length > 0) {
+  //     const allTempo = Songs.map((song) => song.tempo);
+  //     const allThemes = Songs.map((song) => song.themes);
+
+  //     const tempoSet = new Set<string>();
+  //     allTempo.forEach((tempo) => tempo.forEach((t) => tempoSet.add(t)));
+  //     setTempoList(Array.from(tempoSet));
+
+  //     const themeSet = new Set<string>();
+  //     allThemes.forEach((theme) => theme.forEach((t) => themeSet.add(t)));
+  //     setThemeList(Array.from(themeSet));
+  //   }
+  // }, [Songs]);
+
+  useEffect(() => {
+    updateFilterData();
+  }, [tempoList, themeList, displayResultList]);
+
+  const updateFilterData = () => {
+    props.setFilterData({
+      search: searchString,
+      tempo: tempoList,
+      themes: themeList,
+      display: {
+        tempo: displayResultList.includes('Tempo'),
+        themes: displayResultList.includes('Themes'),
+        lyricsPreview: displayResultList.includes('First Line Lyric'),
+        originalKey: displayResultList.includes('Original Key'),
+        year: displayResultList.includes('Year'),
+        code: displayResultList.includes('Code'),
+        timeSignature: displayResultList.includes('Time'),
+      },
+    });
+  };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.search) {
+      const searchQuery = new URLSearchParams(location.search).get('q');
+      setSearchString(searchQuery ?? '');
+    }
+  }, [location.search]);
+
+  const [isTempoOpen, setIsTempoOpen] = useState<boolean>(true);
+  const [isThemeOpen, setIsThemeOpen] = useState<boolean>(true);
+  const [isDisplayResultOpen, setIsDisplayResultOpen] = useState<boolean>(true);
+
   return (
-    <Container sx={{ py: '2em', background: '#000', borderRadius: '16px' }}>
+    <Container sx={{ py: '1em', background: '#000', borderRadius: '16px' }}>
       <Box sx={{ color: '#9E9E9E' }}>
         {/* filter heading and reset button */}
-        <Stack direction="row" alignItems="center" pb={3} gap={1} spacing="space-between">
-          <HeaderWithIcon Icon={Tune} headerText="Filter" headerVariant="h3" />
+        <Stack
+          direction="row"
+          alignItems="center"
+          pb={3}
+          justifyContent="space-between"
+          minWidth="100%"
+        >
+          <HeaderWithIcon
+            Icon={Tune}
+            headerText="Filter"
+            headerVariant="h3"
+            headerColor="#CAC4D0"
+          />
           <Button
             sx={{
-              padding: '10px 25px',
-              borderRadius: '16px',
+              padding: '7.5px 15px',
+              borderRadius: '10px',
               backgroundColor: '#000',
               color: 'secondary.main',
               textTransform: 'none',
-              width: '10em',
             }}
             startIcon={<Refresh />}
-            onClick={handleClear}
+            onClick={handleResetFilters}
           >
             Reset All
           </Button>
         </Stack>
 
-        <Stack direction="column" gap={2.5}>
+        <Stack direction="column" gap={'1.25rem'}>
           <Box>
-            <Typography variant="h4" sx={{ pb: 1 }}>
-              Tempo
+            <Typography variant="h4" color="#E6E0E9" pb={'0.5rem'}>
+              Search Keywords
             </Typography>
-            {tempoOptions.map((item) => (
-              <Chip
-                sx={{
-                  backgroundColor: disabledTempo.includes(item)
-                    ? 'secondary.lighter'
-                    : 'primary.dark',
+            <TextField
+              variant="standard"
+              placeholder="Type Song Title, Keywords, etc"
+              InputProps={{
+                style: {
+                  fontSize: '1rem',
+                  color: '#CAC4D0',
+                  background: '#4A4458',
                   borderRadius: '8px',
-                  m: 0.5,
+                  border: 0,
+                  padding: '0.5rem 1rem',
+                },
+                disableUnderline: true,
+              }}
+              sx={{
+                width: '100%',
+                mb: '1.25rem',
+              }}
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
+              autoFocus
+              onKeyDown={() => updateFilterData()}
+            />
+            <Stack
+              direction="row"
+              justifyContent={'space-between'}
+              width="100%"
+              alignItems={'center'}
+              pb="0.5rem"
+            >
+              <Typography variant="h4" color="#E6E0E9">
+                Tempo
+              </Typography>
+              <IconButton
+                onClick={() => setIsTempoOpen(!isTempoOpen)}
+                sx={{
+                  color: '#E8DEF8',
+                  p: 0,
+                  transform: isTempoOpen ? '' : 'rotate(-180deg)',
+                  transition: '0.1s ease-in-out',
                 }}
-                key={item}
-                label={item}
-                onDelete={disabledTempo.includes(item) ? undefined : handleDeleteTempo(item)}
-                onClick={disabledTempo.includes(item) ? handleReactivateTempo(item) : undefined}
-              />
-            ))}
+                disableRipple
+                disableTouchRipple
+              >
+                <ArrowDropDown sx={{ color: '#CAC4D0' }} />
+              </IconButton>
+            </Stack>
+            {isTempoOpen &&
+              tempoOptions.map((item) => (
+                <Chip
+                  sx={{
+                    backgroundColor: disabledTempo.includes(item)
+                      ? 'secondary.lighter'
+                      : 'primary.dark',
+                    borderRadius: '8px',
+                    m: 0.5,
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                    },
+                  }}
+                  key={item}
+                  label={item}
+                  onDelete={disabledTempo.includes(item) ? undefined : handleDeleteTempo(item)}
+                  onClick={disabledTempo.includes(item) ? handleReactivateTempo(item) : undefined}
+                />
+              ))}
           </Box>
 
           <Box>
-            <Typography variant="h4" sx={{ pb: 1 }}>
-              Themes
-            </Typography>
-            {themeOptions.map((item) => (
-              <Chip
+            <Stack
+              direction="row"
+              justifyContent={'space-between'}
+              width="100%"
+              alignItems={'center'}
+              pb="0.5rem"
+            >
+              <Typography variant="h4" color="#E6E0E9">
+                Themes
+              </Typography>
+              <IconButton
+                onClick={() => setIsThemeOpen(!isThemeOpen)}
                 sx={{
-                  backgroundColor: disabledTheme.includes(item)
-                    ? 'secondary.lighter'
-                    : 'primary.dark',
-                  borderRadius: '8px',
-                  m: 0.5,
+                  color: '#E8DEF8',
+                  p: 0,
+                  transform: isThemeOpen ? '' : 'rotate(-180deg)',
+                  transition: '0.1s ease-in-out',
                 }}
-                key={item}
-                label={item}
-                onDelete={disabledTheme.includes(item) ? undefined : handleDeleteTheme(item)}
-                onClick={disabledTheme.includes(item) ? handleReactivateTheme(item) : undefined}
-              />
-            ))}
+                disableRipple
+                disableTouchRipple
+              >
+                <ArrowDropDown sx={{ color: '#CAC4D0' }} />
+              </IconButton>
+            </Stack>
+
+            {isThemeOpen &&
+              themeOptions.map((item) => (
+                <Chip
+                  sx={{
+                    backgroundColor: disabledTheme.includes(item)
+                      ? 'secondary.lighter'
+                      : 'primary.dark',
+                    borderRadius: '8px',
+                    m: 0.5,
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                    },
+                  }}
+                  key={item}
+                  label={item}
+                  onDelete={disabledTheme.includes(item) ? undefined : handleDeleteTheme(item)}
+                  onClick={disabledTheme.includes(item) ? handleReactivateTheme(item) : undefined}
+                />
+              ))}
           </Box>
 
           <Box>
-            <Typography variant="h4" sx={{ pb: 1 }}>
-              Display Results Details
-            </Typography>
-            {displayResultOptions.map((item) => (
-              <Chip
+            <Stack
+              direction="row"
+              justifyContent={'space-between'}
+              width="100%"
+              alignItems={'center'}
+              pb="0.5rem"
+            >
+              <Typography variant="h4" color="#E6E0E9">
+                Display Results Details
+              </Typography>
+              <IconButton
+                onClick={() => setIsDisplayResultOpen(!isDisplayResultOpen)}
                 sx={{
-                  backgroundColor: disabledDisplayResult.includes(item)
-                    ? 'secondary.lighter'
-                    : 'primary.dark',
-                  borderRadius: '8px',
-                  m: 0.5,
+                  color: '#E8DEF8',
+                  p: 0,
+                  transform: isDisplayResultOpen ? '' : 'rotate(-180deg)',
+                  transition: '0.1s ease-in-out',
                 }}
-                key={item}
-                label={item}
-                onDelete={
-                  disabledDisplayResult.includes(item) ? undefined : handleDeleteDisplayResult(item)
-                }
-                onClick={
-                  disabledDisplayResult.includes(item)
-                    ? handleReactivateDisplayResult(item)
-                    : undefined
-                }
-              />
-            ))}
+                disableRipple
+                disableTouchRipple
+              >
+                <ArrowDropDown sx={{ color: '#CAC4D0' }} />
+              </IconButton>
+            </Stack>
+
+            {isDisplayResultOpen &&
+              displayResultOptions.map((item) => (
+                <Chip
+                  sx={{
+                    backgroundColor: disabledDisplayResult.includes(item)
+                      ? 'secondary.lighter'
+                      : 'primary.dark',
+                    borderRadius: '8px',
+                    m: 0.5,
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                    },
+                  }}
+                  key={item}
+                  label={item}
+                  onDelete={
+                    disabledDisplayResult.includes(item)
+                      ? undefined
+                      : handleDeleteDisplayResult(item)
+                  }
+                  onClick={
+                    disabledDisplayResult.includes(item)
+                      ? handleReactivateDisplayResult(item)
+                      : undefined
+                  }
+                />
+              ))}
           </Box>
 
           <Stack
             sx={{ border: 1, p: 1, borderRadius: '4px', borderColor: '#625B71' }}
             direction="row"
             alignItems="center"
-            gap={1}
+            gap={'0.5rem'}
           >
             <Info sx={{ color: '#E8DEF8' }} />
-            <Typography variant="body1">Song Title will be displayed by default</Typography>
+            <Typography variant="body2">Song Title will be displayed by default</Typography>
           </Stack>
         </Stack>
       </Box>

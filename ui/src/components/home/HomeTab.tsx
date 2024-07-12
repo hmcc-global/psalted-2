@@ -20,6 +20,7 @@ const HomeTab: FC<HomeTabProps> = ({ title, description, Icon, route }): ReactEl
         backgroundColor: 'primary.darker',
         '&:hover': {
           backgroundColor: 'primary.main',
+          cursor: 'pointer',
         },
       }}
       onClick={() => navigate(route)}

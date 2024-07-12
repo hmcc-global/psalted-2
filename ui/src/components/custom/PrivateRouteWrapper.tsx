@@ -5,8 +5,8 @@ import { useMediaQuery, Box } from '@mui/material';
 import axios from 'axios';
 import { updateAxiosClient } from './customAxios';
 
-import ErrorPage from './ErrorPage';
 import SearchBar from '../navigation/SearchBar';
+import ErrorPage from './ErrorPage';
 import NavBarMobile from '../navigation/NavBarMobile';
 import Sidebar from '../navigation/Sidebar';
 

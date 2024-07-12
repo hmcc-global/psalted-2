@@ -23,6 +23,7 @@ import axios from 'axios';
 import { FC, ReactElement, useState, useEffect, useCallback, Fragment, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SetlistFolderDrawer from './SetlistFolderDrawer';
+import SetlistViewContainer from './adminView/SetlistViewContainer';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -197,7 +198,7 @@ const SetlistListContainer: FC = (): ReactElement => {
                         <List component="div" disablePadding>
                           {folder.setlistIds.length > 0 ? (
                             folder.setlistIds.map((subSetlist, i) => (
-                              <ListItemButton sx={{ pl: 9 }}>
+                              <ListItemButton sx={{ pl: 9 }} key={i}>
                                 <ListItemIcon>
                                   <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
                                 </ListItemIcon>
@@ -263,7 +264,7 @@ const SetlistListContainer: FC = (): ReactElement => {
                       <List component="div" disablePadding>
                         {folder.setlistIds.length > 0 ? (
                           folder.setlistIds.map((subSetlist, i) => (
-                            <ListItemButton sx={{ pl: 9 }}>
+                            <ListItemButton sx={{ pl: 9 }} key={i}>
                               <ListItemIcon>
                                 <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
                               </ListItemIcon>
@@ -327,7 +328,9 @@ const SetlistListContainer: FC = (): ReactElement => {
         <Divider orientation="vertical" variant="fullWidth" sx={{ borderColor: '#D9D9D980' }} />
 
         {/* display setlist details & preview */}
-        <Box></Box>
+        <Box>
+          <SetlistViewContainer />
+        </Box>
       </Stack>
 
       <SetlistFolderDrawer

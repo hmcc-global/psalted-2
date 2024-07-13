@@ -18,15 +18,16 @@ const HomeContainer: FC = (): ReactElement => {
         alignItems: 'flex-start',
         margin: 'auto',
         paddingBottom: '1em',
-        paddingTop: '5em',
+        paddingTop: '2em',
       }}
     >
       <Stack direction={'column'}>
         <Stack direction={'row'} spacing={2}>
           <Box
             sx={{
-              padding: '2em',
-              borderRadius: '40px',
+              py: '2.5em',
+              px: '2em',
+              borderRadius: '30px',
               background:
                 'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
               width: '50%',
@@ -46,7 +47,7 @@ const HomeContainer: FC = (): ReactElement => {
             </Typography>
           </Box>
 
-          <Stack direction={'column'} spacing={2}>
+          <Stack direction={'column'} spacing={2} width="50%">
             <HomeTab
               title="Songs"
               description="Find, add, view worship songs with lyrics and chords"
@@ -61,7 +62,7 @@ const HomeContainer: FC = (): ReactElement => {
             />
             <HomeTab
               title="Resources"
-              description="All things resources"
+              description="Find resources for worship here"
               Icon={TextSnippetIcon}
               route="/resource"
             />

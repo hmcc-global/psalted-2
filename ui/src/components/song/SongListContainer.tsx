@@ -24,6 +24,7 @@ import {
   ViewModule,
 } from '@mui/icons-material';
 import PageHeader from '../navigation/PageHeader';
+import { getFirstLineLyrics } from '../../helpers/song';
 
 const SongListContainer: FC = (): ReactElement => {
   const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
@@ -238,6 +239,7 @@ const SongListContainer: FC = (): ReactElement => {
                         showDetails={showDetails}
                         filterData={filterData}
                         isDesktop={isDesktop}
+                        firstLine={getFirstLineLyrics(song.lyricsPreview)}
                       />
                     );
                   })

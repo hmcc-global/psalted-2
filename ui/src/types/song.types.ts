@@ -34,7 +34,9 @@ export type SongCardProps = {
   artist: string;
   year: string;
   code: string;
+  lyrics: string;
   lyricsPreview: string;
+  firstLine: string;
   chordLyrics: string;
   createdBy: string;
   lastUpdatedBy: string;
@@ -63,11 +65,12 @@ export type SongSearchFilter = {
   display?: {
     tempo: boolean;
     themes: boolean;
-    lyricsPreview: boolean;
+    // lyricsPreview: boolean;
     originalKey: boolean;
     year: boolean;
     code: boolean;
     timeSignature: boolean;
+    firstLine: boolean;
   };
 };
 

@@ -120,7 +120,7 @@ const SongSearch = (props: SongSearchProps) => {
       display: {
         tempo: displayResultList.includes('Tempo'),
         themes: displayResultList.includes('Themes'),
-        lyricsPreview: displayResultList.includes('First Line Lyric'),
+        firstLine: displayResultList.includes('First Line Lyric'),
         originalKey: displayResultList.includes('Original Key'),
         year: displayResultList.includes('Year'),
         code: displayResultList.includes('Code'),

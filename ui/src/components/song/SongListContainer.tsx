@@ -30,7 +30,6 @@ const SongListContainer: FC = (): ReactElement => {
         setAllSongs(data);
         const searchQuery = new URLSearchParams(location.search).get('q');
         setFilterData({ ...filterData, search: searchQuery });
-
         if (filterData) {
           const songs: SongCardProps[] = data;
 
@@ -63,7 +62,7 @@ const SongListContainer: FC = (): ReactElement => {
     } catch (error) {
       console.log(error);
     }
-  }, [location.search, filterData]);
+  }, [location.search]);
 
   const modalSearchStyle = {
     position: 'absolute',
@@ -75,7 +74,7 @@ const SongListContainer: FC = (): ReactElement => {
 
   useEffect(() => {
     getSongResults();
-  },[]);
+  }, [getSongResults]);
 
   return (
     <>

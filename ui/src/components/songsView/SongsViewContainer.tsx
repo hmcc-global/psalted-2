@@ -60,10 +60,6 @@ const SongsViewContainer: FC = (): ReactElement => {
               <Box sx={{ marginBottom: '15vh' }}>
                 <SongsButtonCard song={song} />
               </Box>
-
-              <Box width={['25%']}>
-                <SongsInfoCard song={song} />
-              </Box>
             </Stack>
           </Grid>
         </Grid>

@@ -20,6 +20,7 @@ import SongsLyrics from './SongsLyrics';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import PlaylistAdd from '@mui/icons-material/PlaylistAdd';
 import { Share } from '@mui/icons-material';
+import SongsInfoCard from './SongsInfoCard';
 
 type SongsButtonCardProps = {
   song: SongViewSchema | undefined;
@@ -34,6 +35,13 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
 
   const isDesktop = useMediaQuery('(min-width:768px)');
   const navigate = useNavigate();
+  const buttonClass = {
+    display: 'flex',
+    justifyContent: 'center',
+    background: '#141218',
+    padding: '1px 12px',
+    borderRadius: '4px',
+  };
 
   const handleChange = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     return (event: React.ChangeEvent<{}>, value: boolean) => {
@@ -102,11 +110,8 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           </Stack>
 
           {/* chords toggle */}
-          <Box
-            fontSize={{ sm: '16px', md: '26px' }}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
-          >
-            <FormGroup>
+          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
+            <FormGroup style={{ justifyContent: 'center' }}>
               <FormControlLabel
                 labelPlacement="start"
                 sx={{ color: 'secondary.main' }}
@@ -123,11 +128,8 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           </Box>
 
           {/* flat toggle */}
-          <Box
-            fontSize={{ sm: '16px', md: '26px' }}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
-          >
-            <FormGroup>
+          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
+            <FormGroup style={{ justifyContent: 'center' }}>
               <FormControlLabel
                 labelPlacement="start"
                 sx={{ color: 'secondary.main' }}
@@ -201,12 +203,18 @@ const SongsButtonsCard = (props: SongsButtonCardProps) => {
           <Box
             alignItems="center"
             justifyContent="center"
+            display="flex"
             border="1px solid #332D41"
             sx={{ borderRadius: '100px', p: 1 }}
           >
             <IconButton>
               <Share aria-label="share" sx={{ color: 'secondary.main' }} />
             </IconButton>
+          </Box>
+
+          {/* about song */}
+          <Box>
+            <SongsInfoCard song={song} />
           </Box>
         </Stack>
       </Box>

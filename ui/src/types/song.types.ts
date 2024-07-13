@@ -35,6 +35,7 @@ export type SongCardProps = {
   year: string;
   code: string;
   lyricsPreview: string;
+  chordLyrics: string;
   createdBy: string;
   lastUpdatedBy: string;
   filterData?: SongSearchFilter;

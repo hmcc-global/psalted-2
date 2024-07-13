@@ -21,6 +21,7 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     let para = 0;
     lyricsLine &&
       lyricsLine.map((line) => (line.includes('{') && line.includes('}') ? para++ : null));
+    return para;
   };
 
   const searchChordColor = (chord: string): string | undefined => {
@@ -66,14 +67,12 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                     color: '#A9A9A9',
                     fontWeight: 'bold',
                     borderRadius: 4,
-                    backgroundColor: '#FAFAFA',
                     border: '2',
                     fontSize: '14px',
                   },
                 }}
                 style={{
                   borderRadius: 4,
-                  backgroundColor: 'primary',
                   marginBottom: '10px',
                   marginTop: '3px',
                   borderColor: '#A9A9A9',
@@ -91,21 +90,30 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
             const regex = new RegExp(`(?=${escapedSplitChar})`);
             const lyrics = line.split(regex);
             return result.push(
-              <Stack key={j} direction="row">
+              <Stack key={j} flexDirection="row" flexWrap="wrap">
                 {lyrics.map((lyric, i) => {
                   if (lyric.includes('[') && lyric.includes(']')) {
                     const startChord = lyric.indexOf('[');
                     const endChord = lyric.indexOf(']');
                     const chord = lyric.slice(startChord + 1, endChord);
-                    const chordIndex = useFlat
-                      ? flatMusicKeysOptions.indexOf(chord[0])
-                      : sharpMusicKeysOptions.indexOf(chord[0]);
+
+                    let cleanedChord = chord.slice(0, 2);
+                    if (cleanedChord.length > 1 && !['#', 'b'].includes(cleanedChord[1])) {
+                      cleanedChord = cleanedChord[0];
+                    }
+                    cleanedChord = cleanedChord[0].toUpperCase() + cleanedChord.slice(1);
+                    const chordIndex =
+                      flatMusicKeysOptions.indexOf(cleanedChord) === -1
+                        ? sharpMusicKeysOptions.indexOf(cleanedChord)
+                        : flatMusicKeysOptions.indexOf(cleanedChord);
+
+                    const transpossedChordBase = useFlat
+                      ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
+                      : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12];
                     const transpossedChord =
-                      (useFlat
-                        ? flatMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]
-                        : sharpMusicKeysOptions[(chordIndex + transpossedChordIndex) % 12]) +
-                      chord.slice(1);
-                    const textLyrics = '\u00A0' + lyric.slice(endChord + 1);
+                      transpossedChordBase + chord.slice(cleanedChord.length);
+
+                    const textLyrics = lyric.slice(endChord + 1);
                     const chipColor = getColor(transpossedChord);
                     return (
                       <Box key={i}>
@@ -130,14 +138,14 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
                             }}
                           />
                         ) : null}
-                        <Typography>{textLyrics}</Typography>
+                        <Typography style={{ whiteSpace: 'pre-wrap' }}>{textLyrics}</Typography>
                       </Box>
                     );
                   } else {
                     return (
                       <Box key={i}>
                         {chordStatus ? <Chip sx={{ visibility: 'hidden' }} /> : null}
-                        <Typography>{lyric}</Typography>
+                        <Typography style={{ whiteSpace: 'pre-wrap' }}>{lyric}</Typography>
                       </Box>
                     );
                   }
@@ -191,10 +199,9 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
     const res = groupLyricsToParagraphs(song);
     setFinalLyrics(res);
   }, [parseLyrics, song, groupLyricsToParagraphs]);
-
   return (
     <>
-      <Grid container width={'100%'}>
+      <Grid container width={'100%'} spacing={2}>
         {finalLyrics &&
           finalLyrics.map((chunk, i) => {
             return (

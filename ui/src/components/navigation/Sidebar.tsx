@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import {
   Box,
   Drawer,
@@ -15,6 +15,8 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import Language from '@mui/icons-material/Language';
 import Person from '@mui/icons-material/Person';
+import { useDispatch } from 'react-redux';
+import { getSongsGlobal } from '../../helpers/global';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -24,6 +26,7 @@ const drawerWidth = 100;
 
 const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
   const menuItems = [
@@ -38,6 +41,11 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     setSelectedItem(text);
     navigate(`/${path}`);
   };
+
+  // Get songs, setlists, folders globally
+  useEffect(() => {
+    getSongsGlobal(dispatch);
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>

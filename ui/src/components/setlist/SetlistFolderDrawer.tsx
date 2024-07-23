@@ -50,7 +50,7 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
 
   const getPeople = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('http://localhost:1338/api/users/get');
+      const { data, status } = await axios.get('/api/users/get');
       if (status === 200) setAllPeople(data);
     } catch (error) {
       console.log(error);
@@ -84,13 +84,13 @@ const SetlistFolderDrawer = (props: SetlistFolderDrawerProps) => {
       let payload: AxiosResponse;
 
       if (folderId) {
-        payload = await axios.put('http://localhost:1338/api/groups/update', {
+        payload = await axios.put('/api/groups/update', {
           id: folderId,
           groupName: folderName,
           userIds: addedPeople,
         });
       } else {
-        payload = await axios.post('http://localhost:1338/api/groups/create', {
+        payload = await axios.post('/api/groups/create', {
           groupName: folderName,
           userIds: addedPeople,
         });

@@ -83,12 +83,12 @@ const SetlistListContainer: FC = (): ReactElement => {
 
   const getSetlistsAndFolders = useCallback(async () => {
     try {
-      const setlistRes = await axios.get('http://localhost:1338/api/setlists/get');
+      const setlistRes = await axios.get('/api/setlists/get');
       if (setlistRes.status === 200) {
         setAllSetlists(setlistRes.data);
       }
 
-      const folderRes = await axios.get('http://localhost:1338/api/groups/get');
+      const folderRes = await axios.get('/api/groups/get');
       if (folderRes.status === 200) {
         setAllFolders(folderRes.data);
       }

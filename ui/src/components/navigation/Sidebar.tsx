@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import {
   Box,
   Drawer,

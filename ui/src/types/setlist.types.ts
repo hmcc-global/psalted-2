@@ -1,4 +1,4 @@
-import { SongSearchFilter } from './song.types';
+import { SongSearchFilter, SongViewSchema } from './song.types';
 
 interface SetlistEditorFields {
   name: string;
@@ -37,6 +37,7 @@ export type Setlist = {
   _id: string;
   name: string;
   date: Date;
+  songs: SongViewSchema[];
   sharedUserIds: string[];
 };
 

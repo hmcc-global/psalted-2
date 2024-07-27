@@ -5,7 +5,7 @@ type SetlistSchema = {
   name: string;
   date: Date;
   createdBy: Types.ObjectId;
-  songs: Types.Array<Types.ObjectId>;
+  songs: Types.Array<Object>;
   lastUpdatedBy: Types.ObjectId;
   publicLink: string;
   groupIds: Types.Array<Types.ObjectId>;

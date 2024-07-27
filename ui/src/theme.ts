@@ -13,9 +13,10 @@ const PRIMARY_DARK = '#6750A4';
 const PRIMARY_DARKER = '#1D192B';
 const PRIMARY_DARKEST = '#141218';
 
-const SECONDARY_MAIN = '#D0BCFF';
+const SECONDARY_MAIN = '#D0BCFE';
 const SECONDARY_LIGHT = '#CAC4D0'; // grey
 const SECONDARY_LIGHTER = '#4A4458'; // purple grey
+const SECONDARY_DARK = '#49454F'; // dark grey
 
 declare module '@mui/material/styles' {
   interface PaletteColorOptions {
@@ -44,9 +45,11 @@ const customTheme = createTheme({
       main: SECONDARY_MAIN,
       light: SECONDARY_LIGHT,
       lighter: SECONDARY_LIGHTER,
+      dark: SECONDARY_DARK,
     },
     background: {
       default: '#171717',
+      paper: '#0F0D13',
     },
     text: {
       primary: '#fff',

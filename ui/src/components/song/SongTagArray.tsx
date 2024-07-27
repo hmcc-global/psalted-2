@@ -7,7 +7,7 @@ const SongTagArray = ({ data }: FieldArrayProps) => {
     return (
       <Stack spacing={1} direction="row">
         {data.map((item: string, i: number) => {
-          return <Chip sx={{ bgcolor: 'primary.light' }} size="medium" key={i} label={item} />;
+          return <Chip sx={{ bgcolor: 'primary.dark' }} size="medium" key={i} label={item} />;
         })}
       </Stack>
     );

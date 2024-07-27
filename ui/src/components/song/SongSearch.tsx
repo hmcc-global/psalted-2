@@ -4,37 +4,19 @@ import {
   Box,
   Stack,
   TextField,
-  Autocomplete,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
   Button,
-  Alert,
-  Grid,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Chip,
-  Icon,
   IconButton,
-  InputAdornment,
 } from '@mui/material';
-import { SongSearchProps, SongCardProps } from '../../types/song.types';
-import { useState, useEffect, useCallback } from 'react';
-import {
-  timeSignatureOptions,
-  tempoOptions,
-  themeOptions,
-  displayResultOptions,
-} from '../../constants';
+import { SongSearchProps, SongViewSchema } from '../../types/song.types';
+import { useState, useEffect } from 'react';
+import { tempoOptions, themeOptions, displayResultOptions } from '../../constants';
 import { ArrowDropDown, Info, Refresh, Tune } from '@mui/icons-material';
 import HeaderWithIcon from '../custom/HeaderWithIcon';
 import { useLocation } from 'react-router-dom';
 
 const SongSearch = (props: SongSearchProps) => {
-  const Songs: SongCardProps[] = props.songs;
+  const Songs: SongViewSchema[] = props.songs;
   const prevFilter = props.filterData;
   const isDesktop = props.isDesktop;
 

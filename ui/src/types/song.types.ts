@@ -38,8 +38,8 @@ export type SongCardProps = {
   lyricsPreview: string;
   firstLine: string;
   chordLyrics: string;
-  createdBy: string;
-  lastUpdatedBy: string;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
   filterData?: SongSearchFilter;
   isVerified: Boolean;
   createdAt: Date;
@@ -49,7 +49,7 @@ export type SongCardProps = {
 };
 
 export type SongSearchProps = {
-  songs: SongCardProps[];
+  songs: SongViewSchema[];
   filterData: SongSearchFilter | undefined;
   setFilterData: React.Dispatch<React.SetStateAction<SongSearchFilter | undefined>>;
   onClose: () => void;
@@ -77,12 +77,14 @@ export type SongSearchFilter = {
 export type SongViewSchema = {
   _id: string;
   title: string;
+  timeSignature: string[];
   tempo: string[];
   originalKey: string;
   themes: string[];
   artist: string;
   year: string;
   code: string;
+  lyrics: string;
   lyricsPreview: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;

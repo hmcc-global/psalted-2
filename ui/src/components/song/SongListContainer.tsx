@@ -7,29 +7,19 @@ import {
   Modal,
   useMediaQuery,
   ButtonGroup,
-  Grid,
 } from '@mui/material';
-import axios from 'axios';
-import { FC, ReactElement, useEffect, useState, useCallback, SetStateAction } from 'react';
-import { SongCardProps, SongSearchFilter } from '../../types/song.types';
+import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
+import { SongSearchFilter, SongViewSchema } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Add,
-  MusicNote,
-  Refresh,
-  TableChart,
-  TableRows,
-  ViewAgenda,
-  ViewModule,
-} from '@mui/icons-material';
+import { Add, MusicNote } from '@mui/icons-material';
 import PageHeader from '../navigation/PageHeader';
 import { getFirstLineLyrics } from '../../helpers/song';
+import { useSongs } from '../../helpers/customHooks';
 
 const SongListContainer: FC = (): ReactElement => {
-  const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
-  const [songResults, setSongResults] = useState<SongCardProps[]>([]);
+  const [songResults, setSongResults] = useState<SongViewSchema[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -42,51 +32,45 @@ const SongListContainer: FC = (): ReactElement => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const getSongResults = useCallback(async () => {
-    try {
-      const { data, status } = await axios.get('/api/songs/get');
-      if (status === 200) {
-        setAllSongs(data);
-        if (filterData) {
-          const songs: SongCardProps[] = data;
+  const allSongs = useSongs() as SongViewSchema[];
 
-          // filter the song based on data
-          const filteredSong = songs.filter(
-            (song) =>
-              ((filterData.search
-                ? song.artist && song.artist.toLowerCase().includes(filterData.search.toLowerCase())
-                : true) ||
-                (filterData.search
-                  ? song.title && song.title.toLowerCase().includes(filterData.search.toLowerCase())
-                  : true) ||
-                (filterData.search
-                  ? song.lyricsPreview &&
-                    song.lyricsPreview.toLowerCase().includes(filterData.search.toLowerCase())
-                  : true) ||
-                (filterData.search
-                  ? song.themes &&
-                    song.themes
-                      .map((t) => t.toLowerCase())
-                      .includes(filterData.search.toLowerCase())
-                  : true)) &&
-              (filterData.timeSignature
-                ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
-                : true) &&
-              (filterData.themes && filterData.themes.length > 0
-                ? filterData.themes.some((theme) => song.themes?.includes(theme))
-                : true) &&
-              (filterData.tempo && filterData.tempo.length > 0
-                ? filterData.tempo.some((tempo) =>
-                    song.tempo.map((t) => t.toLowerCase()).includes(tempo.toLowerCase())
-                  )
-                : true)
-          );
-          setSongResults(filteredSong);
-        } else setSongResults(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const getSongResults = useCallback(async () => {
+    if (filterData) {
+      // filter the song based on data
+      const filteredSong = allSongs.filter(
+        (song) =>
+          ((filterData.search
+            ? song.artist && song.artist.toLowerCase().includes(filterData.search.toLowerCase())
+            : true) ||
+            (filterData.search
+              ? song.title && song.title.toLowerCase().includes(filterData.search.toLowerCase())
+              : true) ||
+            (filterData.search
+              ? song.lyricsPreview &&
+                song.lyricsPreview.toLowerCase().includes(filterData.search.toLowerCase())
+              : true) ||
+            (filterData.search
+              ? song.themes &&
+                song.themes.map((t) => t.toLowerCase()).includes(filterData.search.toLowerCase())
+              : true)) &&
+          (filterData.timeSignature
+            ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
+            : true) &&
+          (filterData.themes && filterData.themes.length > 0
+            ? filterData.themes.some((theme) => song.themes?.includes(theme))
+            : true) &&
+          (filterData.tempo && filterData.tempo.length > 0
+            ? filterData.tempo.some((tempo) =>
+                song.tempo.map((t) => t.toLowerCase()).includes(tempo.toLowerCase())
+              )
+            : true)
+      );
+      setSongResults(filteredSong);
+    } else setSongResults(allSongs);
+  }, [filterData]);
+
+  useEffect(() => {
+    getSongResults();
   }, [filterData]);
 
   useEffect(() => {
@@ -95,10 +79,6 @@ const SongListContainer: FC = (): ReactElement => {
       setFilterData({ ...filterData, search: searchQuery });
     }
   }, [location.search]);
-
-  useEffect(() => {
-    getSongResults();
-  }, [filterData]);
 
   const modalSearchStyle = {
     position: 'absolute',

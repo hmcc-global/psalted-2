@@ -139,10 +139,10 @@ const SongCard = (props: SongCardProps) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 400,
-            bgcolor: '#171717',
-            borderRadius: 8,
+            bgcolor: '#2B2930',
+            borderRadius: '10px',
             boxShadow: 2,
-            p: 4,
+            p: '1.5rem',
           }}
           spacing={1}
         >
@@ -158,10 +158,21 @@ const SongCard = (props: SongCardProps) => {
           {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
           <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
             <Button size="small" variant="text" onClick={handleClose}>
-              CANCEL
+              <Typography variant="body2" color="#CAC4D0" textTransform={'none'}>
+                Cancel
+              </Typography>
             </Button>
-            <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
-              ADD SONG
+            <Button
+              size="medium"
+              variant="outlined"
+              onClick={() => navigate('/song/add')}
+              sx={{
+                borderColor: 'primary.light',
+              }}
+            >
+              <Typography variant="body2" color="#CAC4D0" textTransform={'none'}>
+                Add Song
+              </Typography>{' '}
             </Button>
           </Stack>
         </Stack>

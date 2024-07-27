@@ -1,4 +1,5 @@
 import { SongSearchFilter } from './song.types';
+import { UserEditorFields } from './user.types';
 
 interface SetlistEditorFields {
   name: string;
@@ -21,8 +22,8 @@ export type SetlistSongCardProps = {
   artist: string;
   year: string;
   code: string;
-  createdBy: string;
-  lastUpdatedBy: string;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
   filterData?: SongSearchFilter;
   isVerified: Boolean;
   createdAt: Date;

@@ -122,14 +122,16 @@ export const routes: Array<Route> = [
     enabled: true,
     component: SetlistEditorContainer,
     permissions: ['user'],
-  },  
+  },
 ];
 
-export const userRoutes: Array<Route> = [  {
-  key: 'setlist-view-route',
-  title: 'View Setlist',
-  path: '/setlist/view/:id',
-  enabled: true,
-  component: SetlistViewContainer,
-  permissions: ['user'],
-},]
+export const userRoutes: Array<Route> = [
+  {
+    key: 'setlist-view-route',
+    title: 'View Setlist',
+    path: '/setlist/view/:id',
+    enabled: true,
+    component: SetlistViewContainer,
+    permissions: ['user'],
+  },
+];

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import {
   Box,
   Drawer,
@@ -17,9 +17,10 @@ import Language from '@mui/icons-material/Language';
 import Person from '@mui/icons-material/Person';
 import GlobalSearchModal from './GlobalSearchModal';
 import SearchIcon from '@mui/icons-material/Search';
-import { SongSearchModalProps } from '#/types/song.types';
-import axios from 'axios';
-import { SetlistSearchModalProps } from '#/types/setlist.types';
+import { useSetlists, useSongs } from '../../helpers/customHooks';
+import { SongViewSchema } from '#/types/song.types';
+import { Setlist } from '#/types/setlist.types';
+import { SearchButtonBox } from './NavigationPaper';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -32,38 +33,8 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
 
-  const [allSongs, setAllSongs] = useState<SongSearchModalProps[]>([]);
-  const [allSetlists, setAllSetlists] = useState<SetlistSearchModalProps[]>([]);
-
-  const getAllSongs = useCallback(async () => {
-    try {
-      const { data, status } = await axios.get('/api/songs/get');
-      if (status === 200) {
-        setAllSongs(data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    getAllSongs();
-  }, [getAllSongs]);
-
-  const getAllSetlists = useCallback(async () => {
-    try {
-      const setlistRes = await axios.get('/api/setlists/get');
-      if (setlistRes.status === 200) {
-        setAllSetlists(setlistRes.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    getAllSetlists();
-  }, [getAllSetlists]);
+  const allSongs = useSongs() as SongViewSchema[];
+  const allSetlists = useSetlists() as Setlist[];
 
   // Separate the "Profile" item from the rest of the items
   const topMenuItems = [
@@ -119,26 +90,9 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
               mb: '0.2rem',
             }}
           >
-            <Box
-              onClick={() => handleSearchClick()}
-              sx={{
-                color: 'primary.lighter',
-                backgroundColor: '#1D192B',
-                borderRadius: '15px',
-                padding: '1rem',
-                width: 'fit-content',
-                display: 'flex',
-                flexDir: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                '&:hover': {
-                  opacity: 0.9,
-                },
-              }}
-            >
+            <SearchButtonBox onClick={() => handleSearchClick()}>
               <SearchIcon sx={{ color: '#D0BCFE', width: '1.75rem', height: '1.75rem' }} />
-            </Box>
+            </SearchButtonBox>
           </Box>
           <List
             sx={{

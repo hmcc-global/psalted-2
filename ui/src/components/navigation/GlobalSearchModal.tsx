@@ -1,42 +1,19 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Box, Fade, InputAdornment, Modal, TextField, Typography } from '@mui/material';
 
-import SongSearchResult from './search-results/SongSearchResult';
+import SongSearchResult from './searchModalComponents/SongSearchResult';
 import { useNavigate } from 'react-router-dom';
-import SetlistSearchResult from './search-results/SetlistSearchResult';
-import { SongSearchModalProps } from '#/types/song.types';
-import { SetlistSearchModalProps } from '#/types/setlist.types';
+import SetlistSearchResult from './searchModalComponents/SetlistSearchResult';
+import { SongViewSchema } from '#/types/song.types';
+import { Setlist } from '#/types/setlist.types';
 import SearchIcon from '@mui/icons-material/Search';
-
-const RadioCard = (props: any) => {
-  const { children, isSelected, onClick } = props;
-
-  return (
-    <Box
-      sx={{
-        cursor: 'pointer',
-        border: 1,
-        borderRadius: '5px',
-        borderColor: isSelected ? '#6750A4' : '#938F99',
-        backgroundColor: isSelected ? '#6750A4' : '#2B2930',
-        fontWeight: isSelected ? '500' : 'normal',
-        px: '0.6rem',
-        py: '0.3rem',
-      }}
-      onClick={onClick}
-    >
-      <Typography variant="body2" fontWeight={isSelected ? '500' : 'normal'} color="#CAC4D0">
-        {children}
-      </Typography>
-    </Box>
-  );
-};
+import RadioCard from './searchModalComponents/RadioCard';
 
 type GlobalSearchModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  allSongs: SongSearchModalProps[];
-  allSetlists: SetlistSearchModalProps[];
+  allSongs: SongViewSchema[];
+  allSetlists: Setlist[];
 };
 
 const GlobalSearchModal = (props: GlobalSearchModalProps) => {
@@ -46,8 +23,8 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
   const [radioFilter, setRadioFilter] = useState('Songs');
 
   const [loading, setLoading] = useState(false);
-  const [filteredSongs, setFilteredSongs] = useState<SongSearchModalProps[]>([]);
-  const [filteredSetlists, setFilteredSetlists] = useState<SetlistSearchModalProps[]>([]);
+  const [filteredSongs, setFilteredSongs] = useState<SongViewSchema[]>([]);
+  const [filteredSetlists, setFilteredSetlists] = useState<Setlist[]>([]);
 
   const [searchString, setSearchString] = useState('');
   const filterKeyword = useMemo(() => searchString.trim().toLowerCase(), [searchString]);
@@ -56,7 +33,7 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
     setSearchString('');
   }, [onClose]);
 
-  const filterSongs = () => {
+  const memoizedFilteredSongs = useMemo(() => {
     if (filterKeyword.length < 2 || allSongs.length === 0) return [];
 
     setLoading(true);
@@ -71,9 +48,9 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
     });
     setLoading(false);
     return filteredSongs;
-  };
+  }, [filterKeyword, allSongs]);
 
-  const filterSetlists = () => {
+  const memoizedFilteredSetlists = useMemo(() => {
     if (filterKeyword.length < 2 || allSetlists.length === 0) return [];
 
     setLoading(true);
@@ -88,14 +65,6 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
     });
     setLoading(false);
     return filteredSetlists;
-  };
-
-  const memoizedFilteredSongs = useMemo(() => {
-    return filterSongs();
-  }, [filterKeyword, allSongs]);
-
-  const memoizedFilteredSetlists = useMemo(() => {
-    return filterSetlists();
   }, [filterKeyword, allSetlists]);
 
   useEffect(() => {
@@ -142,9 +111,9 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
       if (focusedIndex !== -1) {
         const category = radioFilter.toLowerCase();
         if (category === 'songs') {
-          navigate(`/song/${(results[focusedIndex] as SongSearchModalProps)._id}`);
+          navigate(`/song/${(results[focusedIndex] as SongViewSchema)._id}`);
         } else if (category === 'setlists') {
-          navigate(`/setlist/${(results[focusedIndex] as SetlistSearchModalProps)._id}`);
+          navigate(`/setlist/${(results[focusedIndex] as Setlist)._id}`);
         }
         onClose();
       }
@@ -176,6 +145,95 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
     } else if (event.key === 'Escape') {
       onClose();
     }
+  };
+
+  const renderResults = () => {
+    if (radioFilter === 'Songs') {
+      if (filterKeyword === '') {
+        return (
+          <SongSearchResult
+            _id=""
+            title=""
+            keyword=""
+            ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
+            isFocused={focusedIndex === 0}
+            onClose={onClose}
+          />
+        );
+      }
+
+      if (filteredSongs && filteredSongs.length > 0) {
+        return filteredSongs.map((song, index) => (
+          <SongSearchResult
+            key={song._id}
+            _id={song._id}
+            title={song.title}
+            keyword={filterKeyword}
+            ref={(el) => (resultRefs.current[index] = el as HTMLDivElement)}
+            isFocused={index === focusedIndex}
+            onClose={onClose}
+          />
+        ));
+      }
+
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: '100%',
+            p: '0.75rem',
+          }}
+        >
+          <Typography variant="body1" color="#CAC4D0">
+            No songs found
+          </Typography>
+        </Box>
+      );
+    }
+
+    if (filterKeyword === '') {
+      return (
+        <SetlistSearchResult
+          _id=""
+          name=""
+          keyword={filterKeyword}
+          ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
+          isFocused={focusedIndex === 0}
+        />
+      );
+    }
+
+    if (filteredSetlists && filteredSetlists.length > 0) {
+      return filteredSetlists.map((setlist, index) => (
+        <SetlistSearchResult
+          _id={setlist._id}
+          name={setlist.name}
+          keyword={filterKeyword}
+          ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
+          isFocused={index === focusedIndex}
+        />
+      ));
+    }
+
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          width: '100%',
+          p: '0.75rem',
+        }}
+      >
+        <Typography variant="body1" color="#CAC4D0">
+          No setlists found
+        </Typography>
+      </Box>
+    );
   };
 
   return (
@@ -264,77 +322,8 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
             >
               {loading ? (
                 <Box sx={{ fontSize: '1rem', color: 'black', p: 2 }}>Loading...</Box>
-              ) : radioFilter === 'Songs' ? (
-                filterKeyword === '' ? (
-                  <SongSearchResult
-                    _id=""
-                    title=""
-                    keyword=""
-                    ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
-                    isFocused={focusedIndex === 0}
-                    onClose={onClose}
-                  />
-                ) : filteredSongs && filteredSongs.length > 0 ? (
-                  filteredSongs.map((song, index) => (
-                    <SongSearchResult
-                      key={song._id}
-                      _id={song._id}
-                      title={song.title}
-                      keyword={filterKeyword}
-                      ref={(el) => (resultRefs.current[index] = el as HTMLDivElement)}
-                      isFocused={index === focusedIndex}
-                      onClose={onClose}
-                    />
-                  ))
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      width: '100%',
-                      p: '0.75rem',
-                    }}
-                  >
-                    <Typography variant="body1" color="#CAC4D0">
-                      No songs found
-                    </Typography>
-                  </Box>
-                )
-              ) : filterKeyword === '' ? (
-                <SetlistSearchResult
-                  _id=""
-                  name=""
-                  keyword={filterKeyword}
-                  ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
-                  isFocused={focusedIndex === 0}
-                />
-              ) : filteredSetlists && filteredSetlists.length > 0 ? (
-                filteredSetlists.map((setlist, index) => (
-                  <SetlistSearchResult
-                    _id={setlist._id}
-                    name={setlist.name}
-                    keyword={filterKeyword}
-                    ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
-                    isFocused={index === focusedIndex}
-                  />
-                ))
               ) : (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    width: '100%',
-                    p: '0.75rem',
-                  }}
-                >
-                  <Typography variant="body1" color="#CAC4D0">
-                    No setlists found
-                  </Typography>
-                </Box>
+                renderResults()
               )}
             </Box>
           </Box>

@@ -40,11 +40,6 @@ export type Setlist = {
   sharedUserIds: string[];
 };
 
-export type SetlistSearchModalProps = {
-  _id: string;
-  name: string;
-};
-
 export type SetlistFolder = {
   _id: string;
   groupName: string;

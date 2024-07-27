@@ -7,6 +7,7 @@ import {
   Modal,
   useMediaQuery,
   ButtonGroup,
+  Grid,
 } from '@mui/material';
 import axios from 'axios';
 import { FC, ReactElement, useEffect, useState, useCallback, SetStateAction } from 'react';
@@ -71,11 +72,11 @@ const SongListContainer: FC = (): ReactElement => {
               (filterData.timeSignature
                 ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
                 : true) &&
-              (filterData.themes
-                ? filterData.themes.every((theme) => song.themes.includes(theme))
+              (filterData.themes && filterData.themes.length > 0
+                ? filterData.themes.some((theme) => song.themes?.includes(theme))
                 : true) &&
-              (filterData.tempo
-                ? filterData.tempo.every((tempo) =>
+              (filterData.tempo && filterData.tempo.length > 0
+                ? filterData.tempo.some((tempo) =>
                     song.tempo.map((t) => t.toLowerCase()).includes(tempo.toLowerCase())
                   )
                 : true)
@@ -149,7 +150,7 @@ const SongListContainer: FC = (): ReactElement => {
 
         {/* Desktop filter menu */}
         <Stack direction="row" maxWidth="100%" width="100%" gap={'1%'}>
-          <Box display={isDesktop ? 'flex' : 'none'} minWidth="28%" width="28%">
+          <Box flex="0 0 28%" display={isDesktop ? 'flex' : 'none'}>
             <SongSearch
               filterData={filterData}
               setFilterData={setFilterData}
@@ -161,14 +162,13 @@ const SongListContainer: FC = (): ReactElement => {
           </Box>
 
           {/* Song cards search results */}
-          <Box display="flex" flex="1" maxWidth="71%">
+          <Box flex="0 0 71%" display="flex">
             <Container
               sx={{
                 py: '1em',
                 background: '#000',
                 borderRadius: '16px',
-                minWidth: '100%',
-                maxWidth: '100%',
+                width: '100%',
                 overflow: 'auto',
               }}
             >
@@ -183,51 +183,7 @@ const SongListContainer: FC = (): ReactElement => {
                 <Typography variant="h3" color="#FFFFFF">
                   Search Results
                 </Typography>
-                <ButtonGroup variant="outlined">
-                  <Button
-                    startIcon={<ViewAgenda sx={{ color: '#E8DEF8' }} />}
-                    sx={{
-                      borderColor: '#E8DEF8',
-                      borderTopLeftRadius: 100,
-                      borderBottomLeftRadius: 100,
-                      px: 3,
-                      py: 1,
-                      '&:hover': {
-                        backgroundColor: '#4A4458',
-                        borderColor: '#E8DEF8',
-                      },
-                      backgroundColor: viewOption === 'cards' ? '#4A4458' : 'transparent',
-                    }}
-                    onClick={() => setViewOption('cards')}
-                  >
-                    <Typography variant="body2" textTransform={'none'} sx={{ color: '#E8DEF8' }}>
-                      {' '}
-                      Cards
-                    </Typography>
-                  </Button>
-                  <Button
-                    // onClick={handleViewChange}
-                    startIcon={<TableChart sx={{ color: '#E8DEF8' }} />}
-                    sx={{
-                      borderColor: '#E8DEF8',
-                      borderTopRightRadius: 100,
-                      borderBottomRightRadius: 100,
-                      px: 3,
-                      py: 1,
-                      '&:hover': {
-                        backgroundColor: '#4A4458',
-                        borderColor: '#E8DEF8',
-                      },
-                      backgroundColor: viewOption === 'table' ? '#4A4458' : 'transparent',
-                    }}
-                    onClick={() => setViewOption('table')}
-                  >
-                    <Typography variant="body2" textTransform={'none'} sx={{ color: '#E8DEF8' }}>
-                      {' '}
-                      Table
-                    </Typography>
-                  </Button>
-                </ButtonGroup>
+                <ButtonGroup variant="outlined">{/* Button group code */}</ButtonGroup>
               </Stack>
               <Stack direction="column" spacing={3} height="100%" maxWidth="100%">
                 {songResults.length > 0 ? (

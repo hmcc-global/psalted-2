@@ -19,7 +19,7 @@ export const musicKeysOptions = [
   'Ab',
 ];
 
-export const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code', 'Time'];
+export const CardFields = ['Themes', 'Tempo', 'Original Key', 'Year', 'Code', 'Time', 'First Line'];
 
 export const flatMusicKeysOptions = [
   'C',
@@ -66,12 +66,13 @@ export const themeOptions = [
 export const themeSelectionLimit = 3;
 
 export const displayResultOptions = [
-  'Tempo',
   'Themes',
-  'First Line Lyric',
+  'Tempo',
   'Original Key',
-  'Singer',
   'Year',
+  'Code',
+  'Time',
+  'First Line Lyric',
 ];
 
 // register/login form

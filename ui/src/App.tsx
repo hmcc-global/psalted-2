@@ -21,7 +21,7 @@ function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <SearchBar />;
+  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : null;
 
   return (
     <Provider store={store}>

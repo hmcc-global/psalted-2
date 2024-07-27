@@ -21,6 +21,7 @@ const SongCard = (props: SongCardProps) => {
     code,
     chordLyrics,
     lyricsPreview,
+    firstLine,
     filterData,
     showDetails,
     isDesktop,
@@ -33,8 +34,9 @@ const SongCard = (props: SongCardProps) => {
     filterData?.display?.year ?? true,
     filterData?.display?.code ?? true,
     filterData?.display?.timeSignature ?? true,
+    filterData?.display?.firstLine ?? true,
   ];
-  const fieldData = [themes, tempo, originalKey, year, code, timeSignature];
+  const fieldData = [themes, tempo, originalKey, year, code, timeSignature, firstLine];
   const navigate = useNavigate();
 
   // state for the modal
@@ -46,27 +48,42 @@ const SongCard = (props: SongCardProps) => {
     <>
       <Container
         onClick={() => navigate(`/song/${_id}`)}
+        disableGutters
         sx={{
           borderRadius: '8px',
           border: 1,
           borderColor: '#49454F',
           backgroundColor: 'primary.darkest',
-          py: 2,
+          p: '1rem',
+          '&:hover': {
+            borderColor: 'secondary.main',
+            cursor: 'pointer',
+          },
+          transition: 'all 0.1s ease-in-out',
+          maxWidth: '100%',
         }}
       >
-        <Stack direction="row" display="flex" justifyContent="space-between">
+        <Stack
+          direction="row"
+          display="flex"
+          justifyContent="space-between"
+          minWidth={'100%'}
+          maxWidth={'100%'}
+          p={0}
+          mb="1rem"
+        >
           <Stack>
-            <Typography variant="h2" color={'secondary.main'}>
+            <Typography variant="h4" color={'secondary.main'}>
               {title}
             </Typography>
-            <Typography variant="subtitle1" color={'secondary.main'}>
+            <Typography variant="subtitle2" color={'secondary.main'}>
               {artist}
             </Typography>
           </Stack>
           <>
             <Box sx={{ height: '30px', width: '30px' }}>
               <VisibilityIcon
-                onClick={(event) => {
+                onClick={(event: any) => {
                   event.stopPropagation();
                   modalOpen ? handleClose() : handleOpen();
                 }}
@@ -76,31 +93,40 @@ const SongCard = (props: SongCardProps) => {
             </Box>
           </>
         </Stack>
-        <Stack direction={isDesktop ? 'row' : 'column'} spacing={isDesktop ? 4 : 1}>
+        <Stack
+          direction={isDesktop ? 'row' : 'column'}
+          maxWidth={'100%'}
+          flexWrap="wrap"
+          rowGap={'0.5rem'}
+        >
           {CardFields &&
             showDetails !== false &&
             CardFields.map((field, i) => {
               return (
-                <Stack direction="row" display="flex" key={i} spacing={1}>
-                  {displayData[i] ? (
-                    <>
-                      <Typography
-                        variant="body2"
-                        color="#9E9E9E"
-                        width={isDesktop ? '100%' : '40%'}
-                      >
-                        {field}
+                displayData[i] && (
+                  <Stack
+                    direction="row"
+                    display="flex"
+                    key={i}
+                    spacing={1}
+                    width="fit-content"
+                    maxWidth="100%"
+                    alignItems={'center'}
+                    justifyContent={'flex-start'}
+                    mr={isDesktop ? '1.25rem' : 1}
+                  >
+                    <Typography variant="body2" color="#9E9E9E" minWidth={'fit-content'}>
+                      {field}
+                    </Typography>
+                    {Array.isArray(fieldData[i]) ? (
+                      <SongFieldArray data={fieldData[i]} />
+                    ) : (
+                      <Typography variant="body2" color={'#CCC2DC'} align="left" noWrap>
+                        {fieldData[i] ?? '-'}
                       </Typography>
-                      {Array.isArray(fieldData[i]) ? (
-                        <SongFieldArray data={fieldData[i]} />
-                      ) : (
-                        <Typography variant="body2" color={'#CCC2DC'}>
-                          {fieldData[i] ?? '-'}
-                        </Typography>
-                      )}
-                    </>
-                  ) : null}
-                </Stack>
+                    )}
+                  </Stack>
+                )
               );
             })}
         </Stack>
@@ -113,10 +139,10 @@ const SongCard = (props: SongCardProps) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 400,
-            bgcolor: '#171717',
-            borderRadius: 8,
+            bgcolor: '#2B2930',
+            borderRadius: '10px',
             boxShadow: 2,
-            p: 4,
+            p: '1.5rem',
           }}
           spacing={1}
         >
@@ -132,10 +158,21 @@ const SongCard = (props: SongCardProps) => {
           {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
           <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
             <Button size="small" variant="text" onClick={handleClose}>
-              CANCEL
+              <Typography variant="body2" color="#CAC4D0" textTransform={'none'}>
+                Cancel
+              </Typography>
             </Button>
-            <Button size="small" variant="outlined" onClick={() => navigate('/song/add')}>
-              ADD SONG
+            <Button
+              size="medium"
+              variant="outlined"
+              onClick={() => navigate('/song/add')}
+              sx={{
+                borderColor: 'primary.light',
+              }}
+            >
+              <Typography variant="body2" color="#CAC4D0" textTransform={'none'}>
+                Add Song
+              </Typography>{' '}
             </Button>
           </Stack>
         </Stack>

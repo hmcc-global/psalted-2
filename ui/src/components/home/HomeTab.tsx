@@ -15,16 +15,20 @@ const HomeTab: FC<HomeTabProps> = ({ title, description, Icon, route }): ReactEl
   return (
     <Box
       sx={{
-        padding: '2em',
-        borderRadius: '40px',
+        px: '2em',
+        py: '2.5em',
+        borderRadius: '30px',
         backgroundColor: 'primary.darker',
         '&:hover': {
           backgroundColor: 'primary.main',
+          cursor: 'pointer',
         },
+        transition: 'all 0.1s ease-in-out',
+        width: '100%',
       }}
       onClick={() => navigate(route)}
     >
-      <Stack direction={'row'} alignItems="center" justifyContent="space-between">
+      <Stack direction={'row'} alignItems="center" justifyContent="space-between" gap={'1rem'}>
         <Stack direction="column" spacing={1}>
           <Typography variant="h2">{title}</Typography>
           <Typography variant="body1">{description}</Typography>
@@ -32,7 +36,7 @@ const HomeTab: FC<HomeTabProps> = ({ title, description, Icon, route }): ReactEl
 
         <Icon
           sx={{
-            color: 'primary.light',
+            color: 'primary.lightest',
             backgroundColor: 'primary.dark',
             borderRadius: '50%',
             width: '2em',

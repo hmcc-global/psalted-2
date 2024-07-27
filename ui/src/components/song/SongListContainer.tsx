@@ -1,16 +1,25 @@
-import { Box, Button, Container, Stack, Typography, Modal, useMediaQuery } from '@mui/material';
-import axios from 'axios';
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  Modal,
+  useMediaQuery,
+  ButtonGroup,
+} from '@mui/material';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
-import { SongCardProps, SongSearchFilter } from '../../types/song.types';
+import { SongSearchFilter, SongViewSchema } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate, useLocation } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
-import MusicNote from '@mui/icons-material/MusicNote';
+import { Add, MusicNote } from '@mui/icons-material';
+import PageHeader from '../navigation/PageHeader';
+import { getFirstLineLyrics } from '../../helpers/song';
+import { useSongs } from '../../helpers/customHooks';
 
 const SongListContainer: FC = (): ReactElement => {
-  const [allSongs, setAllSongs] = useState<SongCardProps[]>([]);
-  const [songResults, setSongResults] = useState<SongCardProps[]>([]);
+  const [songResults, setSongResults] = useState<SongViewSchema[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -23,44 +32,51 @@ const SongListContainer: FC = (): ReactElement => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const getSongResults = useCallback(async () => {
-    try {
-      const { data, status } = await axios.get('/api/songs/get');
-      if (status === 200) {
-        setAllSongs(data);
-        const searchQuery = new URLSearchParams(location.search).get('q');
-        setFilterData({ ...filterData, search: searchQuery });
-        if (filterData) {
-          const songs: SongCardProps[] = data;
+  const allSongs = useSongs() as SongViewSchema[];
 
-          // filter the song based on data
-          const filteredSong = songs.filter(
-            (song) =>
-              ((filterData.search
-                ? song.artist && song.artist.includes(filterData.search)
-                : true) ||
-                (filterData.search ? song.title && song.title.includes(filterData.search) : true) ||
-                (filterData.search
-                  ? song.lyricsPreview && song.lyricsPreview.includes(filterData.search)
-                  : true) ||
-                (filterData.search
-                  ? song.themes && song.themes.includes(filterData.search)
-                  : true)) &&
-              (filterData.timeSignature
-                ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
-                : true) &&
-              (filterData.themes
-                ? filterData.themes.every((theme) => song.themes.includes(theme))
-                : true) &&
-              (filterData.tempo
-                ? filterData.tempo.every((tempo) => song.tempo.includes(tempo))
-                : true)
-          );
-          setSongResults(filteredSong);
-        } else setSongResults(data);
-      }
-    } catch (error) {
-      console.log(error);
+  const getSongResults = useCallback(async () => {
+    if (filterData) {
+      // filter the song based on data
+      const filteredSong = allSongs.filter(
+        (song) =>
+          ((filterData.search
+            ? song.artist && song.artist.toLowerCase().includes(filterData.search.toLowerCase())
+            : true) ||
+            (filterData.search
+              ? song.title && song.title.toLowerCase().includes(filterData.search.toLowerCase())
+              : true) ||
+            (filterData.search
+              ? song.lyricsPreview &&
+                song.lyricsPreview.toLowerCase().includes(filterData.search.toLowerCase())
+              : true) ||
+            (filterData.search
+              ? song.themes &&
+                song.themes.map((t) => t.toLowerCase()).includes(filterData.search.toLowerCase())
+              : true)) &&
+          (filterData.timeSignature
+            ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
+            : true) &&
+          (filterData.themes && filterData.themes.length > 0
+            ? filterData.themes.some((theme) => song.themes?.includes(theme))
+            : true) &&
+          (filterData.tempo && filterData.tempo.length > 0
+            ? filterData.tempo.some((tempo) =>
+                song.tempo.map((t) => t.toLowerCase()).includes(tempo.toLowerCase())
+              )
+            : true)
+      );
+      setSongResults(filteredSong);
+    } else setSongResults(allSongs);
+  }, [filterData]);
+
+  useEffect(() => {
+    getSongResults();
+  }, [filterData]);
+
+  useEffect(() => {
+    if (location.search) {
+      const searchQuery = new URLSearchParams(location.search).get('q');
+      setFilterData({ ...filterData, search: searchQuery });
     }
   }, [location.search]);
 
@@ -72,61 +88,49 @@ const SongListContainer: FC = (): ReactElement => {
     p: '32px 16px',
   };
 
-  useEffect(() => {
-    getSongResults();
-  }, [getSongResults]);
+  const [viewOption, setViewOption] = useState<string>('cards');
 
   return (
     <>
-      <Container fixed sx={{ padding: '5em 24px 24px', height: '100%' }}>
-        {/* Toolbar at the top */}
-        <Stack
-          direction="row"
-          display="flex"
-          justifyContent="space-between"
-          pb="10px"
-          pl={{ base: '0', md: '15px' }}
-        >
-          {/* Title */}
-          <Typography variant="h1" color="white" sx={{ display: 'flex', alignItems: 'center' }}>
-            <MusicNote
+      <Container
+        fixed
+        sx={{ py: '1rem', px: '1.5rem', height: '100%', minWidth: '100%', overflow: 'auto' }}
+      >
+        <PageHeader
+          title="Songs"
+          icon={<MusicNote />}
+          actionButtons={
+            <Button
+              variant="outlined"
               sx={{
-                color: 'primary.light',
-                backgroundColor: 'primary.dark',
-                borderRadius: '50%',
-                width: '2em',
-                height: '2em',
-                padding: '0.5em',
-                mr: 3,
+                border: 0,
+                padding: '10px 25px',
+                borderRadius: '40px',
+                backgroundColor: '#D0BCFF',
+                color: '#381E72',
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: '#D0BCFF',
+                  opacity: '0.95',
+                },
+                transition: 'all 0.1s ease-in-out',
               }}
-            />
-            Songs
-          </Typography>
-
-          {/* Add new song button */}
-          <Button
-            variant="outlined"
-            sx={{
-              borderWidth: '2px',
-              padding: '10px 25px',
-              borderRadius: '40px',
-              backgroundColor: 'rgba(208, 188, 255, 0.12)',
-              color: '#D0BCFF',
-              textTransform: 'none',
-            }}
-            startIcon={<AddIcon />}
-            onClick={() => navigate('/song/add')}
-          >
-            <Typography variant="subtitle1">New Song</Typography>
-          </Button>
-        </Stack>
+              startIcon={<Add />}
+              onClick={() => navigate('/song/add')}
+            >
+              <Typography variant="subtitle1" fontWeight={700}>
+                New Song
+              </Typography>
+            </Button>
+          }
+        />
 
         {/* TODO: Mobile Search bar and filters */}
         <Box display={{ base: 'block', md: 'none' }}></Box>
 
-        {/* Desktop search bar and filters */}
-        <Stack direction="row" width="100%" gap={3}>
-          <Box display={isDesktop ? 'block' : 'none'}>
+        {/* Desktop filter menu */}
+        <Stack direction="row" maxWidth="100%" width="100%" gap={'1%'}>
+          <Box flex="0 0 28%" display={isDesktop ? 'flex' : 'none'}>
             <SongSearch
               filterData={filterData}
               setFilterData={setFilterData}
@@ -138,29 +142,55 @@ const SongListContainer: FC = (): ReactElement => {
           </Box>
 
           {/* Song cards search results */}
-          <Stack direction="column" spacing={3} height="100%" width="100%">
-            {songResults.length > 0 ? (
-              songResults.map((song, i) => {
-                return (
-                  <SongCard
-                    key={i}
-                    {...song}
-                    showDetails={showDetails}
-                    filterData={filterData}
-                    isDesktop={isDesktop}
-                  />
-                );
-              })
-            ) : (
-              // Error message when no songs are found
-              <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
-                <Typography variant="h2" color="primary.main">
-                  Couldn't find "{filterData?.search}"
+          <Box flex="0 0 71%" display="flex">
+            <Container
+              sx={{
+                py: '1em',
+                background: '#000',
+                borderRadius: '16px',
+                width: '100%',
+                overflow: 'auto',
+              }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent={'space-between'}
+                pb={'1em'}
+                spacing="space-between"
+                maxWidth="100%"
+              >
+                <Typography variant="h3" color="#FFFFFF">
+                  Search Results
                 </Typography>
-                <Typography variant="body2">Try searching again</Typography>
+                <ButtonGroup variant="outlined">{/* Button group code */}</ButtonGroup>
               </Stack>
-            )}
-          </Stack>
+              <Stack direction="column" spacing={3} height="100%" maxWidth="100%">
+                {songResults.length > 0 ? (
+                  songResults.map((song, i) => {
+                    return (
+                      <SongCard
+                        key={i}
+                        {...song}
+                        showDetails={showDetails}
+                        filterData={filterData}
+                        isDesktop={isDesktop}
+                        firstLine={getFirstLineLyrics(song.lyricsPreview)}
+                      />
+                    );
+                  })
+                ) : (
+                  // Error message when no songs are found
+                  <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
+                    <Typography variant="h2" color="primary.main">
+                      Couldn't find "{filterData?.search}"
+                    </Typography>
+                    <Typography variant="body2">Try searching again</Typography>
+                  </Stack>
+                )}
+              </Stack>
+            </Container>
+          </Box>
         </Stack>
       </Container>
 

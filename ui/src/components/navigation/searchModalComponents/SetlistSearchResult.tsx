@@ -8,12 +8,22 @@ type SetlistSearchResultProps = {
   name: string;
   keyword: string;
   isFocused: boolean;
+  onClose: () => void;
 };
 
 const SetlistSearchResult = forwardRef<HTMLDivElement, SetlistSearchResultProps>((props, ref?) => {
   const navigate = useNavigate();
 
-  const { _id, name, keyword, isFocused } = props;
+  const { _id, name, keyword, isFocused, onClose } = props;
+
+  const handleSelect = () => {
+    if (keyword === '') {
+      navigate('/setlist');
+    } else {
+      navigate(`/setlist/${_id}`);
+    }
+    onClose();
+  };
 
   return (
     <Box
@@ -34,9 +44,7 @@ const SetlistSearchResult = forwardRef<HTMLDivElement, SetlistSearchResultProps>
         outline: 'none',
       }}
       ref={ref}
-      onClick={() => {
-        navigate(`/setlist/${_id}`);
-      }}
+      onClick={handleSelect}
     >
       <QueueMusicIcon sx={{ color: '#CAC4D0' }} />
       <Typography variant="body1" color="#CAC4D0">

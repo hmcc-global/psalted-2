@@ -215,6 +215,7 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
           keyword={filterKeyword}
           ref={(el) => (resultRefs.current[0] = el as HTMLDivElement)}
           isFocused={index === focusedIndex}
+          onClose={onClose}
         />
       ));
     }

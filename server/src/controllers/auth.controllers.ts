@@ -23,7 +23,7 @@ import { PWD_RESET_TOKEN_TTL } from '../constants';
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserDocument | GooglePayloadSchema | UserAuthSchema | string
+  payload: (UserDocument | GooglePayloadSchema | UserAuthSchema | string) & { token?: string }
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -58,7 +58,7 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
           credentials.isRememberPassword
         );
 
-        sendResponse(res, 200, token);
+        sendResponse(res, 200, { token: token, ...userRecord });
       } else {
         sendResponse(res, 401, 'Invalid login credentials');
       }

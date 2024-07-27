@@ -16,6 +16,8 @@ export type UserEditorProps = {
   onClickEdit: () => void;
   onClickChange: () => void;
   user?: UserEditorFields;
+  _doc?: UserEditorFields;
+  token?: string;
 };
 
 export type HomeProfileProps = Omit<UserEditorProps, 'onSubmit'>;

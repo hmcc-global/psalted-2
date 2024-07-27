@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SongFieldArray from './SongFieldArray';
 import SongTagArray from './SongTagArray';
-import { getLyricsPreview } from '../../helpers/song';
+import getLyricsPreview from '../../helpers/song/getLyricsPreview';
 
 const SongCard = (props: SongCardProps) => {
   const {

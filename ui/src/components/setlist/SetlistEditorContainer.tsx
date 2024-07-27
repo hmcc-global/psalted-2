@@ -63,7 +63,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
 
   const getSongResults = useCallback(async () => {
     try {
-      const { data, status } = await axios.get('http://localhost:1338/api/songs/get');
+      const { data, status } = await axios.get('/api/songs/get');
       if (status === 200) {
         setAllSongs(data);
 
@@ -97,7 +97,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
 
   const handleSaveSetlist: SubmitHandler<SetlistEditorFields> = async (data) => {
     try {
-      const payload = await axios.post('http://localhost:1338/api/setlists/create', {
+      const payload = await axios.post('/api/setlists/create', {
         name: data.name,
         date: date,
         songs: addedSongs,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
@@ -9,6 +9,7 @@ import customTheme from './theme';
 import NavBarMobile from './components/navigation/NavBarMobile';
 import Sidebar from './components/navigation/Sidebar';
 import SearchBar from './components/navigation/SearchBar';
+import CustomAppContainer from './components/custom/CustomAppContainer';
 import './styles.css';
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
         <BrowserRouter>
-          <Box display="flex" flexDirection="row" height="100vh">
+          <CustomAppContainer>
             <Sidebar isOpen={isSidebarOpen} />
 
             <Box component="main" sx={{ flexGrow: 1 }}>
@@ -48,7 +49,7 @@ function App() {
                 ))}
               </Routes>
             </Box>
-          </Box>
+          </CustomAppContainer>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>

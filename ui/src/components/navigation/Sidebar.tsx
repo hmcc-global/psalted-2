@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import {
   Box,
   Drawer,
@@ -9,7 +9,7 @@ import {
   ListItemText,
   useMediaQuery,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
@@ -36,6 +36,17 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const allSongs = useSongs() as SongViewSchema[];
   const allSetlists = useSetlists() as Setlist[];
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') setSelectedItem('Home');
+    if (path.includes('song')) setSelectedItem('Songs');
+    if (path.includes('setlist')) setSelectedItem('Setlists');
+    if (path.includes('resource')) setSelectedItem('Resources');
+    if (path.includes('profile')) setSelectedItem('Profile');
+  }, [location]);
+
   // Separate the "Profile" item from the rest of the items
   const topMenuItems = [
     { icon: <Language />, text: 'Home', path: '' },
@@ -52,7 +63,6 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   };
 
   const handleSearchClick = () => {
-    setSelectedItem('Search');
     onSearchOpen();
   };
 

@@ -10,6 +10,7 @@ import { LoginFormFields } from '../../types/form.types';
 import { formSpacing, formWidth } from '../../constants';
 import { emailValidator, passwordValidator } from './helpers/zod.validators';
 import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
 
 // zod validation
 const loginValidationSchema = z.object({
@@ -49,10 +50,29 @@ const LoginContainer: React.FC = () => {
     }
   };
 
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      try {
+        const payload = await axios.post('/api/auth/login-google', {
+          responseCode: codeResponse.code,
+        });
+
+        dispatch(signin(payload));
+        setInvalidLogin('');
+        navigate('/');
+      } catch (error) {
+        console.error('Google login error:', error);
+      }
+    },
+    onError: () => console.log('failed'),
+    flow: 'auth-code',
+  });
+
   return (
     <>
       <Box
-        minHeight={'100vh'}
+        minHeight="100vh"
+        width="100%"
         sx={{
           backgroundImage: `url(${process.env.PUBLIC_URL}/images/psalted-bg.jpg)`,
           backgroundSize: 'cover',
@@ -115,9 +135,14 @@ const LoginContainer: React.FC = () => {
                     {invalidLogin}
                   </Typography>
                 ) : null}
-                <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
-                  LOGIN
-                </Button>
+                <Box>
+                  {' '}
+                  <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
+                    LOGIN
+                  </Button>
+                  <Button onClick={() => handleGoogleLogin()}>Login with Google</Button>
+                </Box>
+
                 <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
                   <Link href="/register" underline={'hover'} variant="button">
                     CREATE ACCOUNT

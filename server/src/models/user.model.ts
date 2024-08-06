@@ -5,7 +5,7 @@ const userSchema = new Schema<UserSchema>(
   {
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String },
     accessType: { type: String, enum: ['admin', 'normal'], default: 'normal' },
     groupIds: [{ type: Types.ObjectId, ref: 'Group' }],
     setlistIds: [{ type: Types.ObjectId, ref: 'Setlist' }],

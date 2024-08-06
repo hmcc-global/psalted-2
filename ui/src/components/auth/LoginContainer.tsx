@@ -56,8 +56,8 @@ const LoginContainer: React.FC = () => {
         const payload = await axios.post('/api/auth/login-google', {
           responseCode: codeResponse.code,
         });
-
-        dispatch(signin(payload));
+        
+        dispatch(signin(payload.data));
         setInvalidLogin('');
         navigate('/');
       } catch (error) {

@@ -1,6 +1,7 @@
 import { Setlist, SetlistFolder } from '#/types/setlist.types';
 import { SongViewSchema } from '#/types/song.types';
 import { UserEditorProps } from '#/types/user.types';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 type RootState = {
@@ -11,10 +12,8 @@ type RootState = {
 };
 
 export const useUser = () => {
-  return useSelector((state: RootState) => {
-    const { token, _doc } = state.user;
-    return { token: token, user: _doc };
-  });
+  const { token, _doc } = useSelector((state: RootState) => state.user);
+  return useMemo(() => ({ token, user: _doc }), [token, _doc]);
 };
 export const useSongs = (id?: string) => {
   const allSongs = useSelector((state: RootState) => state.songs);

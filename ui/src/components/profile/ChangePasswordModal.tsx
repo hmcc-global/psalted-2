@@ -30,7 +30,6 @@ const ChangePasswordModal = (props: otherProfileProps) => {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [matchPassword, setMatchPassword] = useState(false);
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
@@ -43,6 +42,7 @@ const ChangePasswordModal = (props: otherProfileProps) => {
   };
 
   const onVerifyPassword = () => {
+    const newPassword = getFormValues('newPassword');
     if (newPassword !== confirmPassword) {
       setMatchPassword(false);
       return;
@@ -74,11 +74,13 @@ const ChangePasswordModal = (props: otherProfileProps) => {
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit(getFormValues());
+            handleClose();
           }}
           style={{ marginBottom: '10%' }}
         >
           <TextField
             fullWidth
+            required
             id="outlined-old-password"
             {...register('currentPassword')}
             label="Enter Old Password"
@@ -103,6 +105,7 @@ const ChangePasswordModal = (props: otherProfileProps) => {
           <Divider style={{ marginTop: '2%', marginBottom: '3%' }} />
           <TextField
             fullWidth
+            required
             id="outlined-adornment-password"
             label="New Password"
             style={{ marginBottom: '5%' }}
@@ -122,12 +125,11 @@ const ChangePasswordModal = (props: otherProfileProps) => {
                 </InputAdornment>
               ),
             }}
-            onChange={(e) => setNewPassword(e.target.value)}
             onBlur={onVerifyPassword}
           />
-          {/* TODO: error handling still aint right */}
           <TextField
             fullWidth
+            required
             id="outlined-basic"
             label="Confirm New Password"
             style={{ marginBottom: '5%' }}
@@ -151,7 +153,7 @@ const ChangePasswordModal = (props: otherProfileProps) => {
               ),
             }}
           />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button variant="contained" type="submit" fullWidth disabled={!matchPassword}>
             <Typography variant="body2">SAVE</Typography>
           </Button>
         </form>

@@ -1,8 +1,4 @@
-import {
-  getFoldersGlobal,
-  getSetlistsGlobal,
-  getSongsGlobal,
-} from '../../helpers/global';
+import { getFoldersGlobal, getSetlistsGlobal, getSongsGlobal } from '../../helpers/global';
 import { Box } from '@mui/material';
 import { ReactNode, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,7 +14,7 @@ const CustomAppContainer = ({ children }: Props) => {
     getSongsGlobal(dispatch);
     getSetlistsGlobal(dispatch);
     getFoldersGlobal(dispatch);
-  }, []);
+  }, [dispatch]);
   return (
     <Box display="flex" flexDirection="row" height="100vh">
       {children}

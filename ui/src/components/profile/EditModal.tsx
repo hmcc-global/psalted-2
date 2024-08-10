@@ -86,6 +86,7 @@ const EditModal = (props: otherProfileProps) => {
         >
           <TextField
             fullWidth
+            required
             id="outlined-name"
             {...register('fullName')}
             label="Enter New Name"

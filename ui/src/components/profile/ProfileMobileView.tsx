@@ -6,35 +6,45 @@ import { UserEditorFields } from '../../types/user.types';
 import { useUser } from '../../helpers/customHooks';
 import EditModal from './EditModal';
 import ChangePasswordModal from './ChangePasswordModal';
+import { useDispatch } from 'react-redux';
+import { refetchUser } from '../../reducers/userSlice';
 
 const ProfileMobileView: FC = (): ReactElement => {
-  const { user } = useUser();
+  const { token, user } = useUser();
+  const dispatch = useDispatch();
   const { register, getValues } = useForm<UserEditorFields>();
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
   const handleEditUserInformation = async (data: UserEditorFields) => {
-    // data.id = user?.id || '';
-    // const { status } = await axios.put('/api/users/update', {
-    //   email: data.email,
-    //   id: data.id,
-    //   fullName: data.fullName,
-    // });
-    // if (status === 200) {
-    //   // fetchUserData();
-    // }
+    data._id = user?._id || '';
+    try {
+      const { data: updated, status } = await axios.put('/api/users/update', {
+        id: data._id,
+        fullName: data.fullName,
+      });
+      if (status === 200) {
+        dispatch(refetchUser({ token, _doc: updated }));
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleChangePassword = async (data: UserEditorFields) => {
-    // data.id = user?.id || '';
-    // const { status } = await axios.put('/api/users/change-password', {
-    //   id: data.id,
-    //   currentPassword: data.currentPassword,
-    //   newPassword: data.newPassword,
-    // });
-    // if (status === 200) {
-    //   // fetchUserData();
-    // }
+    data._id = user?._id || '';
+    try {
+      const { data: updated, status } = await axios.put('/api/users/change-password', {
+        id: data._id,
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      if (status === 200) {
+        dispatch(refetchUser({ token, _doc: updated }));
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const editProfileHandler = () => {
@@ -98,8 +108,15 @@ const ProfileMobileView: FC = (): ReactElement => {
             <Button variant="outlined" onClick={editProfileHandler} style={{ width: '45%' }}>
               <Typography variant="body2">EDIT PROFILE</Typography>
             </Button>
-            <Button variant="outlined" onClick={changePassHandler} style={{ width: '60%' }}>
-              <Typography variant="body2">CHANGE PASSWORD</Typography>
+            <Button
+              variant="outlined"
+              onClick={changePassHandler}
+              style={{ width: '60%' }}
+              disabled={user?.password === ''}
+            >
+              <Typography variant="body2">
+                {user?.password === '' ? 'Google Login cannot change password' : 'Change Password'}
+              </Typography>
             </Button>
           </Stack>
         )}
@@ -115,6 +132,7 @@ const ProfileMobileView: FC = (): ReactElement => {
         <ChangePasswordModal
           onSubmit={handleChangePassword}
           open={showChangePassword}
+          user={user}
           handleClose={backProfileHandler}
           getFormValues={getValues}
           register={register}

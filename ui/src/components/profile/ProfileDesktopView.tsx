@@ -51,25 +51,33 @@ const ProfileDesktopView: FC = (): ReactElement => {
 
   const handleEditUserInformation = async (data: UserEditorFields) => {
     data._id = user?._id || '';
-    const { data: updated, status } = await axios.put('/api/users/update', {
-      id: data._id,
-      fullName: data.fullName,
-    });
-    if (status === 200) {
-      dispatch(refetchUser({ token, _doc: updated }));
+    try {
+      const { data: updated, status } = await axios.put('/api/users/update', {
+        id: data._id,
+        fullName: data.fullName,
+      });
+      if (status === 200) {
+        dispatch(refetchUser({ token, _doc: updated }));
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   const handleChangePassword = async (data: UserEditorFields) => {
-    // data.id = user?.id || '';
-    // const { status } = await axios.put('/api/users/change-password', {
-    //   id: data.id,
-    //   currentPassword: data.currentPassword,
-    //   newPassword: data.newPassword,
-    // });
-    // if (status === 200) {
-    // fetchUserData();
-    // }
+    data._id = user?._id || '';
+    try {
+      const { data: updated, status } = await axios.put('/api/users/change-password', {
+        id: data._id,
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      if (status === 200) {
+        dispatch(refetchUser({ token, _doc: updated }));
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const editProfileHandler = () => {
@@ -135,11 +143,13 @@ const ProfileDesktopView: FC = (): ReactElement => {
             style={{ marginBottom: '5%' }}
           />
           <Divider />
-          <Button variant="contained" onClick={changePassHandler}>
-            <Typography variant="body2">Change Password</Typography>
+          <Button variant="contained" onClick={changePassHandler} disabled={user?.password === ''}>
+            <Typography variant="body2">
+              {user?.password === '' ? 'Google Login cannot change password' : 'Change Password'}
+            </Typography>
           </Button>
-          <Button variant="contained" onClick={changePassHandler}>
-            <Typography variant="body2">Delete Account</Typography>
+          <Button variant="contained">
+            <Typography variant="body2">Delete Account (Coming Soon)</Typography>
           </Button>
         </Stack>
         <EditModal
@@ -154,6 +164,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
           onSubmit={handleChangePassword}
           getFormValues={getValues}
           register={register}
+          user={user}
           open={showChangePassword}
           handleClose={backProfileHandler}
         />

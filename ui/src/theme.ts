@@ -27,6 +27,7 @@ declare module '@mui/material/styles' {
     dark?: string;
     darker?: string;
     darkest?: string;
+    contrastText?: string;
   }
 }
 
@@ -46,6 +47,11 @@ const customTheme = createTheme({
       light: SECONDARY_LIGHT,
       lighter: SECONDARY_LIGHTER,
       dark: SECONDARY_DARK,
+      contrastText: '#381E72',
+    },
+    warning: {
+      main: '#EFB8C8',
+      contrastText: '#601410',
     },
     background: {
       default: '#171717',
@@ -100,7 +106,7 @@ const customTheme = createTheme({
     },
     button: {
       fontSize: '0.875rem', // Equivalent to 14px (16 * 0.875)
-      fontWeight: 400,
+      fontWeight: 600,
     },
   },
   components: {

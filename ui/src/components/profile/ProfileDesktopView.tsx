@@ -10,6 +10,7 @@ import {
   Typography,
   Container,
   styled,
+  useTheme,
 } from '@mui/material';
 import { UserEditorFields } from '../../types/user.types';
 import CreateIcon from '@mui/icons-material/Create';
@@ -20,6 +21,8 @@ import EditModal from './EditModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import { useDispatch } from 'react-redux';
 import { refetchUser } from '../../reducers/userSlice';
+import LockIcon from '@mui/icons-material/Lock';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const RowStack = styled(Stack)({
   display: 'flex',
@@ -43,6 +46,7 @@ const DisabledTextField = styled(TextField)(({ theme }) => ({
 const ProfileDesktopView: FC = (): ReactElement => {
   const { token, user } = useUser();
   const dispatch = useDispatch();
+  const theme = useTheme();
   // TO-DO refactor the use of react form to properly pass the values using the hooks instead of forcing it now.
   const { register, getValues } = useForm<UserEditorFields>();
 
@@ -115,11 +119,28 @@ const ProfileDesktopView: FC = (): ReactElement => {
       >
         <PageHeader title="Profile" icon={<PersonIcon />} />
 
-        <Stack spacing={2} width="90%" margin="auto">
+        <Stack
+          style={{
+            background: theme.palette.background.paper,
+            padding: '24px',
+            borderRadius: '8px',
+            marginTop: '16px',
+          }}
+          spacing={2}
+          width="90%"
+        >
           <RowStack>
-            <Typography>My Information</Typography>
-            <Button startIcon={<CreateIcon />} variant="contained" onClick={editProfileHandler}>
-              <Typography variant="body2">Edit</Typography>
+            <Typography variant="h2">My Information</Typography>
+            <Button
+              style={{ borderRadius: '28px', padding: '12px 24px' }}
+              startIcon={<CreateIcon />}
+              variant="contained"
+              color="secondary"
+              onClick={editProfileHandler}
+            >
+              <Typography color="inherit" variant="h5">
+                Edit
+              </Typography>
             </Button>
           </RowStack>
           <RowStack>
@@ -140,17 +161,33 @@ const ProfileDesktopView: FC = (): ReactElement => {
             label="Email"
             value={user?.email}
             {...register('email', { required: true })}
-            style={{ marginBottom: '5%' }}
+            style={{ marginBottom: '16px' }}
           />
-          <Divider />
-          <Button variant="contained" onClick={changePassHandler} disabled={user?.password === ''}>
-            <Typography variant="body2">
-              {user?.password === '' ? 'Google Login cannot change password' : 'Change Password'}
-            </Typography>
-          </Button>
-          <Button variant="contained">
-            <Typography variant="body2">Delete Account (Coming Soon)</Typography>
-          </Button>
+          <Divider style={{ borderColor: theme.palette.secondary.dark, marginBottom: '16px' }} />
+          <Box display="flex" flexDirection="column" alignItems="flex-start" gap="16px">
+            <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<LockIcon />}
+              onClick={changePassHandler}
+              style={{ borderRadius: '20px' }}
+              disabled={user?.password === ''}
+            >
+              <Typography color="inherit" variant="h5">
+                {user?.password === '' ? 'Google Login cannot change password' : 'Change Password'}
+              </Typography>
+            </Button>
+            <Button
+              startIcon={<DeleteIcon />}
+              variant="contained"
+              color="warning"
+              style={{ borderRadius: '20px' }}
+            >
+              <Typography color="inherit" variant="h5">
+                Delete Account (Coming Soon)
+              </Typography>
+            </Button>
+          </Box>
         </Stack>
         <EditModal
           onSubmit={handleEditUserInformation}

@@ -9,10 +9,10 @@ import {
   IconButton,
   Button,
   Modal,
+  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import CreateIcon from '@mui/icons-material/Create';
+import LockIcon from '@mui/icons-material/Lock';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -21,12 +21,13 @@ const modalStyle = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: '20px',
 };
 
 const ChangePasswordModal = (props: otherProfileProps) => {
+  const theme = useTheme();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -59,13 +60,14 @@ const ChangePasswordModal = (props: otherProfileProps) => {
             display: 'flex',
             alignItems: 'center',
             flexWrap: 'wrap',
+            marginBottom: '24px',
+            gap: '8px',
           }}
         >
-          <ArrowBackIosNewIcon onClick={handleClose} sx={{ color: 'gray' }} />
-          <Typography variant="h3" color="primary">
+          <LockIcon color="secondary" style={{ marginLeft: '2%' }} />
+          <Typography variant="h3" color={theme.palette.text.primary}>
             CHANGE PASSWORD
           </Typography>
-          <CreateIcon color="primary" style={{ marginLeft: '2%' }} />
         </div>
 
         <Typography variant="h3">Old Password</Typography>
@@ -153,9 +155,25 @@ const ChangePasswordModal = (props: otherProfileProps) => {
               ),
             }}
           />
-          <Button variant="contained" type="submit" fullWidth disabled={!matchPassword}>
-            <Typography variant="body2">SAVE</Typography>
-          </Button>
+          <Box display="flex" justifyContent="flex-end" gap={2}>
+            <Button
+              color="secondary"
+              onClick={handleClose}
+              variant="outlined"
+              style={{ borderRadius: '20px' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              type="submit"
+              disabled={!matchPassword}
+              style={{ borderRadius: '20px' }}
+            >
+              <Typography variant="body2">Save</Typography>
+            </Button>
+          </Box>
         </form>
       </Box>
     </Modal>

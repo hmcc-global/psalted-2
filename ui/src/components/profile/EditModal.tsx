@@ -18,9 +18,9 @@ const modalStyle = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: '20px',
 };
 
 const DisabledTextField = styled(TextField)(({ theme }) => ({
@@ -47,6 +47,8 @@ const EditModal = (props: otherProfileProps) => {
             display: 'flex',
             alignItems: 'center',
             flexWrap: 'wrap',
+            marginBottom: '24px',
+            gap: '8px',
           }}
         >
           <CreateIcon color="secondary" style={{ marginLeft: '2%' }} />
@@ -107,11 +109,23 @@ const EditModal = (props: otherProfileProps) => {
             }}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button onClick={handleClose} variant="outlined">
+            <Button
+              color="secondary"
+              onClick={handleClose}
+              variant="outlined"
+              style={{ borderRadius: '20px' }}
+            >
               Cancel
             </Button>
-            <Button variant="contained" type="submit">
-              <Typography variant="body2">Save</Typography>
+            <Button
+              color="secondary"
+              variant="contained"
+              type="submit"
+              style={{ borderRadius: '20px' }}
+            >
+              <Typography color="inherit" variant="button">
+                Save
+              </Typography>
             </Button>
           </Box>
         </form>

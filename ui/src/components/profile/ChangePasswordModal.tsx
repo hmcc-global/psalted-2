@@ -36,7 +36,7 @@ const ChangePasswordModal = (props: otherProfileProps) => {
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmNewPassword = () => setShowConfirmNewPassword((show) => !show);
-  const { open, onSubmit, register, handleClose } = props;
+  const { open, onSubmit, getFormValues, register, handleClose } = props;
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -70,7 +70,13 @@ const ChangePasswordModal = (props: otherProfileProps) => {
 
         <Typography variant="h3">Old Password</Typography>
         <Divider style={{ marginBottom: '3%' }} />
-        <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(getFormValues());
+          }}
+          style={{ marginBottom: '10%' }}
+        >
           <TextField
             fullWidth
             id="outlined-old-password"

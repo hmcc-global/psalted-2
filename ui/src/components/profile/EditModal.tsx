@@ -37,7 +37,7 @@ const DisabledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const EditModal = (props: otherProfileProps) => {
-  const { onSubmit, register, open, handleClose, user } = props;
+  const { onSubmit, register, open, getFormValues, handleClose, user } = props;
   const theme = useTheme();
   return (
     <Modal open={!!open} onClose={handleClose}>
@@ -76,7 +76,14 @@ const EditModal = (props: otherProfileProps) => {
         />
         <Typography variant="h3">New Name</Typography>
         <Divider style={{ marginBottom: '3%' }} />
-        <form onSubmit={onSubmit} style={{ marginBottom: '10%' }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(getFormValues());
+            handleClose();
+          }}
+          style={{ marginBottom: '10%' }}
+        >
           <TextField
             fullWidth
             id="outlined-name"

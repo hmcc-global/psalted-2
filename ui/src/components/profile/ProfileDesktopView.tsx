@@ -18,6 +18,8 @@ import { useUser } from '../../helpers/customHooks';
 import PageHeader from '../navigation/PageHeader';
 import EditModal from './EditModal';
 import ChangePasswordModal from './ChangePasswordModal';
+import { useDispatch } from 'react-redux';
+import { refetchUser } from '../../reducers/userSlice';
 
 const RowStack = styled(Stack)({
   display: 'flex',
@@ -39,37 +41,35 @@ const DisabledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const ProfileDesktopView: FC = (): ReactElement => {
-  const { user } = useUser();
-
-  const { handleSubmit, register } = useForm<UserEditorFields>();
+  const { token, user } = useUser();
+  const dispatch = useDispatch();
+  // TO-DO refactor the use of react form to properly pass the values using the hooks instead of forcing it now.
+  const { register, getValues } = useForm<UserEditorFields>();
 
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
   const handleEditUserInformation = async (data: UserEditorFields) => {
-    data.id = user?.id || '';
-console.log(user)
-    const { status } = await axios.put('/api/users/update', {
-      email: data.email,
-      id: data.id,
+    data._id = user?._id || '';
+    const { data: updated, status } = await axios.put('/api/users/update', {
+      id: data._id,
       fullName: data.fullName,
     });
     if (status === 200) {
-      // fetchUserData();
+      dispatch(refetchUser({ token, _doc: updated }));
     }
   };
 
   const handleChangePassword = async (data: UserEditorFields) => {
-    data.id = user?.id || '';
-
-    const { status } = await axios.put('/api/users/change-password', {
-      id: data.id,
-      currentPassword: data.currentPassword,
-      newPassword: data.newPassword,
-    });
-    if (status === 200) {
-      // fetchUserData();
-    }
+    // data.id = user?.id || '';
+    // const { status } = await axios.put('/api/users/change-password', {
+    //   id: data.id,
+    //   currentPassword: data.currentPassword,
+    //   newPassword: data.newPassword,
+    // });
+    // if (status === 200) {
+    // fetchUserData();
+    // }
   };
 
   const editProfileHandler = () => {
@@ -143,14 +143,16 @@ console.log(user)
           </Button>
         </Stack>
         <EditModal
-          onSubmit={handleSubmit(handleEditUserInformation)}
+          onSubmit={handleEditUserInformation}
           register={register}
+          getFormValues={getValues}
           user={user}
           open={showEditProfile}
           handleClose={backProfileHandler}
         />
         <ChangePasswordModal
-          onSubmit={handleSubmit(handleChangePassword)}
+          onSubmit={handleChangePassword}
+          getFormValues={getValues}
           register={register}
           open={showChangePassword}
           handleClose={backProfileHandler}

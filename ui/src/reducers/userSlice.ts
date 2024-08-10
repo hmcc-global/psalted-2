@@ -10,9 +10,12 @@ export const userSlice = createSlice({
     signout: (_, _action) => {
       return {};
     },
+    refetchUser: (_, action) => {
+      return action.payload;
+    },
   },
 });
 
-export const { signin, signout } = userSlice.actions;
+export const { signin, signout, refetchUser } = userSlice.actions;
 
 export default userSlice.reducer;

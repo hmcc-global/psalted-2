@@ -10,7 +10,6 @@ export type UserEditorFields = {
 };
 
 export type UserEditorProps = {
-  onBack: () => void;
   onSubmit: () => void;
   register: UseFormRegister<UserEditorFields>;
   onClickEdit: () => void;
@@ -20,6 +19,7 @@ export type UserEditorProps = {
   token?: string;
 };
 
-export type HomeProfileProps = Omit<UserEditorProps, 'onSubmit'>;
-
-export type otherProfileProps = Omit<UserEditorProps, 'onClickEdit' | 'onClickChange'>;
+export type otherProfileProps = Omit<UserEditorProps, 'onClickEdit' | 'onClickChange'> & {
+  open?: boolean;
+  handleClose?: () => void;
+};

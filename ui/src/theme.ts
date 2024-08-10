@@ -52,7 +52,7 @@ const customTheme = createTheme({
       paper: '#0F0D13',
     },
     text: {
-      primary: '#fff',
+      primary: '#E6E0E9',
     },
   },
   typography: {

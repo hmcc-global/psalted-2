@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { FC, ReactElement, useState, useEffect, useCallback } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -11,69 +10,17 @@ import {
   Typography,
   Container,
 } from '@mui/material';
-import { UserEditorFields, HomeProfileProps, otherProfileProps } from '../../types/user.types';
+import { UserEditorFields, otherProfileProps } from '../../types/user.types';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-function HomeProfile(props: HomeProfileProps) {
-  const { onBack, register, onClickChange, onClickEdit, user } = props;
-
-  return (
-    <Stack spacing={2} width="100%">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
-        <Typography variant="h3" color="primary">
-          PROFILE
-        </Typography>
-      </div>
-      <TextField
-        fullWidth
-        disabled
-        id="outlined-name"
-        label="Name"
-        value={user?.fullName}
-        {...register('fullName', { required: true })}
-        sx={{
-          '& .MuiInputBase-input.Mui-disabled': {
-            WebkitTextFillColor: 'black',
-          },
-        }}
-      />
-      <TextField
-        fullWidth
-        disabled
-        id="outlined-email"
-        label="Email"
-        value={user?.email}
-        {...register('email', { required: true })}
-        sx={{
-          '& .MuiInputBase-input.Mui-disabled': {
-            WebkitTextFillColor: 'black',
-          },
-        }}
-      />
-      <Button variant="outlined" onClick={onClickEdit} style={{ width: '45%' }}>
-        <Typography variant="body2">EDIT PROFILE</Typography>
-      </Button>
-      <Button variant="outlined" onClick={onClickChange} style={{ width: '60%' }}>
-        <Typography variant="body2">CHANGE PASSWORD</Typography>
-      </Button>
-    </Stack>
-  );
-}
+import { useUser } from '../../helpers/customHooks';
 
 function EditProfile(props: otherProfileProps) {
-  const { onBack, onSubmit, register, user } = props;
+  const { handleClose, onSubmit, register, user } = props;
 
   return (
     <Stack spacing={2} width="100%">
@@ -92,7 +39,7 @@ function EditProfile(props: otherProfileProps) {
             flexWrap: 'wrap',
           }}
         >
-          <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
+          <ArrowBackIosNewIcon onClick={handleClose} sx={{ color: 'gray' }} />
           <Typography variant="h3" color="primary">
             EDIT PROFILE
           </Typography>
@@ -140,7 +87,7 @@ function ChangePassword(props: otherProfileProps) {
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmNewPassword = () => setShowConfirmNewPassword((show) => !show);
-  const { onBack, onSubmit, register } = props;
+  const { handleClose, onSubmit, register } = props;
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -172,7 +119,7 @@ function ChangePassword(props: otherProfileProps) {
             flexWrap: 'wrap',
           }}
         >
-          <ArrowBackIosNewIcon onClick={onBack} sx={{ color: 'gray' }} />
+          <ArrowBackIosNewIcon onClick={handleClose} sx={{ color: 'gray' }} />
           <Typography variant="h3" color="primary">
             CHANGE PASSWORD
           </Typography>
@@ -262,34 +209,13 @@ function ChangePassword(props: otherProfileProps) {
 }
 
 const ProfileMobileView: FC = (): ReactElement => {
-  const user = useSelector((state: any) => state.user);
-  const { setValue, handleSubmit, register } = useForm<UserEditorFields>();
-  const [userData, setUserData] = useState(undefined);
+  const { user } = useUser();
+  const { handleSubmit, register } = useForm<UserEditorFields>();
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
 
-  const setUserInformationFields = useCallback(
-    (userData: UserEditorFields) => {
-      setValue('fullName', userData['fullName']);
-      setValue('email', userData['email']);
-      setValue('password', userData['password']);
-    },
-    [setValue]
-  );
-
-  const fetchUserData = useCallback(async () => {
-    if (user.id) {
-      const { data, status } = await axios.get('/api/users/get', { params: { id: user.id } });
-
-      if (status === 200) {
-        setUserData(data);
-        setUserInformationFields(data);
-      }
-    }
-  }, [user.id, setUserInformationFields]);
-
   const handleEditUserInformation = async (data: UserEditorFields) => {
-    data.id = user.id;
+    data.id = user?.id || '';
 
     const { status } = await axios.put('/api/users/update', {
       email: data.email,
@@ -297,12 +223,12 @@ const ProfileMobileView: FC = (): ReactElement => {
       fullName: data.fullName,
     });
     if (status === 200) {
-      fetchUserData();
+      // fetchUserData();
     }
   };
 
   const handleChangePassword = async (data: UserEditorFields) => {
-    data.id = user.id;
+    data.id = user?.id || '';
 
     const { status } = await axios.put('/api/users/change-password', {
       id: data.id,
@@ -311,7 +237,7 @@ const ProfileMobileView: FC = (): ReactElement => {
     });
 
     if (status === 200) {
-      fetchUserData();
+      // fetchUserData();
     }
   };
 
@@ -333,10 +259,6 @@ const ProfileMobileView: FC = (): ReactElement => {
     }
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, [fetchUserData]);
-
   return (
     <Container>
       <Box
@@ -350,26 +272,53 @@ const ProfileMobileView: FC = (): ReactElement => {
         }}
       >
         {!showEditProfile && !showChangePassword && (
-          <HomeProfile
-            onClickEdit={editProfileHandler}
-            onClickChange={changePassHandler}
-            onBack={backProfileHandler}
-            register={register}
-            user={userData}
-          />
+          <Stack spacing={2} width="100%">
+            <TextField
+              fullWidth
+              disabled
+              id="outlined-name"
+              label="Name"
+              value={user?.fullName}
+              {...register('fullName', { required: true })}
+              sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: 'black',
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              disabled
+              id="outlined-email"
+              label="Email"
+              value={user?.email}
+              {...register('email', { required: true })}
+              sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: 'black',
+                },
+              }}
+            />
+            <Button variant="outlined" onClick={editProfileHandler} style={{ width: '45%' }}>
+              <Typography variant="body2">EDIT PROFILE</Typography>
+            </Button>
+            <Button variant="outlined" onClick={changePassHandler} style={{ width: '60%' }}>
+              <Typography variant="body2">CHANGE PASSWORD</Typography>
+            </Button>
+          </Stack>
         )}
         {showEditProfile && !showChangePassword && (
           <EditProfile
-            onBack={backProfileHandler}
+            handleClose={backProfileHandler}
             onSubmit={handleSubmit(handleEditUserInformation)}
             register={register}
-            user={userData}
+            user={user}
           />
         )}
         {!showEditProfile && showChangePassword && (
           <ChangePassword
             onSubmit={handleSubmit(handleChangePassword)}
-            onBack={backProfileHandler}
+            handleClose={backProfileHandler}
             register={register}
           />
         )}

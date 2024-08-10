@@ -1,8 +1,4 @@
-import {
-  getFoldersGlobal,
-  getSetlistsGlobal,
-  getSongsGlobal,
-} from '../../helpers/global';
+import { getFoldersGlobal, getSetlistsGlobal, getSongsGlobal } from '../../helpers/global';
 import { Box } from '@mui/material';
 import { ReactNode, useEffect } from 'react';
 import { useDispatch } from 'react-redux';

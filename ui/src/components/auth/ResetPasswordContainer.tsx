@@ -10,11 +10,12 @@ import {
   Snackbar,
   Alert,
   AlertColor,
+  useTheme,
 } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ResetPasswordFields } from '../../types/form.types';
-import { formSpacing, formWidth } from '../../constants';
+import { formSpacing } from '../../constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { stringValidator, passwordValidator } from './helpers/zod.validators';
 
@@ -41,6 +42,7 @@ const useQuery = () => {
 const ResetPasswordContainer: React.FC = () => {
   const query = useQuery();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<AlertColor | undefined>();
@@ -100,71 +102,65 @@ const ResetPasswordContainer: React.FC = () => {
   return (
     <>
       <Box
-        minHeight={'100vh'}
-        sx={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/images/psalted-bg.jpg)`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+        style={{
+          background: theme.palette.primary.darker,
+          borderRadius: '30px',
+          padding: '32px 24px',
         }}
+        width="50%"
       >
-        <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
-          <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
-            <Stack spacing={1}>
-              <Typography variant="h1" color={'primary'} textAlign={'center'}>
-                RESET PASSWORD
-              </Typography>
-              <Typography variant={'body1'} textAlign={'center'}>
-                Create a new password
-              </Typography>
-            </Stack>
-            <form onSubmit={handleSubmit(handleResetPassword)}>
-              <Stack spacing={formSpacing}>
-                <Stack spacing={1}>
-                  <TextField
-                    label="Password"
-                    type="password"
-                    {...register('password', {
-                      required: 'Required',
-                    })}
-                    fullWidth
-                    error={!!errors?.password?.message}
-                    helperText={errors?.password?.message}
-                  />
-                </Stack>
-                <Stack spacing={1}>
-                  <TextField
-                    label="Confirm Password"
-                    type="password"
-                    {...register('confirmPassword', {
-                      required: 'Required',
-                    })}
-                    fullWidth
-                    error={!!errors?.confirmPassword?.message}
-                    helperText={errors?.confirmPassword?.message}
-                  />
-                </Stack>
-                <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
-                  RESET PASSWORD
-                </Button>
-              </Stack>
-            </form>
+        <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
+          <Stack spacing={1}>
+            <Typography variant="h1" color={'primary'} textAlign={'center'}>
+              RESET PASSWORD
+            </Typography>
+            <Typography variant={'body1'} textAlign={'center'}>
+              Create a new password
+            </Typography>
           </Stack>
-        </Box>
-        <Snackbar
-          open={open}
-          onClose={handleClose}
-          autoHideDuration={9000}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert severity={status} sx={{ width: '100%' }} onClose={handleClose}>
-            {message}
-          </Alert>
-        </Snackbar>
+          <form onSubmit={handleSubmit(handleResetPassword)}>
+            <Stack spacing={formSpacing}>
+              <Stack spacing={1}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  {...register('password', {
+                    required: 'Required',
+                  })}
+                  fullWidth
+                  error={!!errors?.password?.message}
+                  helperText={errors?.password?.message}
+                />
+              </Stack>
+              <Stack spacing={1}>
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  {...register('confirmPassword', {
+                    required: 'Required',
+                  })}
+                  fullWidth
+                  error={!!errors?.confirmPassword?.message}
+                  helperText={errors?.confirmPassword?.message}
+                />
+              </Stack>
+              <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
+                RESET PASSWORD
+              </Button>
+            </Stack>
+          </form>
+        </Stack>
       </Box>
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        autoHideDuration={9000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity={status} sx={{ width: '100%' }} onClose={handleClose}>
+          {message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

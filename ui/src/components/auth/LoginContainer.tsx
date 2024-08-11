@@ -85,155 +85,115 @@ const LoginContainer: React.FC = () => {
 
   return (
     <Box
-      sx={{
-        width: { xs: '100%', md: '90%' },
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        paddingBottom: '1em',
-        paddingTop: '2em',
-        mx: '24px',
+      style={{
+        background: theme.palette.primary.darker,
+        borderRadius: '30px',
+        padding: '32px 24px',
       }}
+      width="50%"
     >
-      <Stack direction="row" width="100%" spacing={2}>
-        <Box
-          sx={{
-            py: '2.5em',
-            px: '2em',
-            borderRadius: '30px',
-            background:
-              'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
-            width: '50%',
-          }}
-          position="relative"
-        >
-          <Typography variant="h1" sx={{ pb: 2, fontSize: '40px' }}>
-            Welcome to
-            <br />
-            Ripple Worship
+      <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
+        <Stack spacing={0.5}>
+          <Typography variant="h1" color={theme.palette.text.primary} textAlign={'center'}>
+            Log In
           </Typography>
-          <Typography variant="body1" position="absolute" bottom={35}>
-            Harvest Mission Community Church
-          </Typography>
-        </Box>
-        <Box
-          style={{
-            background: theme.palette.primary.darker,
-            borderRadius: '30px',
-            padding: '32px 24px',
-          }}
-          width="50%"
-        >
-          <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
-            <Stack spacing={0.5}>
-              <Typography variant="h1" color={theme.palette.text.primary} textAlign={'center'}>
-                Log In
-              </Typography>
+        </Stack>
+        <form onSubmit={handleSubmit(handleEmailLogin)}>
+          <Stack spacing={formSpacing}>
+            <Stack spacing={1}>
+              <TextField
+                label="Email"
+                fullWidth
+                autoComplete={'email'}
+                autoFocus
+                {...register('email', {
+                  required: 'Required',
+                })}
+                error={!!errors?.email?.message}
+                helperText={errors?.email?.message}
+              />
             </Stack>
-            <form onSubmit={handleSubmit(handleEmailLogin)}>
-              <Stack spacing={formSpacing}>
-                <Stack spacing={1}>
-                  <TextField
-                    label="Email"
-                    fullWidth
-                    autoComplete={'email'}
-                    autoFocus
-                    {...register('email', {
-                      required: 'Required',
-                    })}
-                    error={!!errors?.email?.message}
-                    helperText={errors?.email?.message}
-                  />
-                </Stack>
-                <Stack spacing={1}>
-                  <TextField
-                    label="Password"
-                    type={showPassword ? 'text' : 'password'}
-                    {...register('password', {
-                      required: 'Required',
-                    })}
-                    autoComplete={'password'}
-                    fullWidth
-                    error={!!errors?.password?.message}
-                    helperText={errors?.password?.message}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            color="secondary"
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Stack>
-                <Stack
-                  direction={'row'}
-                  spacing={1}
-                  alignItems={'center'}
-                  justifyContent="space-between"
-                >
-                  <Box display="flex" gap={1} alignItems="center">
-                    <Checkbox
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setRememberPassword(e.target.checked)
-                      }
-                      color="secondary"
-                      sx={{ '& .MuiSvgIcon-root': { color: theme.palette.secondary.main } }}
-                      checked={rememberPassword}
-                    />
-                    <Typography variant={'body2'}>Remember me</Typography>
-                  </Box>
-                  <Link
-                    href="/password/recover"
-                    underline={'hover'}
-                    color="secondary"
-                    variant="button"
-                  >
-                    FORGOT PASSWORD?
-                  </Link>
-                </Stack>
-                {invalidLogin ? (
-                  <Typography variant={'body2'} color={'error'}>
-                    {invalidLogin}
-                  </Typography>
-                ) : null}
-                <Stack display="flex" justifyContent="center" alignItems="center" spacing={2}>
-                  <Button
-                    type={'submit'}
-                    style={{ borderRadius: '30px' }}
-                    color={'secondary'}
-                    variant={'contained'}
-                    fullWidth
-                  >
-                    <Typography variant="subtitle2" color="inherit">
-                      Log In
-                    </Typography>
-                  </Button>
-                  <Typography>OR</Typography>
-                  <Stack
-                    direction={'row'}
-                    spacing={4}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                  >
-                    <Typography color={theme.palette.secondary.light}>
-                      Don't have an account?
-                    </Typography>
-                    <Link color="secondary" href="/register" underline={'hover'} variant="button">
-                      Sign Up
-                    </Link>
-                  </Stack>
-                </Stack>
+            <Stack spacing={1}>
+              <TextField
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: 'Required',
+                })}
+                autoComplete={'password'}
+                fullWidth
+                error={!!errors?.password?.message}
+                helperText={errors?.password?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        color="secondary"
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Stack>
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              justifyContent="space-between"
+            >
+              <Box display="flex" gap={1} alignItems="center">
+                <Checkbox
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setRememberPassword(e.target.checked)
+                  }
+                  color="secondary"
+                  sx={{ '& .MuiSvgIcon-root': { color: theme.palette.secondary.main } }}
+                  checked={rememberPassword}
+                />
+                <Typography variant={'body2'}>Remember me</Typography>
+              </Box>
+              <Link href="/password/recover" underline={'hover'} color="secondary" variant="button">
+                FORGOT PASSWORD?
+              </Link>
+            </Stack>
+            {invalidLogin ? (
+              <Typography variant={'body2'} color={'error'}>
+                {invalidLogin}
+              </Typography>
+            ) : null}
+            <Stack display="flex" justifyContent="center" alignItems="center" spacing={2}>
+              <Button
+                type={'submit'}
+                style={{ borderRadius: '30px' }}
+                color={'secondary'}
+                variant={'contained'}
+                fullWidth
+              >
+                <Typography variant="subtitle2" color="inherit">
+                  Log In
+                </Typography>
+              </Button>
+              <Typography>OR</Typography>
+              <Stack
+                direction={'row'}
+                spacing={4}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography color={theme.palette.secondary.light}>
+                  Don't have an account?
+                </Typography>
+                <Link color="secondary" href="/register" underline={'hover'} variant="button">
+                  Sign Up
+                </Link>
               </Stack>
-            </form>
+            </Stack>
           </Stack>
-        </Box>
+        </form>
       </Stack>
     </Box>
   );

@@ -1,9 +1,6 @@
 import { FC } from 'react';
 import HomeContainer from './components/home/HomeContainer';
-import LoginContainer from './components/auth/LoginContainer';
-import RegisterContainer from './components/auth/RegisterContainer';
-import RecoverPasswordContainer from './components/auth/RecoverPasswordContainer';
-import ResetPasswordContainer from './components/auth/ResetPasswordContainer';
+import MainLoginContainer from './components/auth/MainLoginContainer';
 import SongEditorContainer from './components/song/SongEditorContainer';
 import SongListContainer from './components/song/SongListContainer';
 import ProfileContainer from './components/profile/ProfileContainer';
@@ -29,7 +26,7 @@ export const routes: Array<Route> = [
     title: 'Login',
     path: '/login',
     enabled: true,
-    component: LoginContainer,
+    component: MainLoginContainer,
     permissions: ['noUser'],
   },
   {
@@ -37,7 +34,7 @@ export const routes: Array<Route> = [
     title: 'Register',
     path: '/register',
     enabled: true,
-    component: RegisterContainer,
+    component: MainLoginContainer,
     permissions: ['noUser'],
   },
   {
@@ -45,7 +42,7 @@ export const routes: Array<Route> = [
     title: 'Recover Password',
     path: '/password/recover',
     enabled: true,
-    component: RecoverPasswordContainer,
+    component: MainLoginContainer,
     permissions: ['noUser'],
   },
   {
@@ -53,7 +50,7 @@ export const routes: Array<Route> = [
     title: 'Reset Password',
     path: '/password/new',
     enabled: true,
-    component: ResetPasswordContainer,
+    component: MainLoginContainer,
     permissions: ['noUser'],
   },
   // Home routes

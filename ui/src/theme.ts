@@ -2,7 +2,6 @@ import {
   createTheme,
   PaletteOptions,
   SimplePaletteColorOptions,
-  TypeText,
 } from '@mui/material/styles';
 import '@fontsource/work-sans';
 import '@fontsource/dm-sans';

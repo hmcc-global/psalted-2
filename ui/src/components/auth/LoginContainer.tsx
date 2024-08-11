@@ -3,14 +3,27 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { signin } from '../../reducers/userSlice';
 import axios from 'axios';
-import { Box, Button, Checkbox, Link, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LoginFormFields } from '../../types/form.types';
-import { formSpacing, formWidth } from '../../constants';
+import { formSpacing } from '../../constants';
 import { emailValidator, passwordValidator } from './helpers/zod.validators';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // zod validation
 const loginValidationSchema = z.object({
@@ -25,10 +38,12 @@ const LoginContainer: React.FC = () => {
   const { errors } = formState;
 
   const [invalidLogin, setInvalidLogin] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleEmailLogin: SubmitHandler<LoginFormFields> = async (data) => {
     try {
@@ -56,7 +71,7 @@ const LoginContainer: React.FC = () => {
         const payload = await axios.post('/api/auth/login-google', {
           responseCode: codeResponse.code,
         });
-        
+
         dispatch(signin(payload.data));
         setInvalidLogin('');
         navigate('/');
@@ -69,28 +84,51 @@ const LoginContainer: React.FC = () => {
   });
 
   return (
-    <>
-      <Box
-        minHeight="100vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/images/psalted-bg.jpg)`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Box margin={'auto'} bgcolor={'transparent'} width={formWidth}>
+    <Box
+      sx={{
+        width: { xs: '100%', md: '90%' },
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        paddingBottom: '1em',
+        paddingTop: '2em',
+        mx: '24px',
+      }}
+    >
+      <Stack direction="row" width="100%" spacing={2}>
+        <Box
+          sx={{
+            py: '2.5em',
+            px: '2em',
+            borderRadius: '30px',
+            background:
+              'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
+            width: '50%',
+          }}
+          position="relative"
+        >
+          <Typography variant="h1" sx={{ pb: 2, fontSize: '40px' }}>
+            Welcome to
+            <br />
+            Ripple Worship
+          </Typography>
+          <Typography variant="body1" position="absolute" bottom={35}>
+            Harvest Mission Community Church
+          </Typography>
+        </Box>
+        <Box
+          style={{
+            background: theme.palette.primary.darker,
+            borderRadius: '30px',
+            padding: '32px 24px',
+          }}
+          width="50%"
+        >
           <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
             <Stack spacing={0.5}>
-              <Typography variant="h1" color={'primary'} textAlign={'center'}>
-                LOGIN
-              </Typography>
-              <Typography variant={'body1'} textAlign={'center'}>
-                Welcome Back
+              <Typography variant="h1" color={theme.palette.text.primary} textAlign={'center'}>
+                Log In
               </Typography>
             </Stack>
             <form onSubmit={handleSubmit(handleEmailLogin)}>
@@ -111,7 +149,7 @@ const LoginContainer: React.FC = () => {
                 <Stack spacing={1}>
                   <TextField
                     label="Password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     {...register('password', {
                       required: 'Required',
                     })}
@@ -119,44 +157,85 @@ const LoginContainer: React.FC = () => {
                     fullWidth
                     error={!!errors?.password?.message}
                     helperText={errors?.password?.message}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            color="secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Stack>
-                <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                  <Checkbox
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setRememberPassword(e.target.checked)
-                    }
-                    checked={rememberPassword}
-                  />
-                  <Typography variant={'body2'}>Remember me</Typography>
+                <Stack
+                  direction={'row'}
+                  spacing={1}
+                  alignItems={'center'}
+                  justifyContent="space-between"
+                >
+                  <Box display="flex" gap={1} alignItems="center">
+                    <Checkbox
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setRememberPassword(e.target.checked)
+                      }
+                      color="secondary"
+                      sx={{ '& .MuiSvgIcon-root': { color: theme.palette.secondary.main } }}
+                      checked={rememberPassword}
+                    />
+                    <Typography variant={'body2'}>Remember me</Typography>
+                  </Box>
+                  <Link
+                    href="/password/recover"
+                    underline={'hover'}
+                    color="secondary"
+                    variant="button"
+                  >
+                    FORGOT PASSWORD?
+                  </Link>
                 </Stack>
                 {invalidLogin ? (
                   <Typography variant={'body2'} color={'error'}>
                     {invalidLogin}
                   </Typography>
                 ) : null}
-                <Box>
-                  {' '}
-                  <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
-                    LOGIN
+                <Stack display="flex" justifyContent="center" alignItems="center" spacing={2}>
+                  <Button
+                    type={'submit'}
+                    style={{ borderRadius: '30px' }}
+                    color={'secondary'}
+                    variant={'contained'}
+                    fullWidth
+                  >
+                    <Typography variant="subtitle2" color="inherit">
+                      Log In
+                    </Typography>
                   </Button>
-                  <Button onClick={() => handleGoogleLogin()}>Login with Google</Button>
-                </Box>
-
-                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-                  <Link href="/register" underline={'hover'} variant="button">
-                    CREATE ACCOUNT
-                  </Link>
-                  <Link href="/password/recover" underline={'hover'} variant="button">
-                    FORGOT PASSWORD?
-                  </Link>
+                  <Typography>OR</Typography>
+                  <Stack
+                    direction={'row'}
+                    spacing={4}
+                    justifyContent={'space-between'}
+                    alignItems={'center'}
+                  >
+                    <Typography color={theme.palette.secondary.light}>
+                      Don't have an account?
+                    </Typography>
+                    <Link color="secondary" href="/register" underline={'hover'} variant="button">
+                      Sign Up
+                    </Link>
+                  </Stack>
                 </Stack>
               </Stack>
             </form>
           </Stack>
         </Box>
-      </Box>
-    </>
+      </Stack>
+    </Box>
   );
 };
 

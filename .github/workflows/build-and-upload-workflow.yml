@@ -60,6 +60,10 @@ jobs:
         with:
           name: my_artifact
           path: release.zip
+      - name: Inspect artifact
+        run: |
+          ls -l
+          file release.zip
       - name: "Trigger Deploy ${{ github.event.inputs.deploy_env }} Workflow"
         run: |
           curl \

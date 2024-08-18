@@ -1,4 +1,4 @@
-import { SetlistFolderMember } from '#/types/setlist.types';
+import { SetlistFolderMember } from '../../types/setlist.types';
 import { Folder, GroupAdd, Delete, Close, Check, Add } from '@mui/icons-material';
 import {
   Drawer,

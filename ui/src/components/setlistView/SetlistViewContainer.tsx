@@ -1,5 +1,5 @@
-import { Setlist } from '#/types/setlist.types';
-import { SongViewSchema } from '#/types/song.types';
+import { Setlist } from '../../types/setlist.types';
+import { SongViewSchema } from '../../types/song.types';
 import { Box, Button, Container, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { FC, ReactElement, useEffect, useState } from 'react';
 import SongsButtonsCard from '../songsView/SongsButtonsCard';

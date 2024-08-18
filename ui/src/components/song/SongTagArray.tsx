@@ -1,4 +1,4 @@
-import { FieldArrayProps } from '#/types/song.types';
+import { FieldArrayProps } from '../../types/song.types';
 import { Typography, Stack, Chip } from '@mui/material';
 
 const SongTagArray = ({ data }: FieldArrayProps) => {

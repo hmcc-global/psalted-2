@@ -4,8 +4,8 @@ import { Box, Fade, InputAdornment, Modal, TextField, Typography } from '@mui/ma
 import SongSearchResult from './searchModalComponents/SongSearchResult';
 import { useNavigate } from 'react-router-dom';
 import SetlistSearchResult from './searchModalComponents/SetlistSearchResult';
-import { SongViewSchema } from '#/types/song.types';
-import { Setlist } from '#/types/setlist.types';
+import { SongViewSchema } from '../../types/song.types';
+import { Setlist } from '../../types/setlist.types';
 import SearchIcon from '@mui/icons-material/Search';
 import RadioCard from './searchModalComponents/RadioCard';
 

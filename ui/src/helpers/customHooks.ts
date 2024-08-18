@@ -1,6 +1,6 @@
-import { Setlist, SetlistFolder } from '#/types/setlist.types';
-import { SongViewSchema } from '#/types/song.types';
-import { UserEditorProps } from '#/types/user.types';
+import { Setlist, SetlistFolder } from '../types/setlist.types';
+import { SongViewSchema } from '../types/song.types';
+import { UserEditorProps } from '../types/user.types';
 import { useSelector } from 'react-redux';
 
 type RootState = {

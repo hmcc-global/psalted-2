@@ -1,5 +1,5 @@
 import { Button, Box, Container, Modal, Stack, Typography } from '@mui/material';
-import { SongCardProps } from '#/types/song.types';
+import { SongCardProps } from '../../types/song.types';
 import { CardFields } from '../../constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import { SetlistSongCardProps } from '#/types/setlist.types';
+import { SetlistSongCardProps } from '../../types/setlist.types';
 import { Add, Check } from '@mui/icons-material';
 import { Typography, Stack, Container, IconButton, Grid } from '@mui/material';
 import SongFieldArray from '../song/SongFieldArray';

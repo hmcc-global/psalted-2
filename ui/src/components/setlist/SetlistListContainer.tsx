@@ -1,4 +1,4 @@
-import { Setlist, SetlistFolder } from '#/types/setlist.types';
+import { Setlist, SetlistFolder } from '../../types/setlist.types';
 import { ExpandLess, ExpandMore, Folder, KeyboardArrowDown, QueueMusic } from '@mui/icons-material';
 import {
   Box,

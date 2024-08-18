@@ -1,5 +1,5 @@
-import { SetlistEditorFields, SetlistEditorProps } from '#/types/setlist.types';
-import { SongCardProps, SongSearchFilter } from '#/types/song.types';
+import { SetlistEditorFields, SetlistEditorProps } from '../../types/setlist.types';
+import { SongCardProps, SongSearchFilter } from '../../types/song.types';
 import { Info, MoreVert, MusicNote, Search } from '@mui/icons-material';
 import {
   Alert,

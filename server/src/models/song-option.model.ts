@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose';
-import { SongOptionSchema } from '#/types/song-option.types';
+import { SongOptionSchema } from '../types/song-option.types';
 
 const songOptionSchema = new Schema<SongOptionSchema>(
   {

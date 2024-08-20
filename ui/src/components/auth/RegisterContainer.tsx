@@ -11,6 +11,8 @@ import {
   Snackbar,
   Typography,
   useTheme,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -23,6 +25,8 @@ import {
   passwordValidator,
 } from './helpers/zod.validators';
 import { useNavigate } from 'react-router-dom';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Visibility } from '@mui/icons-material';
 
 // zod validation
 const registerValidationSchema = z
@@ -47,6 +51,8 @@ const RegisterContainer: React.FC = () => {
   const theme = useTheme();
 
   const [open, setOpen] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -100,11 +106,8 @@ const RegisterContainer: React.FC = () => {
       >
         <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
           <Stack spacing={1}>
-            <Typography variant="h1" color={'primary'} textAlign={'center'}>
-              REGISTER
-            </Typography>
-            <Typography variant={'body1'} textAlign={'center'}>
-              Create a New Account
+            <Typography variant="h1" color={'text'} textAlign={'center'}>
+              Create Account
             </Typography>
           </Stack>
           <form onSubmit={handleSubmit(handleRegister)}>
@@ -135,25 +138,51 @@ const RegisterContainer: React.FC = () => {
               <Stack spacing={1}>
                 <TextField
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   {...register('password', {
                     required: 'Required',
                   })}
                   fullWidth
                   error={!!errors?.password?.message}
                   helperText={errors?.password?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          color="secondary"
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Stack>
               <Stack spacing={1}>
                 <TextField
                   label="Confirm Password"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   {...register('confirmPassword', {
                     required: 'Required',
                   })}
                   fullWidth
                   error={!!errors?.confirmPassword?.message}
                   helperText={errors?.confirmPassword?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          color="secondary"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Stack>
               {invalidRegistration ? (
@@ -161,11 +190,23 @@ const RegisterContainer: React.FC = () => {
                   {invalidRegistration}
                 </Typography>
               ) : null}
-              <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
-                REGISTER
+              <Button
+                type={'submit'}
+                style={{ borderRadius: '30px' }}
+                color={'secondary'}
+                variant={'contained'}
+                fullWidth
+              >
+                Sign Up
               </Button>
-              <Link href="/login" underline={'hover'} variant="button" textAlign={'center'}>
-                ALREADY HAVE AN ACCOUNT? LOGIN
+              <Link
+                href="/login"
+                color="white"
+                underline={'hover'}
+                variant="button"
+                textAlign={'center'}
+              >
+                Already have an account? Login
               </Link>
             </Stack>
           </form>

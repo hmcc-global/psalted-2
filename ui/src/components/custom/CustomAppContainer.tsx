@@ -9,7 +9,6 @@ type Props = {
 const CustomAppContainer = ({ children }: Props) => {
   const dispatch = useDispatch();
   // Get songs, setlists, folders globally
-  // TO-DO: Now its called on every re render, cache it and check if there is change then call.
   useEffect(() => {
     getSongsGlobal(dispatch);
     getSetlistsGlobal(dispatch);

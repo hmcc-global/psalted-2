@@ -5,6 +5,7 @@ import ErrorPage from './ErrorPage';
 import NavBarMobile from '../navigation/NavBarMobile';
 import Sidebar from '../navigation/Sidebar';
 import { useUser } from '../../helpers/customHooks';
+import { drawerWidth } from '../../constants';
 
 interface PrivateRouteProps {
   children: ReactElement;
@@ -21,9 +22,9 @@ const renderPageWithNavBar = (
     return (
       <>
         {navBar}
-        <Box component="main" display="flex" sx={{ flexGrow: 1 }}>
+        <Box component="main" display="flex" width="100%" sx={{ flexGrow: 1 }}>
           <Sidebar isOpen={isSidebarOpen} />
-          {cloneElement(children)}
+          <Box width={`calc(100% - ${drawerWidth})`}>{cloneElement(children)}</Box>
         </Box>
       </>
     );

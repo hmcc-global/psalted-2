@@ -21,12 +21,11 @@ import { useSetlists, useSongs } from '../../helpers/customHooks';
 import { SongViewSchema } from '../../types/song.types';
 import { Setlist } from '../../types/setlist.types';
 import { SearchButtonBox } from './NavigationPaper';
+import { drawerWidth } from '../../constants';
 
 interface SidebarProps {
   isOpen: boolean;
 }
-
-const drawerWidth = 100;
 
 const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const navigate = useNavigate();

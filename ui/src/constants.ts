@@ -117,3 +117,5 @@ export const ChordColors: Record<string, string> = {
   Bbm: '#F6BA9490',
   Bm: '#F6CA9490',
 };
+
+export const drawerWidth = '100px';

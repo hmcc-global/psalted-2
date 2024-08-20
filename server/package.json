@@ -30,7 +30,7 @@
   },
   "scripts": {
     "build": "rimraf dist && tsc",
-    "start": "set NODE_ENV=production && nodemon src/app.ts",
-    "dev": "set NODE_ENV=test && nodemon src/app.ts"
+    "start": "set NODE_ENV=production && nodemon app.ts",
+    "dev": "set NODE_ENV=test && nodemon app.ts"
   }
 }

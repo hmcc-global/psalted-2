@@ -44,7 +44,8 @@ const SongsLyrics = ({ chordStatus, changeKey, song, split, useFlat }: SongsLyri
         sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C') === -1
           ? flatMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C')
           : sharpMusicKeysOptions.indexOf(inputSong?.originalKey ?? 'C');
-      const transpossedChordIndex = changeKey - originalChordIndex;
+      const chordDifference = changeKey - originalChordIndex;
+      const transpossedChordIndex = chordDifference < 0 ? chordDifference + 12 : chordDifference;
       const lyricsLine = songChunk;
 
       // render the lyrics

@@ -1,6 +1,6 @@
 import express from 'express';
-import { connectToDB } from './mongoose';
-import { getRoutes } from './routes';
+import { connectToDB } from './src/mongoose';
+import { getRoutes } from './src/routes';
 import * as path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';

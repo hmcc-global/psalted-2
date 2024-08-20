@@ -178,6 +178,7 @@ const LoginContainer: React.FC = () => {
                 </Typography>
               </Button>
               <Typography>OR</Typography>
+              <Button onClick={() => handleGoogleLogin()}>Login with Google</Button>
               <Stack
                 direction={'row'}
                 spacing={4}

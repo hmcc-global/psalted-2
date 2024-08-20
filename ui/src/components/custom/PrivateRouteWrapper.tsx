@@ -1,14 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useState, useEffect, cloneElement, isValidElement, ReactElement } from 'react';
+import { useState, cloneElement, isValidElement, ReactElement } from 'react';
 import { useMediaQuery, Box } from '@mui/material';
-import axios from 'axios';
-import { updateAxiosClient } from './customAxios';
-
-import SearchBar from '../navigation/SearchBar';
 import ErrorPage from './ErrorPage';
 import NavBarMobile from '../navigation/NavBarMobile';
 import Sidebar from '../navigation/Sidebar';
+import { useUser } from '../../helpers/customHooks';
 
 interface PrivateRouteProps {
   children: ReactElement;
@@ -16,7 +12,7 @@ interface PrivateRouteProps {
 }
 
 const renderPageWithNavBar = (
-  navBar: JSX.Element,
+  navBar: JSX.Element | null,
   children: ReactElement<unknown, string | React.JSXElementConstructor<any>>,
   isSidebarOpen: boolean
 ) => {
@@ -25,11 +21,9 @@ const renderPageWithNavBar = (
     return (
       <>
         {navBar}
-        <Box display="flex" flexDirection="row" height="100vh" paddingY="5em">
+        <Box component="main" display="flex" sx={{ flexGrow: 1 }}>
           <Sidebar isOpen={isSidebarOpen} />
-          <Box component="main" sx={{ flexGrow: 1 }}>
-            {cloneElement(children)}
-          </Box>
+          {cloneElement(children)}
         </Box>
       </>
     );
@@ -40,9 +34,8 @@ const renderPageWithNavBar = (
 };
 
 const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
-  const user = useSelector((state: any) => state.user);
+  const { user } = useUser();
   // TODO: Pass userObj as a prop to NavBar
-  const [userObj, setUserObj] = useState(null);
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,38 +44,13 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : <SearchBar />;
-
-  const checkIfTokenExists = async (toVerify: any) => {
-    try {
-      const { data } = await axios.post('/api/auth/verify-token', {
-        token: toVerify,
-      });
-      updateAxiosClient(toVerify);
-      return data;
-    } catch (err: any) {
-      if (err.response.data.raw === 'token-expired') {
-        localStorage.clear();
-        window.location.reload();
-      }
-      return {};
-    }
-  };
-
-  useEffect(() => {
-    // useEffects are meant to be synchronous, this helps to remove the warning
-    async function fetch() {
-      let obj = await checkIfTokenExists(user);
-      setUserObj(obj);
-    }
-
-    fetch();
-  }, [user]);
+  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : null;
 
   // check if Token exists in redux store
-  const noTokenExists = Object.keys(user).length === 0;
+  const noTokenExists = user ? Object.keys(user).length === 0 : true;
   const noUser = permissions.includes('noUser');
   const isPublic = permissions.includes('public');
+  const isRequireUser = permissions.includes('user');
   const access = isPublic;
   // TODO: When accessType is implemented, uncomment this
   //   const access = isPublic || permissions.some(
@@ -101,24 +69,22 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
       );
     } else {
       // If there is a token, navigate to the page
-      renderPageWithNavBar(navBar, children, isSidebarOpen);
+      return renderPageWithNavBar(navBar, children, isSidebarOpen);
     }
   }
   // If the route is accessible (public or matches user's access type)
-  else if (access) {
+  else if (access || isRequireUser) {
     // If there is no token in the redux store
     if (noTokenExists) {
       // Navigate to the login page
       return <Navigate to="/login" />;
     } else {
-      renderPageWithNavBar(navBar, children, isSidebarOpen);
+      return renderPageWithNavBar(navBar, children, isSidebarOpen);
     }
   } else {
     // If the route is not accessible, render the error page
     return <ErrorPage />;
   }
-
-  return;
 };
 
 export default PrivateRouteWrapper;

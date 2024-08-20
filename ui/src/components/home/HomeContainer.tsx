@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { FC, ReactElement } from 'react';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import HomeTab from './HomeTab';
 import RecommendedSongCard from './RecommendedSongCard';

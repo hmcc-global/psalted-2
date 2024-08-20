@@ -30,9 +30,9 @@ const MainLoginContainer: React.FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        margin: 'auto',
         paddingBottom: '1em',
         paddingTop: '2em',
+        mx: '24px',
       }}
     >
       <Stack direction="row" width="100%" spacing={2}>

@@ -20,7 +20,7 @@ import PageHeader from '../navigation/PageHeader';
 import EditModal from './EditModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import { useDispatch } from 'react-redux';
-import { refetchUser } from '../../reducers/userSlice';
+import { refetchUser, signout } from '../../reducers/userSlice';
 import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -165,6 +165,17 @@ const ProfileDesktopView: FC = (): ReactElement => {
           />
           <Divider style={{ borderColor: theme.palette.secondary.dark, marginBottom: '16px' }} />
           <Box display="flex" flexDirection="column" alignItems="flex-start" gap="16px">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<PersonIcon />}
+              onClick={() => dispatch(signout(''))}
+              style={{ borderRadius: '20px' }}
+            >
+              <Typography color="inherit" variant="h5">
+                Log out
+              </Typography>
+            </Button>
             <Button
               variant="contained"
               color="secondary"

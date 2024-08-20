@@ -117,13 +117,18 @@ const changePassword: RequestHandler = async (req: Request, res: Response): Prom
         return;
       }
 
-      const hashedCurr = await hashInput(currentPassword);
-      const isPasswordValid = await validateInput(hashedCurr, userRecord.password);
+      const isPasswordValid = await validateInput(currentPassword, userRecord.password);
+      const hashNewPassword = await hashInput(newPassword);
+
       if (isPasswordValid) {
-        await User.updateOne({ _id: id, isDeleted: false }).set({
-          password: await hashInput(newPassword),
-        });
-        sendResponse(res, 200, 'Successfully changed password!');
+        await User.updateOne(
+          { _id: id, isDeleted: false },
+          {
+            $set: { password: hashNewPassword },
+          }
+        );
+        const newUserRecord = await User.findOne({ _id: id, isDeleted: false });
+        sendResponse(res, 200, newUserRecord);
       } else {
         sendResponse(res, 401, 'Invalid Password');
       }

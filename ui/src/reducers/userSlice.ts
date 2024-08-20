@@ -2,19 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    user: {},
-  },
+  initialState: {},
   reducers: {
-    signin: (state, action) => {
-      state.user = action.payload;
+    signin: (_, action) => {
+      return action.payload;
     },
-    signout: (state, _action) => {
-      state.user = {};
+    signout: (_, _action) => {
+      return {};
+    },
+    refetchUser: (_, action) => {
+      return action.payload;
     },
   },
 });
 
-export const { signin, signout } = userSlice.actions;
+export const { signin, signout, refetchUser } = userSlice.actions;
 
 export default userSlice.reducer;

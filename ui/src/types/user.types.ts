@@ -1,4 +1,4 @@
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormGetValues, UseFormRegister } from 'react-hook-form';
 
 export type UserEditorFields = {
   fullName: string;
@@ -6,18 +6,21 @@ export type UserEditorFields = {
   password: string;
   currentPassword: string;
   newPassword: string;
-  id: string;
+  _id: string;
 };
 
 export type UserEditorProps = {
-  onBack: () => void;
-  onSubmit: () => void;
+  onSubmit: (e: UserEditorFields) => void;
   register: UseFormRegister<UserEditorFields>;
+  getFormValues: UseFormGetValues<UserEditorFields>;
   onClickEdit: () => void;
   onClickChange: () => void;
   user?: UserEditorFields;
+  _doc?: UserEditorFields;
+  token?: string;
 };
 
-export type HomeProfileProps = Omit<UserEditorProps, 'onSubmit'>;
-
-export type otherProfileProps = Omit<UserEditorProps, 'onClickEdit' | 'onClickChange'>;
+export type otherProfileProps = Omit<UserEditorProps, 'onClickEdit' | 'onClickChange'> & {
+  open: boolean;
+  handleClose: () => void;
+};

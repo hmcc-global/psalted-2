@@ -23,7 +23,7 @@ import { PWD_RESET_TOKEN_TTL } from '../constants';
 const sendResponse = (
   res: Response,
   statusCode: number,
-  payload: UserDocument | GooglePayloadSchema | UserAuthSchema | string
+  payload: (UserDocument | GooglePayloadSchema | UserAuthSchema | string) & { token?: string }
 ) => {
   return res.status(statusCode).json(payload);
 };
@@ -34,6 +34,7 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
   if (
     Object.keys(credentials).length > 0 &&
     credentials.email &&
+    credentials.password !== '' &&
     credentials.password &&
     credentials.isRememberPassword !== undefined &&
     credentials.isRememberPassword !== null
@@ -58,7 +59,7 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
           credentials.isRememberPassword
         );
 
-        sendResponse(res, 200, token);
+        sendResponse(res, 200, { token: token, ...userRecord });
       } else {
         sendResponse(res, 401, 'Invalid login credentials');
       }
@@ -71,22 +72,24 @@ const login: RequestHandler = async (req: Request, res: Response): Promise<void>
 };
 
 const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { tokenId } = req.body;
+  const { responseCode } = req.body;
 
-  if (tokenId) {
-    const client: OAuth2Client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  if (responseCode) {
+    const client: OAuth2Client = new OAuth2Client(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      'postmessage'
+    );
 
     try {
-      const data = await verifyGoogleToken(client, tokenId);
-
+      const data = await verifyGoogleToken(client, responseCode);
       if (data && data.email && data.name) {
         const { email } = data;
 
         const newEmail = email.toLowerCase();
 
         const userRecord: UserDocument = await User.findOne({ email: newEmail }).exec();
-
-        if (userRecord && userRecord.password !== '') {
+        if (userRecord) {
           const token = await generateJwt(
             userRecord._id,
             userRecord.email,
@@ -94,13 +97,30 @@ const loginGoogle: RequestHandler = async (req: Request, res: Response): Promise
             true
           ); // always remember password for google login
 
-          sendResponse(res, 200, token);
+          sendResponse(res, 200, { token: token, ...userRecord });
+
+          // Create new user from google
+        } else if (!userRecord) {
+          const newRecord = {
+            email: newEmail,
+            fullName: data.name,
+            password: '',
+          };
+          // create user record
+          const newUser: UserDocument = await User.create(newRecord);
+          const token = await generateJwt(newUser._id, newUser.email, newUser.accessType, true); // always remember password for google login
+          sendResponse(res, 200, { token: token, ...newUser });
         } else {
-          sendResponse(res, 401, 'The provided email address is not registered');
+          sendResponse(res, 401, 'Email not found, failed to register');
         }
       }
-    } catch {
-      sendResponse(res, 500, 'Google token verification failed');
+    } catch (error: any) {
+      console.error('Error creating new user:', error);
+      if (error.name === 'ValidationError') {
+        sendResponse(res, 422, 'Invalid user data');
+      } else {
+        sendResponse(res, 500, 'Failed to create new user');
+      }
     }
   } else {
     sendResponse(res, 422, 'Missing Token ID');
@@ -137,37 +157,6 @@ const signup: RequestHandler = async (req: Request, res: Response): Promise<void
     }
   } else {
     sendResponse(res, 422, 'Missing required fields');
-  }
-};
-
-const signupGoogle: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-  const { tokenId } = req.body;
-
-  if (tokenId) {
-    const client: OAuth2Client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-    try {
-      const data = await verifyGoogleToken(client, tokenId);
-
-      if (data && data.email && data.name) {
-        const { email, name: fullName } = data;
-        const newEmail = email.toLowerCase();
-
-        const userRecord: UserDocument = await User.findOne({ email: newEmail }).exec();
-
-        if (userRecord) {
-          sendResponse(res, 409, 'The provided email address is already in use');
-        }
-
-        const payload = { email: newEmail, fullName: fullName };
-
-        sendResponse(res, 200, payload);
-      }
-    } catch {
-      sendResponse(res, 500, 'Google token verification failed');
-    }
-  } else {
-    sendResponse(res, 422, 'Missing Token ID');
   }
 };
 
@@ -288,4 +277,4 @@ const verifyToken = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { login, loginGoogle, signup, signupGoogle, forgotPassword, resetPassword, verifyToken };
+export { login, loginGoogle, signup, forgotPassword, resetPassword, verifyToken };

@@ -11,10 +11,11 @@ import Sidebar from './components/navigation/Sidebar';
 import SearchBar from './components/navigation/SearchBar';
 import CustomAppContainer from './components/custom/CustomAppContainer';
 import './styles.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const isUserView = window.location.pathname.includes('/view');
+  const isUserView = window.location.pathname.includes('view');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -27,22 +28,19 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        <BrowserRouter>
-          <CustomAppContainer>
-            {isUserView ? (
-              <Routes>
-                {userRoutes.map((route) => (
-                  <Route key={route.key} path={route.path} element={<route.component />} />
-                ))}
-              </Routes>
-            ) : (
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
+          <BrowserRouter>
+            <CustomAppContainer>
               <>
-                <Sidebar isOpen={isSidebarOpen} />
+                {isUserView ? null : <Sidebar isOpen={isSidebarOpen} />}
 
-                <Box component="main" sx={{ flexGrow: 1 }}>
+                <Box display={isUserView ? 'none' : 'flex'} component="main" sx={{ flexGrow: 1 }}>
                   {navBar}
 
                   <Routes>
+                    {userRoutes.map((route) => (
+                      <Route key={route.key} path={route.path} element={<route.component />} />
+                    ))}
                     {appRoutes.map((route) => (
                       // TODO: Uncomment this when PrivateRouteWrapper is implemented and delete the navbar here
                       // <Route
@@ -59,9 +57,9 @@ function App() {
                   </Routes>
                 </Box>
               </>
-            )}
-          </CustomAppContainer>
-        </BrowserRouter>
+            </CustomAppContainer>
+          </BrowserRouter>
+        </GoogleOAuthProvider>
       </ThemeProvider>
     </Provider>
   );

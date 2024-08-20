@@ -70,10 +70,12 @@ const verifyJwt = async (token: string): Promise<UserAuthSchema> => {
   }
 };
 
-const verifyGoogleToken = async (client: OAuth2Client, token: string): Promise<TokenPayload> => {
+const verifyGoogleToken = async (client: OAuth2Client, code: string): Promise<TokenPayload> => {
   try {
+    const { tokens } = await client.getToken(code);
+
     const ticket: LoginTicket = await client.verifyIdToken({
-      idToken: token,
+      idToken: tokens.id_token || '',
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 

@@ -11,7 +11,6 @@ const songSchema = new Schema<SongSchema>(
     artist: { type: String, required: true },
     year: { type: String, required: true },
     code: { type: String, required: true },
-    lyricsPreview: { type: String, required: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     timeSignature: [{ type: String, required: true }],

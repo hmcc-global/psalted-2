@@ -29,7 +29,6 @@ const SongListContainer: FC = (): ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const allSongs = useSongs() as SongSchema[];
@@ -44,10 +43,6 @@ const SongListContainer: FC = (): ReactElement => {
             : true) ||
             (filterData.search
               ? song.title && song.title.toLowerCase().includes(filterData.search.toLowerCase())
-              : true) ||
-            (filterData.search
-              ? song.lyricsPreview &&
-                song.lyricsPreview.toLowerCase().includes(filterData.search.toLowerCase())
               : true) ||
             (filterData.search
               ? song.themes &&
@@ -175,7 +170,7 @@ const SongListContainer: FC = (): ReactElement => {
                         showDetails={showDetails}
                         filterData={filterData}
                         isDesktop={isDesktop}
-                        firstLine={getFirstLineLyrics(song.lyricsPreview)}
+                        firstLine={getFirstLineLyrics(song.chordLyrics)}
                       />
                     );
                   })

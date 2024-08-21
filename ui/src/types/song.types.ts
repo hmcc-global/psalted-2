@@ -35,7 +35,6 @@ export type SongCardProps = {
   year: string;
   code: string;
   lyrics: string;
-  lyricsPreview: string;
   firstLine: string;
   chordLyrics: string;
   createdBy: UserEditorFields;
@@ -65,7 +64,6 @@ export type SongSearchFilter = {
   display?: {
     tempo: boolean;
     themes: boolean;
-    // lyricsPreview: boolean;
     originalKey: boolean;
     year: boolean;
     code: boolean;
@@ -85,7 +83,6 @@ export type SongViewSchema = {
   year: string;
   code: string;
   lyrics: string;
-  lyricsPreview: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;
   isVerified: boolean;
@@ -106,7 +103,6 @@ export type SongSchema = {
   year: string;
   code: string;
   lyrics: string;
-  lyricsPreview: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;
   isVerified: boolean;

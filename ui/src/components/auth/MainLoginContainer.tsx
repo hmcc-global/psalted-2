@@ -32,10 +32,10 @@ const MainLoginContainer: React.FC = () => {
         alignItems: 'flex-start',
         paddingBottom: '1em',
         paddingTop: '2em',
-        mx: '24px',
+        mx: { xs: '', md: '24px' },
       }}
     >
-      <Stack direction="row" width="100%" spacing={2}>
+      <Stack direction={['column', 'row']} width="100%" spacing={2} gap={['12px', '24px']}>
         <Box
           sx={{
             py: '2.5em',
@@ -43,7 +43,7 @@ const MainLoginContainer: React.FC = () => {
             borderRadius: '30px',
             background:
               'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
-            width: '50%',
+            width: { xs: '100%', md: '50%' },
           }}
           position="relative"
         >

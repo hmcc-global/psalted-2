@@ -90,7 +90,9 @@ const LoginContainer: React.FC = () => {
         borderRadius: '30px',
         padding: '32px 24px',
       }}
-      width="50%"
+      sx={{
+        width: { xs: '100%', md: '50%' },
+      }}
     >
       <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
         <Stack spacing={0.5}>

@@ -111,8 +111,8 @@ const ResetPasswordContainer: React.FC = () => {
       >
         <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
           <Stack spacing={1}>
-            <Typography variant="h1" color={'primary'} textAlign={'center'}>
-              RESET PASSWORD
+            <Typography variant="h1" color={'text'} textAlign={'center'}>
+              Reset Password
             </Typography>
             <Typography variant={'body1'} textAlign={'center'}>
               Create a new password
@@ -144,7 +144,13 @@ const ResetPasswordContainer: React.FC = () => {
                   helperText={errors?.confirmPassword?.message}
                 />
               </Stack>
-              <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
+              <Button
+                type={'submit'}
+                color={'secondary'}
+                style={{ borderRadius: '30px' }}
+                variant={'contained'}
+                fullWidth
+              >
                 RESET PASSWORD
               </Button>
             </Stack>

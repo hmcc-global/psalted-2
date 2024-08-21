@@ -83,17 +83,17 @@ const RecoverPasswordContainer: React.FC = () => {
           to="/"
           color="primary"
           sx={{ textDecoration: 'none' }}
-          marginBottom={'5rem'}
+          marginBottom={'2.5rem'}
         >
-          <ArrowBackRounded color="primary" />
-          <Typography variant="body1" color={'primary'} marginLeft={1}>
-            Return to Home
+          <ArrowBackRounded style={{ color: theme.palette.text.primary }} />
+          <Typography variant="body1" color={'text'} marginLeft={1}>
+            Return to Login
           </Typography>
         </Box>
         <Stack direction={'column'} margin={'auto'} spacing={formSpacing}>
           <Stack spacing={1}>
-            <Typography variant="h1" color={'primary'} textAlign={'center'}>
-              RECOVER PASSWORD
+            <Typography variant="h1" color={'text'} textAlign={'center'}>
+              Recover Password
             </Typography>
           </Stack>
           <form onSubmit={handleSubmit(handleRecoverPassword)}>
@@ -113,7 +113,13 @@ const RecoverPasswordContainer: React.FC = () => {
                 Please input the email you used to create your HMCC account This will only be
                 applicable if you signed up using your personal email
               </Typography>
-              <Button type={'submit'} color={'primary'} variant={'contained'} fullWidth>
+              <Button
+                type={'submit'}
+                color={'secondary'}
+                style={{ borderRadius: '30px' }}
+                variant={'contained'}
+                fullWidth
+              >
                 SEND RECOVERY LINK
               </Button>
             </Stack>

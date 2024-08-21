@@ -8,10 +8,10 @@ type SongEditorFields = {
   year: string;
   code: string;
   timeSignature: string[];
-  simplifiedChordLyrics: string;
   originalKey: string;
   recommendedKeys: Array<string>;
   chordLyrics: string;
+  simplifiedChordLyrics: string;
 };
 
 interface SongEditorProps {

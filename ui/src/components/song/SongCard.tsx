@@ -149,7 +149,7 @@ const SongCard = (props: SongCardProps) => {
           <Typography variant="subtitle1" sx={{ color: 'secondary.light' }}>
             {artist}
           </Typography>
-          <Typography sx={{ color: 'secondary.light' }}>getLyricsPreview(chordLyrics)</Typography>
+          <Typography sx={{ color: 'secondary.light' }}>{getLyricsPreview(chordLyrics)}</Typography>
           {Array.isArray(fieldData[0]) ? <SongTagArray data={fieldData[0]} /> : null}
           <Stack direction="row" display="flex" justifyContent="right" spacing={2}>
             <Button size="small" variant="text" onClick={handleClose}>

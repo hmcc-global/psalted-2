@@ -6,6 +6,7 @@ const songSchema = new Schema<SongSchema>(
     title: { type: String, required: true },
     tempo: [{ type: String, required: true }],
     originalKey: { type: String, required: true },
+    recommendedKeys: [{ type: String, required: true }],
     themes: [{ type: String, required: true }],
     artist: { type: String, required: true },
     year: { type: String, required: true },
@@ -14,9 +15,9 @@ const songSchema = new Schema<SongSchema>(
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     timeSignature: [{ type: String, required: true }],
-    simplifiedChordLyrics: { type: String, required: false },
     isVerified: { type: Boolean, default: false },
     chordLyrics: { type: String, required: true },
+    simplifiedChordLyrics: { type: String, required: false },
     isDeleted: { type: Boolean, default: false },
   },
   {

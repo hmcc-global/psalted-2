@@ -5,9 +5,9 @@ type SongEditorFields = {
   title: string;
   themes: Array<string>;
   tempo: Array<string>;
-  year: number;
+  year: string;
   code: string;
-  timeSignature: string;
+  timeSignature: string[];
   simplifiedChordLyrics: string;
   originalKey: string;
   recommendedKeys: Array<string>;
@@ -49,7 +49,7 @@ export type SongCardProps = {
 };
 
 export type SongSearchProps = {
-  songs: SongViewSchema[];
+  songs: SongSchema[];
   filterData: SongSearchFilter | undefined;
   setFilterData: React.Dispatch<React.SetStateAction<SongSearchFilter | undefined>>;
   onClose: () => void;
@@ -93,4 +93,27 @@ export type SongViewSchema = {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type SongSchema = {
+  _id: string;
+  title: string;
+  timeSignature: string[];
+  tempo: string[];
+  originalKey: string;
+  themes: string[];
+  artist: string;
+  year: string;
+  code: string;
+  lyrics: string;
+  lyricsPreview: string;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
+  isVerified: boolean;
+  chordLyrics: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  simplifiedChordLyrics: string;
+  recommendedKeys: Array<string>;
 };

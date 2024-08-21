@@ -11,7 +11,7 @@ const HomeContainer: FC = (): ReactElement => {
   return (
     <Box
       sx={{
-        width: { xs: '100%', md: '90%' },
+        width: '100%',
         flexGrow: 1,
         display: 'flex',
         justifyContent: 'center',
@@ -19,9 +19,10 @@ const HomeContainer: FC = (): ReactElement => {
         margin: 'auto',
         paddingBottom: '1em',
         paddingTop: '2em',
+        px: '1.5rem',
       }}
     >
-      <Stack direction={'column'}>
+      <Stack direction={'column'} width="100%">
         <Stack direction={'row'} spacing={2}>
           <Box
             sx={{

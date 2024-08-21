@@ -1,30 +1,32 @@
 import { Navigate } from 'react-router-dom';
-import { useState, cloneElement, isValidElement, ReactElement } from 'react';
-import { useMediaQuery, Box } from '@mui/material';
+import { cloneElement, isValidElement, ReactElement } from 'react';
+import { Box } from '@mui/material';
 import ErrorPage from './ErrorPage';
-import NavBarMobile from '../navigation/NavBarMobile';
 import Sidebar from '../navigation/Sidebar';
 import { useUser } from '../../helpers/customHooks';
-import { drawerWidth } from '../../constants';
+import { drawerWidth, mobileNavbarHeight } from '../../constants';
 
 interface PrivateRouteProps {
   children: ReactElement;
   permissions: string[];
 }
 
-const renderPageWithNavBar = (
-  navBar: JSX.Element | null,
-  children: ReactElement<unknown, string | React.JSXElementConstructor<any>>,
-  isSidebarOpen: boolean
-) => {
+const PageWithNavBar = ({ children }: { children: ReactElement }) => {
   if (isValidElement(children)) {
     // Render the navbar, sidebar, and the children of the route
     return (
       <>
-        {navBar}
-        <Box component="main" display="flex" width="100%" sx={{ flexGrow: 1 }}>
-          <Sidebar isOpen={isSidebarOpen} />
-          <Box width={`calc(100% - ${drawerWidth})`}>{cloneElement(children)}</Box>
+        <Box component="main" display="flex" width="100%" height="100%" sx={{ flexGrow: 1 }}>
+          <Sidebar />
+          <Box
+            overflow="auto"
+            sx={{
+              height: { xs: `calc(100% - ${mobileNavbarHeight})`, md: '100%' },
+              width: { xs: '100%', md: `calc(100% - ${drawerWidth})` },
+            }}
+          >
+            {cloneElement(children)}
+          </Box>
         </Box>
       </>
     );
@@ -37,15 +39,6 @@ const renderPageWithNavBar = (
 const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   const { user } = useUser();
   // TODO: Pass userObj as a prop to NavBar
-
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const handleToggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const navBar = isMobile ? <NavBarMobile onToggleSidebar={handleToggleSidebar} /> : null;
 
   // check if Token exists in redux store
   const noTokenExists = user ? Object.keys(user).length === 0 : true;
@@ -70,7 +63,7 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
       );
     } else {
       // If there is a token, navigate to the page
-      return renderPageWithNavBar(navBar, children, isSidebarOpen);
+      return <PageWithNavBar children={children} />;
     }
   }
   // If the route is accessible (public or matches user's access type)
@@ -80,7 +73,7 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
       // Navigate to the login page
       return <Navigate to="/login" />;
     } else {
-      return renderPageWithNavBar(navBar, children, isSidebarOpen);
+      return <PageWithNavBar children={children} />;
     }
   } else {
     // If the route is not accessible, render the error page

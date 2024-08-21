@@ -15,7 +15,7 @@ const CustomAppContainer = ({ children }: Props) => {
     getFoldersGlobal(dispatch);
   }, [dispatch]);
   return (
-    <Box display="flex" flexDirection="row" height="100vh">
+    <Box height="100vh" width="100vw">
       {children}
     </Box>
   );

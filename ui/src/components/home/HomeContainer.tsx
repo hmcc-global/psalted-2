@@ -18,10 +18,11 @@ const HomeContainer: FC = (): ReactElement => {
         margin: 'auto',
         paddingBottom: '1em',
         paddingTop: '2em',
+        px: '1em',
       }}
     >
       <Stack direction={'column'}>
-        <Stack direction={'row'} spacing={2}>
+        <Stack direction={['column', 'row']} spacing={2} gap="12px">
           <Box
             sx={{
               py: '2.5em',
@@ -29,7 +30,7 @@ const HomeContainer: FC = (): ReactElement => {
               borderRadius: '30px',
               background:
                 'linear-gradient(158deg, rgba(0, 0, 0, 0.00) 31.44%, rgba(148, 111, 255, 0.20) 80.34%), radial-gradient(111.68% 110.13% at 66.1% 8.28%, rgba(154, 118, 255, 0.20) 36.5%, rgba(0, 0, 0, 0.20) 64%), #1F1F1F',
-              width: '50%',
+              width: ['100%', '50%'],
             }}
             position="relative"
           >
@@ -46,7 +47,7 @@ const HomeContainer: FC = (): ReactElement => {
             </Typography>
           </Box>
 
-          <Stack direction={'column'} spacing={2} width="50%">
+          <Stack direction={'column'} spacing={2} sx={{ width: ['100%', '50%'] }}>
             <HomeTab
               title="Songs"
               description="Find, add, view worship songs with lyrics and chords"
@@ -73,6 +74,7 @@ const HomeContainer: FC = (): ReactElement => {
 
           <Stack direction={'row'} sx={{ py: 2 }} gap={3}>
             {/* TODO: API to generate recommended or newly added songs */}
+            {/* TODO: set this to use display grid and repeat frame instead of fixing the width */}
             <RecommendedSongCard songTitle="Living With A Fire" artistName="Jesus Culture" />
             <RecommendedSongCard
               songTitle="Yesterday, Today, and Forever"

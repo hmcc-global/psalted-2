@@ -119,3 +119,4 @@ export const ChordColors: Record<string, string> = {
 };
 
 export const drawerWidth = '100px';
+export const mobileNavbarHeight = '80px';

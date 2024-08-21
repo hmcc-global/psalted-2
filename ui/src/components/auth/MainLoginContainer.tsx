@@ -32,7 +32,8 @@ const MainLoginContainer: React.FC = () => {
         alignItems: 'flex-start',
         paddingBottom: '1em',
         paddingTop: '2em',
-        mx: { xs: '', md: '24px' },
+        px: { xs: '16px', md: '0px' },
+        mx: { xs: '4px', md: '24px' },
       }}
     >
       <Stack direction={['column', 'row']} width="100%" spacing={2} gap={['12px', '24px']}>

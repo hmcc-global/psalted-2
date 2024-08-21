@@ -9,7 +9,7 @@ import {
   ButtonGroup,
 } from '@mui/material';
 import { FC, ReactElement, useEffect, useState, useCallback } from 'react';
-import { SongSearchFilter, SongViewSchema } from '../../types/song.types';
+import { SongSchema, SongSearchFilter } from '../../types/song.types';
 import SongCard from './SongCard';
 import SongSearch from './SongSearch';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { getFirstLineLyrics } from '../../helpers/song';
 import { useSongs } from '../../helpers/customHooks';
 
 const SongListContainer: FC = (): ReactElement => {
-  const [songResults, setSongResults] = useState<SongViewSchema[]>([]);
+  const [songResults, setSongResults] = useState<SongSchema[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -32,7 +32,7 @@ const SongListContainer: FC = (): ReactElement => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const allSongs = useSongs() as SongViewSchema[];
+  const allSongs = useSongs() as SongSchema[];
 
   const getSongResults = useCallback(async () => {
     if (filterData) {

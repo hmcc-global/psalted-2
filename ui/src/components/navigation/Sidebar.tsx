@@ -18,7 +18,7 @@ import Person from '@mui/icons-material/Person';
 import GlobalSearchModal from './GlobalSearchModal';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSetlists, useSongs } from '../../helpers/customHooks';
-import { SongViewSchema } from '../../types/song.types';
+import { SongSchema } from '../../types/song.types';
 import { Setlist } from '../../types/setlist.types';
 import { SearchButtonBox } from './NavigationPaper';
 
@@ -33,7 +33,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
 
-  const allSongs = useSongs() as SongViewSchema[];
+  const allSongs = useSongs() as SongSchema[];
   const allSetlists = useSetlists() as Setlist[];
 
   const location = useLocation();

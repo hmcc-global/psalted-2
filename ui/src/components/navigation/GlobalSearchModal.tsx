@@ -4,7 +4,7 @@ import { Box, Fade, InputAdornment, Modal, TextField, Typography } from '@mui/ma
 import SongSearchResult from './searchModalComponents/SongSearchResult';
 import { useNavigate } from 'react-router-dom';
 import SetlistSearchResult from './searchModalComponents/SetlistSearchResult';
-import { SongViewSchema } from '../../types/song.types';
+import { SongSchema } from '../../types/song.types';
 import { Setlist } from '../../types/setlist.types';
 import SearchIcon from '@mui/icons-material/Search';
 import RadioCard from './searchModalComponents/RadioCard';
@@ -12,7 +12,7 @@ import RadioCard from './searchModalComponents/RadioCard';
 type GlobalSearchModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  allSongs: SongViewSchema[];
+  allSongs: SongSchema[];
   allSetlists: Setlist[];
 };
 
@@ -23,7 +23,7 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
   const [radioFilter, setRadioFilter] = useState('Songs');
 
   const [loading, setLoading] = useState(false);
-  const [filteredSongs, setFilteredSongs] = useState<SongViewSchema[]>([]);
+  const [filteredSongs, setFilteredSongs] = useState<SongSchema[]>([]);
   const [filteredSetlists, setFilteredSetlists] = useState<Setlist[]>([]);
 
   const [searchString, setSearchString] = useState('');
@@ -111,9 +111,9 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
       if (focusedIndex !== -1) {
         const category = radioFilter.toLowerCase();
         if (category === 'songs') {
-          navigate(`/song/${(results[focusedIndex] as SongViewSchema)._id}`);
+          navigate(`/song/${(results[focusedIndex] as SongSchema)._id}`);
         } else if (category === 'setlists') {
-          navigate(`/setlist/${(results[focusedIndex] as Setlist)._id}`);
+          navigate(`/setlist/view/${(results[focusedIndex] as Setlist)._id}`);
         }
         onClose();
       }
@@ -140,7 +140,12 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
   // Handle input keydown
   const handleInputKeyDown = (event: { key: string }) => {
     if (event.key === 'Enter') {
-      navigate(`/song?q=${searchString}`);
+      const category = radioFilter.toLowerCase();
+      if (category === 'songs') {
+        navigate(`/song?q=${searchString}`);
+      } else if (category === 'setlists') {
+        navigate(`/setlist`);
+      }
       onClose();
     } else if (event.key === 'Escape') {
       onClose();

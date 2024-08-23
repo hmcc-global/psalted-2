@@ -21,15 +21,11 @@ import { useSetlists, useSongs } from '../../helpers/customHooks';
 import { SongSchema } from '../../types/song.types';
 import { Setlist } from '../../types/setlist.types';
 import { SearchButtonBox } from './NavigationPaper';
+import { drawerWidth, mobileNavbarHeight } from '../../constants';
 
-interface SidebarProps {
-  isOpen: boolean;
-}
-
-const drawerWidth = 100;
-
-const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
+const SideBar: FC = (): ReactElement => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const isDesktop = useMediaQuery('(min-width: 769px)');
 
@@ -37,6 +33,32 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
   const allSetlists = useSetlists() as Setlist[];
 
   const location = useLocation();
+
+  const DesktopDrawer = {
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      width: drawerWidth,
+      boxSizing: 'border-box',
+      ...(isDesktop && { position: 'relative' }),
+      backgroundColor: 'primary.darkest',
+    },
+    minHeight: '100%',
+  };
+
+  const MobileDrawer = {
+    minWidth: '100%',
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      height: mobileNavbarHeight,
+      boxSizing: 'border-box',
+      flexDirection: 'row',
+      overflow: 'hidden',
+      ...(isDesktop && { position: 'relative' }),
+      backgroundColor: 'primary.darkest',
+    },
+    height: mobileNavbarHeight,
+  };
 
   useEffect(() => {
     const path = location.pathname;
@@ -53,6 +75,7 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     { icon: <MusicNoteIcon />, text: 'Songs', path: 'song' },
     { icon: <QueueMusicIcon />, text: 'Setlists', path: 'setlist' },
     { icon: <TextSnippetIcon />, text: 'Resources', path: 'resource' },
+    { icon: <Person />, text: 'Profile', path: 'profile' },
   ];
 
   const profileMenuItem = { icon: <Person />, text: 'Profile', path: 'profile' };
@@ -74,85 +97,81 @@ const SideBar: FC<SidebarProps> = ({ isOpen }): ReactElement => {
     <>
       <Box sx={{ display: 'flex', minHeight: '100%' }}>
         <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-              ...(isDesktop && { position: 'relative' }),
-              backgroundColor: 'primary.darkest',
-            },
-            minHeight: '100%',
-          }}
-          variant={isDesktop ? 'permanent' : 'temporary'}
-          open={isDesktop || isOpen}
-          anchor="left"
+          sx={isMobile ? MobileDrawer : DesktopDrawer}
+          variant="permanent"
+          open={true}
+          anchor={isMobile ? 'bottom' : 'left'}
         >
           {/* Global Search Button */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDir: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mt: '1rem',
-              mb: '0.2rem',
-            }}
-          >
-            <SearchButtonBox onClick={() => handleSearchClick()}>
-              <SearchIcon sx={{ color: '#D0BCFE', width: '1.75rem', height: '1.75rem' }} />
-            </SearchButtonBox>
-          </Box>
+          {isMobile ? null : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDir: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mt: '1rem',
+                mb: '0.2rem',
+              }}
+            >
+              <SearchButtonBox onClick={() => handleSearchClick()}>
+                <SearchIcon sx={{ color: '#D0BCFE', width: '1.75rem', height: '1.75rem' }} />
+              </SearchButtonBox>
+            </Box>
+          )}
           <List
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: isMobile ? 'row' : 'column',
               justifyContent: 'flex-start',
               flex: '1',
             }}
           >
             {/* Render the top menu items */}
-            {topMenuItems.map((item, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton
-                  selected={selectedItem === item.text}
-                  onClick={() => handleClick(item.text, item.path)}
-                  sx={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    px: 1,
-                  }}
-                >
-                  <ListItemIcon
+            {topMenuItems.map((item, index) =>
+              item.text === 'Profile' && isDesktop ? null : (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    selected={selectedItem === item.text}
+                    //TODO: remove when resources page is done
+                    disabled={item.text === 'Resources'}
+                    onClick={() => handleClick(item.text, item.path)}
                     sx={{
-                      color: 'primary.lighter',
-                      backgroundColor: selectedItem === item.text ? 'primary.main' : '',
-                      borderRadius: '100px',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      paddingY: '5px',
+                      px: 1,
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
+                    <ListItemIcon
+                      sx={{
+                        color: 'primary.lighter',
+                        backgroundColor: selectedItem === item.text ? 'primary.main' : '',
+                        borderRadius: '100px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingY: '5px',
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
 
-                  <ListItemText
-                    primaryTypographyProps={{
-                      sx: { color: 'primary.lighter' },
-                      variant: 'subtitle2',
-                      fontWeight: 700,
-                    }}
-                    primary={item.text}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
+                    <ListItemText
+                      primaryTypographyProps={{
+                        sx: { color: 'primary.lighter' },
+                        variant: 'subtitle2',
+                        fontWeight: 700,
+                      }}
+                      primary={item.text}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )
+            )}
           </List>
           <List
             sx={{
-              display: 'flex',
+              display: isMobile ? 'none' : 'flex',
               flexDirection: 'column',
             }}
           >

@@ -20,13 +20,14 @@ import PageHeader from '../navigation/PageHeader';
 import EditModal from './EditModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import { useDispatch } from 'react-redux';
-import { refetchUser } from '../../reducers/userSlice';
+import { refetchUser, signout } from '../../reducers/userSlice';
 import LockIcon from '@mui/icons-material/Lock';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const RowStack = styled(Stack)({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   flexDirection: 'row',
 });
 
@@ -48,7 +49,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const theme = useTheme();
   // TO-DO refactor the use of react form to properly pass the values using the hooks instead of forcing it now.
-  const { register, getValues } = useForm<UserEditorFields>();
+  const { register, getValues, setValue } = useForm<UserEditorFields>();
 
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
@@ -85,6 +86,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
   };
 
   const editProfileHandler = () => {
+    setValue('fullName', '');
     setShowEditProfile(true);
     setShowChangePassword(false);
   };
@@ -100,6 +102,8 @@ const ProfileDesktopView: FC = (): ReactElement => {
     } else if (showChangePassword) {
       setShowChangePassword(false);
     }
+    // return it to default
+    setValue('fullName', user?.fullName || '');
   };
 
   return (
@@ -167,10 +171,24 @@ const ProfileDesktopView: FC = (): ReactElement => {
           <Box display="flex" flexDirection="column" alignItems="flex-start" gap="16px">
             <Button
               variant="contained"
+              color="primary"
+              startIcon={<PersonIcon />}
+              onClick={() => dispatch(signout(''))}
+              style={{ borderRadius: '20px' }}
+            >
+              <Typography color="inherit" variant="h5">
+                Log out
+              </Typography>
+            </Button>
+            <Button
+              variant="contained"
               color="secondary"
               startIcon={<LockIcon />}
               onClick={changePassHandler}
-              style={{ borderRadius: '20px' }}
+              style={{
+                borderRadius: '20px',
+                display: user?.password === '' ? 'none' : 'inline-flex',
+              }}
               disabled={user?.password === ''}
             >
               <Typography color="inherit" variant="h5">

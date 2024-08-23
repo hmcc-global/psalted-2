@@ -1,6 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, PaletteOptions, SimplePaletteColorOptions } from '@mui/material/styles';
 import '@fontsource/work-sans';
 import '@fontsource/dm-sans';
+import '@mui/material/styles';
 
 // const PRIMARY_MAIN = '#4B50B4';
 const PRIMARY_MAIN = '#4F378B';
@@ -14,53 +15,61 @@ const PRIMARY_DARKER = '#1D192B';
 const PRIMARY_DARKEST = '#141218';
 
 const SECONDARY_MAIN = '#D0BCFE';
-const SECONDARY_LIGHT = '#CAC4D0'; // grey
+const SECONDARY_LIGHT = '#EADDFF'; // grey
 const SECONDARY_LIGHTER = '#4A4458'; // purple grey
 const SECONDARY_DARK = '#49454F'; // dark grey
 
-declare module '@mui/material/styles' {
-  interface PaletteColorOptions {
-    main?: string;
-    light?: string;
+const WARNING_MAIN = '#EFB8C8';
+
+declare module '@mui/material/styles/createPalette' {
+  interface PaletteColor {
     lighter?: string;
     lightest?: string;
-    dark?: string;
     darker?: string;
     darkest?: string;
-    contrastText?: string;
+    contrastText: string;
   }
 }
+interface ExtendedPaletteColorOptions extends SimplePaletteColorOptions {
+  darker?: string;
+  lighter?: string;
+  lightest?: string;
+  darkest?: string;
+}
 
-const customTheme = createTheme({
-  palette: {
-    primary: {
-      main: PRIMARY_MAIN,
-      light: PRIMARY_LIGHT,
-      lighter: PRIMARY_LIGHTER,
-      lightest: PRIMARY_LIGHTEST,
-      dark: PRIMARY_DARK,
-      darker: PRIMARY_DARKER,
-      darkest: PRIMARY_DARKEST,
-    },
-    secondary: {
-      main: SECONDARY_MAIN,
-      light: SECONDARY_LIGHT,
-      lighter: SECONDARY_LIGHTER,
-      dark: SECONDARY_DARK,
-      contrastText: '#381E72',
-    },
-    warning: {
-      main: '#EFB8C8',
-      contrastText: '#601410',
-    },
-    background: {
-      default: '#171717',
-      paper: '#0F0D13',
-    },
-    text: {
-      primary: '#E6E0E9',
-    },
+interface ExtendedPaletteOptions extends PaletteOptions {
+  primary: ExtendedPaletteColorOptions;
+  secondary: ExtendedPaletteColorOptions;
+}
+const palette: ExtendedPaletteOptions = {
+  primary: {
+    main: PRIMARY_MAIN,
+    light: PRIMARY_LIGHT,
+    lighter: PRIMARY_LIGHTER,
+    lightest: PRIMARY_LIGHTEST,
+    dark: PRIMARY_DARK,
+    darker: PRIMARY_DARKER,
+    darkest: PRIMARY_DARKEST,
   },
+  secondary: {
+    main: SECONDARY_MAIN,
+    light: SECONDARY_LIGHT,
+    lighter: SECONDARY_LIGHTER,
+    dark: SECONDARY_DARK,
+  },
+  background: {
+    default: '#171717',
+    paper: '#0F0D13',
+  },
+  warning: {
+    main: WARNING_MAIN,
+  },
+  text: {
+    primary: '#fff',
+  },
+};
+const customTheme = createTheme({
+  palette: palette,
   typography: {
     htmlFontSize: 16,
     fontFamily: ['Work Sans', 'DM Sans'].join(','),

@@ -20,7 +20,7 @@ const SetlistViewContainer: FC = (): ReactElement => {
   const setlistId = window.location.pathname.split('/').reverse()[0];
   const openMenu = Boolean(menuAnchor);
   const setlist = useSetlists(setlistId) as Setlist;
-  const songs = setlist && setlist.songs
+  const songs = setlist && setlist.songs;
 
   const handleSelectSong = (song: SongViewSchema) => {
     setSelectedSong(song);
@@ -45,11 +45,17 @@ const SetlistViewContainer: FC = (): ReactElement => {
     <Container
       style={{
         maxWidth: '100vw',
-        width: '100vw',
+        width: '100%',
         padding: '0',
       }}
     >
-      <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        height="100%"
+        maxHeight="100vh"
+      >
         {setlist && songs ? (
           <Container
             maxWidth="xl"

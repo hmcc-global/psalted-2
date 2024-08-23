@@ -66,7 +66,7 @@ const ChangePasswordModal = (props: otherProfileProps) => {
         >
           <LockIcon color="secondary" style={{ marginLeft: '2%' }} />
           <Typography variant="h3" color={theme.palette.text.primary}>
-            CHANGE PASSWORD
+            Change Password
           </Typography>
         </div>
 

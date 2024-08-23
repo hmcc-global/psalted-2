@@ -53,7 +53,7 @@ const EditModal = (props: otherProfileProps) => {
         >
           <CreateIcon color="secondary" style={{ marginLeft: '2%' }} />
           <Typography variant="h3" color={theme.palette.text.primary}>
-            EDIT PROFILE
+            Edit Profile
           </Typography>
         </Box>
         <Typography variant="h3">Old Name & Email</Typography>
@@ -84,7 +84,6 @@ const EditModal = (props: otherProfileProps) => {
             onSubmit(getFormValues());
             handleClose();
           }}
-          style={{ marginBottom: '10%' }}
         >
           <TextField
             fullWidth

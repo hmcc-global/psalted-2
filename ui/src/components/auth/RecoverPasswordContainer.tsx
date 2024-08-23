@@ -112,8 +112,8 @@ const RecoverPasswordContainer: React.FC = () => {
                 />
               </Stack>
               <Typography variant={'body1'} textAlign={'left'}>
-                Please input the email you used to create your HMCC account This will only be
-                applicable if you signed up using your personal email
+                Please input the email you used to create your HMCC account. (This will only be
+                applicable if you signed up using your personal email)
               </Typography>
               <Button
                 type={'submit'}

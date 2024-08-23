@@ -27,6 +27,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const RowStack = styled(Stack)({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   flexDirection: 'row',
 });
 
@@ -48,7 +49,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const theme = useTheme();
   // TO-DO refactor the use of react form to properly pass the values using the hooks instead of forcing it now.
-  const { register, getValues } = useForm<UserEditorFields>();
+  const { register, getValues, setValue } = useForm<UserEditorFields>();
 
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
@@ -85,6 +86,7 @@ const ProfileDesktopView: FC = (): ReactElement => {
   };
 
   const editProfileHandler = () => {
+    setValue('fullName', '');
     setShowEditProfile(true);
     setShowChangePassword(false);
   };
@@ -100,6 +102,8 @@ const ProfileDesktopView: FC = (): ReactElement => {
     } else if (showChangePassword) {
       setShowChangePassword(false);
     }
+    // return it to default
+    setValue('fullName', user?.fullName || '');
   };
 
   return (
@@ -182,6 +186,9 @@ const ProfileDesktopView: FC = (): ReactElement => {
               startIcon={<LockIcon />}
               onClick={changePassHandler}
               style={{ borderRadius: '20px' }}
+              sx={{
+                '&:disabled': { backgroundColor: theme.palette.secondary.main },
+              }}
               disabled={user?.password === ''}
             >
               <Typography color="inherit" variant="h5">

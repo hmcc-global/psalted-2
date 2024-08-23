@@ -25,18 +25,23 @@ const MainLoginContainer: React.FC = () => {
   return (
     <Box
       sx={{
-        width: { xs: '100%', md: '90%' },
+        width: '100%',
         flexGrow: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingBottom: '1em',
         paddingTop: '2em',
-        px: { xs: '16px', md: '0px' },
-        mx: { xs: '4px', md: '24px' },
+        px: '16px',
       }}
     >
-      <Stack direction={['column', 'row']} width="100%" spacing={2} gap={['12px', '24px']}>
+      <Stack
+        direction={['column', 'row']}
+        width="100%"
+        maxWidth="1280px"
+        spacing={2}
+        gap={['12px', '24px']}
+      >
         <Box
           sx={{
             py: '2.5em',

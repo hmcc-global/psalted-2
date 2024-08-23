@@ -1,12 +1,11 @@
-import { FC, ReactElement, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
-import { SongEditorFields, SongEditorProps } from '../../types/song.types';
+import { SongEditorFields, SongEditorProps, SongSchema } from '../../types/song.types';
 import {
   musicKeysOptions,
   tempoOptions,
   timeSignatureOptions,
-  themeSelectionLimit,
   themeOptions,
 } from '../../constants';
 import SongHelpDialog from './SongHelpDialog';
@@ -22,7 +21,6 @@ import {
   FormControl,
   Toolbar,
   Button,
-  Divider,
   Alert,
   AlertTitle,
   Snackbar,
@@ -36,68 +34,136 @@ import InfoIcon from '@mui/icons-material/Info';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import AutocompleteInput from '../custom/AutocompleteInput';
 import { useNavigate } from 'react-router-dom';
+import { MusicNote } from '@mui/icons-material';
+import PageHeader from '../navigation/PageHeader';
 
-const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
+const SongEditorContainer: FC<SongEditorProps> = () => {
   // hook to detect the window size
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const navigate = useNavigate();
 
   // STATES
-  const [timeSignature, setTimeSignature] = useState<string | string[] | null>([]);
-  const [recommendedKeys, setRecommendedKeys] = useState<string | string[] | null>([]);
+  const [action, setAction] = useState<string>('new');
 
   const [tempoList, setTempoList] = useState<string[]>([]);
   const [disabledTempo, setDisabledTempo] = useState<string[]>(tempoOptions);
   const [themeList, setThemeList] = useState<string[]>([]);
   const [disabledTheme, setDisabledTheme] = useState<string[]>(themeOptions);
+  const [timeSignatureList, setTimeSignatureList] = useState<string[]>([]);
+  const [recommendedKeys, setRecommendedKeys] = useState<string[]>([]);
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState<boolean>(false);
   const [invalidSong, setInvalidSong] = useState<string>('');
 
+  const paths: string[] = window.location.pathname.split('/');
+
+  const [song, setSong] = useState<SongSchema>({} as SongSchema);
+  const [songId, setSongId] = useState<string>('');
+
+  useEffect(() => {
+    if (paths.includes('edit')) {
+      setAction('edit');
+      setSongId(paths[paths.length - 1]);
+    }
+  }, [paths]);
+
+  const getSong = useCallback(async () => {
+    if (songId === '') return;
+
+    try {
+      const { data, status } = await axios.get(`/api/songs/get?id=${songId}`);
+      if (status === 200) {
+        setSong(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [songId]);
+
+  useEffect(() => {
+    getSong();
+  }, [getSong]);
+
   // FORM HANDLER
-  const { register, handleSubmit, formState } = useForm<SongEditorFields>();
+  const { register, handleSubmit, formState, reset, control } = useForm<SongEditorFields>();
   const { errors } = formState;
+
+  useEffect(() => {
+    if (song && Object.keys(song).length > 0) {
+      setTempoList(song.tempo);
+      setDisabledTempo(tempoOptions.filter((tempo) => !song.tempo.includes(tempo)));
+      setThemeList(song.themes);
+      setDisabledTheme(themeOptions.filter((theme) => !song.themes.includes(theme)));
+      setTimeSignatureList(song.timeSignature);
+      setRecommendedKeys(song.recommendedKeys || []);
+      reset({
+        artist: song.artist,
+        title: song.title,
+        year: song.year,
+        code: song.code,
+        chordLyrics: song.chordLyrics,
+        simplifiedChordLyrics: song.simplifiedChordLyrics,
+        originalKey: song.originalKey,
+      });
+    }
+  }, [song]);
 
   // editor mode is either NEW or EDIT. default is NEW
   const editorMode = (actionOnEditor: string): ReactElement => {
     return (
       <Typography variant="h3" color="white" sx={{ flexGrow: 1 }} gap={1} mx={2}>
-        {actionOnEditor ? actionOnEditor : 'New'} Song
+        {actionOnEditor === 'edit' ? 'Edit Song' : 'New Song'}
       </Typography>
     );
   };
 
   const handleSaveSong: SubmitHandler<SongEditorFields> = async (data) => {
     try {
-      const payload = await axios.post('/api/songs/create', {
-        artist: data.artist,
-        title: data.title,
-        themes: themeList,
-        tempo: tempoList,
-        year: data.year,
-        code: data.code,
-        timeSignature: timeSignature,
-        simplifiedChordLyrics: data.simplifiedChordLyrics,
-        originalKey: data.originalKey,
-        recommendedKeys: recommendedKeys,
-        chordLyrics: data.chordLyrics,
-        // TODO: figure out how to retrieve proper lyrics preview
-        lyricsPreview: data.chordLyrics,
-      });
+      let payload;
+      if (action === 'edit') {
+        payload = await axios.put('/api/songs/update', {
+          id: songId,
+          artist: data.artist,
+          title: data.title,
+          themes: themeList,
+          tempo: tempoList,
+          year: data.year,
+          code: data.code,
+          timeSignature: timeSignatureList,
+          simplifiedChordLyrics: data.simplifiedChordLyrics,
+          originalKey: data.originalKey,
+          recommendedKeys: recommendedKeys,
+          chordLyrics: data.chordLyrics,
+        });
+      } else {
+        payload = await axios.post('/api/songs/create', {
+          artist: data.artist,
+          title: data.title,
+          themes: themeList,
+          tempo: tempoList,
+          year: data.year,
+          code: data.code,
+          timeSignature: timeSignatureList,
+          simplifiedChordLyrics: data.simplifiedChordLyrics,
+          originalKey: data.originalKey,
+          recommendedKeys: recommendedKeys,
+          chordLyrics: data.chordLyrics,
+        });
+      }
 
       if (payload.status === 200) {
         setInvalidSong('');
         setSuccessSnackbarOpen(true);
-        // TODO: redirect to song view page after saving
+        navigate(`/song/${songId}`);
         return payload.data;
       }
 
-      setSuccessSnackbarOpen(false);
+      handleCloseSuccessSnackbar();
       setInvalidSong('Error saving song!');
       return;
     } catch (error: any) {
       setInvalidSong(error.response.data);
-      setSuccessSnackbarOpen(false);
+      handleCloseSuccessSnackbar();
       console.log(error);
     }
   };
@@ -131,10 +197,10 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
   };
 
   return (
-    <Container sx={{ pt: '5em' }}>
+    <Container sx={{ py: '1rem', px: '2rem', height: '100%', minWidth: '100%', overflow: 'auto' }}>
       {/* TODO: Mobile view */}
       <Box display={{ base: 'block', md: 'none' }}>
-        <Toolbar>{editorMode(actionOnEditor)}</Toolbar>
+        <Toolbar sx={{ width: '100%' }}>{editorMode(action)}</Toolbar>
 
         <Box>
           {/* Error message */}
@@ -190,39 +256,42 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
           </form>
         </Box>
       </Box>
-
       {/* Desktop view */}
       <Box display={isDesktop ? 'block' : 'none'}>
         <form onSubmit={handleSubmit(handleSaveSong)}>
-          <Toolbar>
-            {editorMode(actionOnEditor)}
-            <Button
-              type={'submit'}
-              color="secondary"
-              variant="contained"
-              sx={{
-                mr: 1,
-                textTransform: 'none',
-                borderRadius: '100px',
-                px: 3,
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              color={'secondary'}
-              sx={{
-                textTransform: 'none',
-                borderRadius: '100px',
-                border: 1,
-                px: 2,
-              }}
-              onClick={() => navigate('/song')}
-            >
-              Cancel
-            </Button>
-          </Toolbar>
-          <Divider />
+          <PageHeader
+            title={action === 'edit' ? 'Edit Song' : 'New Song'}
+            icon={<MusicNote />}
+            actionButtons={
+              <Stack direction="row">
+                <Button
+                  type={'submit'}
+                  color="secondary"
+                  variant="contained"
+                  sx={{
+                    mr: 1,
+                    textTransform: 'none',
+                    borderRadius: '100px',
+                    px: 3,
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  color={'secondary'}
+                  sx={{
+                    textTransform: 'none',
+                    borderRadius: '100px',
+                    border: 1,
+                    px: 2,
+                  }}
+                  onClick={() => navigate('/song')}
+                >
+                  Cancel
+                </Button>
+              </Stack>
+            }
+          />
 
           <Box my={2}>
             {/* Error message */}
@@ -261,21 +330,37 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   </Typography>
 
                   {/* Song Title Field */}
-                  <TextField
-                    id="title"
-                    label="Song Title"
-                    error={!!errors.title}
-                    helperText={errors?.title?.message}
-                    {...register('title', { required: 'Required' })}
+                  <Controller
+                    name="title"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: 'Song title is required' }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="title"
+                        label="Song Title"
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
 
                   {/* Artist Field */}
-                  <TextField
-                    id="artist"
-                    label="Artist Name"
-                    error={!!errors.artist}
-                    helperText={errors?.artist?.message}
-                    {...register('artist', { required: 'Required' })}
+                  <Controller
+                    name="artist"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: 'Artist name is required' }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="artist"
+                        label="Artist Name"
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
 
                   {/* Themes field */}
@@ -341,9 +426,9 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                       options={timeSignatureOptions}
                       label="Time Signature"
                       autoComplete="time-signature"
-                      value={timeSignature}
-                      onChange={(event, newValue) => {
-                        setTimeSignature(newValue);
+                      value={timeSignatureList}
+                      onChange={(_, newValue) => {
+                        setTimeSignatureList(newValue as string[]);
                       }}
                       register={register}
                       multiple
@@ -352,19 +437,29 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
 
                   {/* Original Key field */}
                   <FormControl fullWidth>
-                    <Autocomplete
-                      id="original-key"
-                      options={musicKeysOptions}
-                      getOptionLabel={(option) => option}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          label="Original Key"
-                          error={!!errors.originalKey}
-                          helperText={errors?.originalKey?.message}
-                          {...register('originalKey', { required: 'Required' })}
+                    <Controller
+                      name="originalKey"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: 'Original key is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          id="original-key"
+                          options={musicKeysOptions}
+                          getOptionLabel={(option) => option}
+                          filterSelectedOptions
+                          value={field.value || null}
+                          onChange={(event, newValue) => field.onChange(newValue)}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              label="Original Key"
+                              error={!!errors.originalKey}
+                              helperText={errors?.originalKey?.message}
+                            />
+                          )}
                         />
                       )}
                     />
@@ -378,8 +473,8 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                       label="Recommended Keys"
                       autoComplete="recommended-keys"
                       value={recommendedKeys}
-                      onChange={(event, newValue) => {
-                        setRecommendedKeys(newValue);
+                      onChange={(_, newValue) => {
+                        setRecommendedKeys(newValue as string[]);
                       }}
                       register={register}
                       multiple
@@ -387,23 +482,42 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                   </FormControl>
 
                   {/* Year field */}
-                  <TextField
-                    id="year"
-                    label="Year"
-                    type="number"
-                    defaultValue={2023}
-                    error={!!errors.year}
-                    helperText={errors?.year?.message}
-                    {...register('year', { required: 'Required' })}
+                  <Controller
+                    name="year"
+                    control={control}
+                    defaultValue={''}
+                    rules={{ required: 'Year is required' }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="year"
+                        label="Year"
+                        type="number"
+                        error={!!errors.year}
+                        helperText={errors?.year?.message}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
 
                   {/* Code field */}
-                  <TextField
-                    id="code"
-                    label="Code"
-                    error={!!errors.code}
-                    helperText={errors?.code?.message}
-                    {...register('code', { required: 'Required' })}
+                  <Controller
+                    name="code"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: 'Code is required' }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="code"
+                        label="Code"
+                        error={!!errors.code}
+                        helperText={errors?.code?.message}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
                 </Stack>
               </Box>
@@ -428,29 +542,34 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                     <SongHelpDialog />
                   </Grid>
 
-                  <TextField
-                    id="chord-lyrics"
-                    placeholder="Enter lyrics & chords here"
-                    multiline
-                    error={!!errors.chordLyrics}
-                    helperText={errors?.chordLyrics?.message}
-                    {...register('chordLyrics', { required: 'Required' })}
-                    InputProps={{
-                      inputComponent: TextareaAutosize,
-                      inputProps: {
-                        minRows: 20,
-                        style: {
-                          resize: 'vertical',
-                        },
-                      },
-                    }}
+                  <Controller
+                    name="chordLyrics"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: 'Chord lyrics are required' }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="chord-lyrics"
+                        placeholder="Enter lyrics & chords here"
+                        multiline
+                        error={!!errors.chordLyrics}
+                        helperText={errors?.chordLyrics?.message}
+                        InputProps={{
+                          inputComponent: TextareaAutosize,
+                          inputProps: {
+                            minRows: 20,
+                            style: {
+                              resize: 'vertical',
+                            },
+                          },
+                        }}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
-                </Stack>
 
-                {/* columns 2: simplified lyrics & chords */}
-                {/* TODO: Can we not use this textbox and instead have a logic 
-                that can translate and simplify the chords itself? */}
-                {/* <Stack direction="column" spacing={2} marginTop="16px">
                   <Grid
                     container
                     direction="row"
@@ -463,33 +582,38 @@ const SongEditorContainer: FC<SongEditorProps> = ({ actionOnEditor }) => {
                       gap={1}
                     >
                       <LibraryMusicIcon />
-                      Simplified Lyrics & Chords
+                      Lyrics & Simplified Chords (Optional)
                     </Typography>
-                    <Box display="flex" gap="8px">
-                      <Typography variant="body2">
-                        Simplified version without the fancy chords (i.e. Cadd9/E) if available.
-                      </Typography>
-                    </Box>
+                    <SongHelpDialog />
                   </Grid>
 
-                  <TextField
-                    id="simplified-chord-lyrics"
-                    placeholder="Enter lyrics & chords here"
-                    multiline
-                    error={!!errors.simplifiedChordLyrics}
-                    helperText={errors?.simplifiedChordLyrics?.message}
-                    {...register('simplifiedChordLyrics', { required: 'Required' })}
-                    InputProps={{
-                      inputComponent: TextareaAutosize,
-                      inputProps: {
-                        minRows: 20,
-                        style: {
-                          resize: 'vertical',
-                        },
-                      },
-                    }}
+                  <Controller
+                    name="simplifiedChordLyrics"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="simplified-chord-lyrics"
+                        placeholder="Enter lyrics & simplified chords here"
+                        multiline
+                        error={!!errors.simplifiedChordLyrics}
+                        helperText={errors?.simplifiedChordLyrics?.message}
+                        InputProps={{
+                          inputComponent: TextareaAutosize,
+                          inputProps: {
+                            minRows: 20,
+                            style: {
+                              resize: 'vertical',
+                            },
+                          },
+                        }}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
                   />
-                </Stack> */}
+                </Stack>
               </Box>
             </Stack>
           </Box>

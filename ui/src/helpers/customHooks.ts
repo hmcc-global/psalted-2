@@ -1,12 +1,12 @@
 import { Setlist, SetlistFolder } from '../types/setlist.types';
-import { SongViewSchema } from '../types/song.types';
+import { SongSchema, SongViewSchema } from '../types/song.types';
 import { UserEditorProps } from '../types/user.types';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 type RootState = {
   user: UserEditorProps;
-  songs: SongViewSchema[];
+  songs: SongSchema[] | SongViewSchema[];
   setlists: Setlist[];
   folders: SetlistFolder[];
 };

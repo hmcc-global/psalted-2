@@ -10,7 +10,6 @@ type SongSchema = {
   artist: string;
   year: string;
   code: string;
-  lyricsPreview: string;
   createdBy: Types.ObjectId;
   lastUpdatedBy: Types.ObjectId;
   isVerified: boolean;

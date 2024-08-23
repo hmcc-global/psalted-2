@@ -5,13 +5,13 @@ type SongEditorFields = {
   title: string;
   themes: Array<string>;
   tempo: Array<string>;
-  year: number;
+  year: string;
   code: string;
-  timeSignature: string;
-  simplifiedChordLyrics: string;
+  timeSignature: string[];
   originalKey: string;
   recommendedKeys: Array<string>;
   chordLyrics: string;
+  simplifiedChordLyrics: string;
 };
 
 interface SongEditorProps {
@@ -34,8 +34,6 @@ export type SongCardProps = {
   artist: string;
   year: string;
   code: string;
-  lyrics: string;
-  lyricsPreview: string;
   firstLine: string;
   chordLyrics: string;
   createdBy: UserEditorFields;
@@ -49,7 +47,7 @@ export type SongCardProps = {
 };
 
 export type SongSearchProps = {
-  songs: SongViewSchema[];
+  songs: SongSchema[];
   filterData: SongSearchFilter | undefined;
   setFilterData: React.Dispatch<React.SetStateAction<SongSearchFilter | undefined>>;
   onClose: () => void;
@@ -65,7 +63,6 @@ export type SongSearchFilter = {
   display?: {
     tempo: boolean;
     themes: boolean;
-    // lyricsPreview: boolean;
     originalKey: boolean;
     year: boolean;
     code: boolean;
@@ -84,8 +81,6 @@ export type SongViewSchema = {
   artist: string;
   year: string;
   code: string;
-  lyrics: string;
-  lyricsPreview: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;
   isVerified: boolean;
@@ -93,4 +88,25 @@ export type SongViewSchema = {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type SongSchema = {
+  _id: string;
+  title: string;
+  timeSignature: string[];
+  tempo: string[];
+  originalKey: string;
+  themes: string[];
+  artist: string;
+  year: string;
+  code: string;
+  createdBy: UserEditorFields;
+  lastUpdatedBy: UserEditorFields;
+  isVerified: boolean;
+  chordLyrics: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  simplifiedChordLyrics: string;
+  recommendedKeys: Array<string>;
 };

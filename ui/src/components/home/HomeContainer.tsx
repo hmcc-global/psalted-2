@@ -10,7 +10,7 @@ const HomeContainer: FC = (): ReactElement => {
   return (
     <Box
       sx={{
-        width: { xs: '100%', md: '90%' },
+        width: '100%',
         flexGrow: 1,
         display: 'flex',
         justifyContent: 'center',

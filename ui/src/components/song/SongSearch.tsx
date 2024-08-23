@@ -8,7 +8,7 @@ import {
   Chip,
   IconButton,
 } from '@mui/material';
-import { SongSearchProps, SongViewSchema } from '../../types/song.types';
+import { SongSearchProps } from '../../types/song.types';
 import { useState, useEffect } from 'react';
 import { tempoOptions, themeOptions, displayResultOptions } from '../../constants';
 import { ArrowDropDown, Info, Refresh, Tune } from '@mui/icons-material';
@@ -16,10 +16,6 @@ import HeaderWithIcon from '../custom/HeaderWithIcon';
 import { useLocation } from 'react-router-dom';
 
 const SongSearch = (props: SongSearchProps) => {
-  const Songs: SongViewSchema[] = props.songs;
-  const prevFilter = props.filterData;
-  const isDesktop = props.isDesktop;
-
   const [searchString, setSearchString] = useState<string>('');
   const [tempoList, setTempoList] = useState<string[]>([]);
   const [disabledTempo, setDisabledTempo] = useState<string[]>(tempoOptions);

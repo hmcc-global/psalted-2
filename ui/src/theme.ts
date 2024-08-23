@@ -1,8 +1,4 @@
-import {
-  createTheme,
-  PaletteOptions,
-  SimplePaletteColorOptions,
-} from '@mui/material/styles';
+import { createTheme, PaletteOptions, SimplePaletteColorOptions } from '@mui/material/styles';
 import '@fontsource/work-sans';
 import '@fontsource/dm-sans';
 import '@mui/material/styles';
@@ -22,6 +18,8 @@ const SECONDARY_MAIN = '#D0BCFE';
 const SECONDARY_LIGHT = '#EADDFF'; // grey
 const SECONDARY_LIGHTER = '#4A4458'; // purple grey
 const SECONDARY_DARK = '#49454F'; // dark grey
+
+const WARNING_MAIN = '#EFB8C8';
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor {
@@ -62,6 +60,9 @@ const palette: ExtendedPaletteOptions = {
   background: {
     default: '#171717',
     paper: '#0F0D13',
+  },
+  warning: {
+    main: WARNING_MAIN,
   },
   text: {
     primary: '#fff',

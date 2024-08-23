@@ -185,9 +185,9 @@ const ProfileDesktopView: FC = (): ReactElement => {
               color="secondary"
               startIcon={<LockIcon />}
               onClick={changePassHandler}
-              style={{ borderRadius: '20px' }}
-              sx={{
-                '&:disabled': { backgroundColor: theme.palette.secondary.main },
+              style={{
+                borderRadius: '20px',
+                display: user?.password === '' ? 'none' : 'inline-flex',
               }}
               disabled={user?.password === ''}
             >

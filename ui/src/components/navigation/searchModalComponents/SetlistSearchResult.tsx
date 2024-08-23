@@ -20,7 +20,7 @@ const SetlistSearchResult = forwardRef<HTMLDivElement, SetlistSearchResultProps>
     if (keyword === '') {
       navigate('/setlist');
     } else {
-      navigate(`/setlist/${_id}`);
+      navigate(`/setlist/view/${_id}`);
     }
     onClose();
   };

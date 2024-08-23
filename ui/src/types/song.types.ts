@@ -34,7 +34,6 @@ export type SongCardProps = {
   artist: string;
   year: string;
   code: string;
-  lyrics: string;
   firstLine: string;
   chordLyrics: string;
   createdBy: UserEditorFields;
@@ -82,7 +81,6 @@ export type SongViewSchema = {
   artist: string;
   year: string;
   code: string;
-  lyrics: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;
   isVerified: boolean;
@@ -102,7 +100,6 @@ export type SongSchema = {
   artist: string;
   year: string;
   code: string;
-  lyrics: string;
   createdBy: UserEditorFields;
   lastUpdatedBy: UserEditorFields;
   isVerified: boolean;

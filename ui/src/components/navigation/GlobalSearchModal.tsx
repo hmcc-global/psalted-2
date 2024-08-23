@@ -113,7 +113,7 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
         if (category === 'songs') {
           navigate(`/song/${(results[focusedIndex] as SongSchema)._id}`);
         } else if (category === 'setlists') {
-          navigate(`/setlist/${(results[focusedIndex] as Setlist)._id}`);
+          navigate(`/setlist/view/${(results[focusedIndex] as Setlist)._id}`);
         }
         onClose();
       }
@@ -144,7 +144,7 @@ const GlobalSearchModal = (props: GlobalSearchModalProps) => {
       if (category === 'songs') {
         navigate(`/song?q=${searchString}`);
       } else if (category === 'setlists') {
-        navigate(`/setlist?q=${searchString}`);
+        navigate(`/setlist`);
       }
       onClose();
     } else if (event.key === 'Escape') {

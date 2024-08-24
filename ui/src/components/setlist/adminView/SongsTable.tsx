@@ -35,32 +35,34 @@ const SongsTable = ({ songs }: Props) => {
       <Grid item xs={12}>
         <Divider color="#332D41" />
       </Grid>
-      {songs.map((song, index) => (
-        <Grid container item xs={12} key={song._id}>
-          <Grid item xs={1}>
-            <Typography>{index + 1}</Typography>
+      {songs &&
+        songs.length > 0 &&
+        songs.map((song, index) => (
+          <Grid container item xs={12} key={song._id}>
+            <Grid item xs={1}>
+              <Typography>{index + 1}</Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="h3">{song.title}</Typography>
+              <Typography variant="body2">{song.artist}</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <Box
+                style={{
+                  background: '#4F378B',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: '40px',
+                  width: '40px',
+                  height: '40px',
+                }}
+              >
+                <Typography>{song.originalKey}</Typography>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={10}>
-            <Typography variant="h3">{song.title}</Typography>
-            <Typography variant="body2">{song.artist}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Box
-              style={{
-                background: '#4F378B',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '40px',
-                width: '40px',
-                height: '40px',
-              }}
-            >
-              <Typography>{song.originalKey}</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      ))}
+        ))}
     </Grid>
   );
 };

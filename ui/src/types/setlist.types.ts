@@ -1,5 +1,5 @@
 import { UserEditorFields } from './user.types';
-import { SongSearchFilter, SongViewSchema, SongCardProps } from './song.types';
+import { SongSearchFilter, SongSchema } from './song.types';
 
 interface SetlistEditorFields {
   name: string;
@@ -38,7 +38,7 @@ export type Setlist = {
   _id: string;
   name: string;
   date: Date | string;
-  songs: SongViewSchema[] | SongCardProps[];
+  songs: SongSchema[];
   sharedUserIds: string[];
   groupIds: string[];
   publicLink: string;

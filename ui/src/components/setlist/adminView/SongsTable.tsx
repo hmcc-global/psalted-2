@@ -1,9 +1,9 @@
-import { SongCardProps } from '#/types/song.types';
+import { SongSchema } from '../../../types/song.types';
 import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { FC } from 'react';
 
 type Props = {
-  songs: SongCardProps[];
+  songs: SongSchema[];
 };
 
 const SongsTable = ({ songs }: Props) => {

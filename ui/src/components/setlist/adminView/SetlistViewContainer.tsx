@@ -26,7 +26,8 @@ const SetlistViewContainer: FC = (): ReactElement | null => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const date = useMemo(() => {
-    return setlist ? new Date(setlist.date).toISOString().split('T')[0] : '';
+    // return setlist ? new Date(setlist.date).toISOString().split('T')[0] : '';
+    return setlist?.date;
   }, [setlist]);
 
   const getSetlist = useCallback(async () => {
@@ -73,14 +74,14 @@ const SetlistViewContainer: FC = (): ReactElement | null => {
   useEffect(() => {
     getSetlist();
   }, [getSetlist, id]);
-  
+
   return id && setlist ? (
     <Container maxWidth="lg" style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
       <Box style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Header */}
         <Box style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <Typography variant="h1">{setlist.name}</Typography>
-          <Typography variant="body1">Created on {date}</Typography>
+          <Typography variant="body1">Created on </Typography>
         </Box>
         {/* Setlist button */}
         <Box gap="8px" display="flex">

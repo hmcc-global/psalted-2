@@ -98,6 +98,10 @@ const SetlistListContainer: FC = (): ReactElement => {
     }
   }, []);
 
+  const handleSelectSetlist = (id: string) => {
+    navigate(`/setlist/${id}`);
+  };
+
   useEffect(() => {
     getSetlistsAndFolders();
   }, [getSetlistsAndFolders]);
@@ -198,7 +202,11 @@ const SetlistListContainer: FC = (): ReactElement => {
                         <List component="div" disablePadding>
                           {folder.setlistIds.length > 0 ? (
                             folder.setlistIds.map((subSetlist, i) => (
-                              <ListItemButton sx={{ pl: 9 }} key={i}>
+                              <ListItemButton
+                                sx={{ pl: 9 }}
+                                key={i}
+                                onClick={() => handleSelectSetlist(subSetlist)}
+                              >
                                 <ListItemIcon>
                                   <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
                                 </ListItemIcon>
@@ -222,7 +230,7 @@ const SetlistListContainer: FC = (): ReactElement => {
                   {allSetlists.map((setlist, i) => (
                     <Fragment key={i}>
                       <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => handleSelectSetlist(setlist._id)}>
                           <ListItemIcon>
                             <QueueMusic sx={{ color: 'secondary.main' }} fontSize="large" />
                           </ListItemIcon>

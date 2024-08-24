@@ -2,6 +2,7 @@ import { Setlist } from '../../types/setlist.types';
 import { SongSchema } from '../../types/song.types';
 import {
   Box,
+  Button,
   Container,
   Divider,
   FormControl,
@@ -15,8 +16,9 @@ import {
 } from '@mui/material';
 import { FC, ReactElement, useEffect, useState } from 'react';
 import { HeaderSetlistView, SetlistViewFooter } from './SetlistViewPaper';
-import SetlistViewMenu from './SetlistViewMenu';
+import SetlistViewMenuMobile from './SetlistViewMenuMobile';
 import { useSetlists } from '../../helpers/customHooks';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SongsLyrics from '../songsView/SongsLyrics';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -101,9 +103,21 @@ const SetlistViewContainerMobile: FC = (): ReactElement => {
             }}
           >
             {/* Header */}
-            <HeaderSetlistView>
+            <HeaderSetlistView style={{ flexDirection: 'row' }}>
+              <Box />
               <Typography variant="h3">{setlist.name}</Typography>
-              <SetlistViewMenu />
+              <Button
+                onClick={handleOpenMenu}
+                style={{ padding: '0px', minWidth: 'unset' }}
+                color="secondary"
+              >
+                <MoreVertIcon />
+              </Button>
+              <SetlistViewMenuMobile
+                anchorEl={menuAnchor}
+                open={openMenu}
+                onClose={handleCloseMenu}
+              />
             </HeaderSetlistView>
             {/* Setlist body */}
             {/* Song choice */}

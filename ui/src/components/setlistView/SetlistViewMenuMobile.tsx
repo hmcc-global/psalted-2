@@ -1,32 +1,26 @@
 import {
-  Button,
   IconButton,
-  List,
   ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Snackbar,
-  Typography,
   useTheme,
 } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { BorderColor } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 
-const SetlistViewMenu = () => {
+type Props = {
+  anchorEl: HTMLElement | null;
+  open: boolean;
+  onClose: () => void;
+};
+const SetlistViewMenuMobile = (props: Props) => {
+  const { onClose } = props;
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const theme = useTheme();
-  const setlistId = window.location.pathname.split('/').reverse()[0];
-
-  const ButtonStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    borderRadius: '30px',
-    borderColor: theme.palette.secondary.main,
-  };
 
   const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -39,28 +33,29 @@ const SetlistViewMenu = () => {
   const handleShare = () => {
     setOpen(true);
     navigator.clipboard.writeText(window.location.href);
+    onClose();
   };
 
   const handleEdit = () => {
-    navigate(`/setlist/edit/${setlistId}`);
+    onClose();
   };
 
   return (
     <>
-      <List style={{ display: 'flex', gap: '24px', paddingBottom: '0px' }}>
-        <Button style={ButtonStyle} variant="outlined" onClick={handleShare}>
-          <ListItemIcon style={{ minWidth: 'unset' }}>
+      <Menu {...props}>
+        <MenuItem onClick={handleShare}>
+          <ListItemIcon>
             <ShareIcon style={{ color: theme.palette.primary.light }} fontSize="small" />
           </ListItemIcon>
-          <Typography color={theme.palette.secondary.main}>Copy Link</Typography>
-        </Button>
-        <Button style={ButtonStyle} variant="outlined" onClick={handleEdit}>
-          <ListItemIcon style={{ minWidth: 'unset' }}>
+          <ListItemText>Share Setlist</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleEdit}>
+          <ListItemIcon>
             <EditIcon style={{ color: theme.palette.primary.light }} fontSize="small" />
           </ListItemIcon>
-          <Typography color={theme.palette.secondary.main}>Edit</Typography>
-        </Button>
-      </List>
+          <ListItemText>Edit Setlist (when user access is done)</ListItemText>
+        </MenuItem>
+      </Menu>
       <Snackbar
         open={open}
         autoHideDuration={5000}
@@ -76,4 +71,4 @@ const SetlistViewMenu = () => {
   );
 };
 
-export default SetlistViewMenu;
+export default SetlistViewMenuMobile;

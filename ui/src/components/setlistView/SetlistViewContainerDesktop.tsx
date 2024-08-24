@@ -9,7 +9,7 @@ import {
   SongSelectTable,
   SetlistViewFooter,
 } from './SetlistViewPaper';
-import SetlistViewMenu from './SetlistViewMenu';
+import SetlistViewMenuDesktop from './SetlistViewMenuDesktop';
 import { useSetlists } from '../../helpers/customHooks';
 
 const SetlistViewContainerDesktop: FC = (): ReactElement => {
@@ -73,7 +73,7 @@ const SetlistViewContainerDesktop: FC = (): ReactElement => {
                 {/* Header */}
                 <HeaderSetlistView>
                   <Typography variant="h3">{setlist.name}</Typography>
-                  <SetlistViewMenu />
+                  <SetlistViewMenuDesktop />
                 </HeaderSetlistView>
                 <SongSelectTable>
                   {songs.map((song) => {

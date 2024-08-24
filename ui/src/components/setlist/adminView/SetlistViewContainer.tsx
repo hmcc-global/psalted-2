@@ -76,8 +76,11 @@ const SetlistViewContainer: FC = (): ReactElement | null => {
   }, [getSetlist, id]);
 
   return id && setlist ? (
-    <Container maxWidth="lg" style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
-      <Box style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <Container
+      maxWidth="lg"
+      style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '100%' }}
+    >
+      <Box style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '50%' }}>
         {/* Header */}
         <Box style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <Typography variant="h1">{setlist.name}</Typography>
@@ -101,7 +104,7 @@ const SetlistViewContainer: FC = (): ReactElement | null => {
         </Box>
       </Box>
       {/* Lyrics Preview */}
-      <Box>
+      <Box width="50%">
         <SetlistPreview />
       </Box>
       <Snackbar

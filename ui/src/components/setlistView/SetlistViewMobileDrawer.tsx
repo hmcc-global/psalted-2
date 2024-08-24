@@ -1,54 +1,48 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SongViewSchema } from '../../types/song.types';
+import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import {
-  Container,
   Box,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  Stack,
   Chip,
+  Drawer,
+  DrawerProps,
+  FormControlLabel,
+  FormGroup,
   IconButton,
+  Stack,
+  Switch,
+  Typography,
   useMediaQuery,
-  Button,
-  Divider,
   useTheme,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SongsLyrics from './SongsLyrics';
-import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
-import PlaylistAdd from '@mui/icons-material/PlaylistAdd';
-import { Share } from '@mui/icons-material';
 
-type SongsButtonCardProps = {
-  song: SongViewSchema | undefined;
-  userView?: boolean;
-  userHeader?: boolean;
+type MobileDrawerProps = DrawerProps & {
+  chordStatus: boolean;
+  split: number;
+  useFlat: boolean;
+  count: number;
+  setSplit: React.Dispatch<React.SetStateAction<number>>;
+  setChordStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  setUseFlat: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsButtonCardProps) => {
-  const [chordStatus, setChordStatus] = useState(false);
-  const [count, setCount] = useState(0);
-  const [useFlat, setUseFlat] = useState(false);
-  const [split, setSplit] = useState(1);
+const SetlistViewMobileDrawer = (props: MobileDrawerProps) => {
+  const {
+    open,
+    onClose,
+    count,
+    useFlat,
+    chordStatus,
+    split,
+    setChordStatus,
+    setSplit,
+    setUseFlat,
+    setCount,
+  } = props;
+  const isDesktop = useMediaQuery('(min-width:768px)');
   const theme = useTheme();
 
-  const isDesktop = useMediaQuery('(min-width:768px)');
-  const navigate = useNavigate();
-  const buttonClass = {
-    display: chordStatus ? 'flex' : 'none',
-    justifyContent: 'center',
-    background: theme.palette.secondary.dark,
-    padding: '12px 16px',
-    borderRadius: '30px',
-  };
-  const switchStyle = {
-    '& .Mui-checked': { color: theme.palette.secondary.main },
-    '& .Mui-checked + .MuiSwitch-track': { backgroundColor: '#8175A0' },
-  };
   const handleChange = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     return (event: React.ChangeEvent<{}>, value: boolean) => {
       setter(value);
@@ -70,25 +64,25 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
     else setSplit(1);
   };
 
-  useEffect(() => {
-    setUseFlat(!!(song?.originalKey && song.originalKey.length > 1 && song.originalKey[1] === 'b'));
-    setCount(
-      useFlat && song
-        ? flatMusicKeysOptions.indexOf(song.originalKey)
-        : sharpMusicKeysOptions.indexOf(song?.originalKey || 'C')
-    );
-  }, [song]);
+  const buttonClass = {
+    display: chordStatus ? 'flex' : 'none',
+    justifyContent: 'center',
+    background: theme.palette.secondary.dark,
+    padding: '12px 16px',
+    borderRadius: '30px',
+  };
+  const switchStyle = {
+    '& .Mui-checked': { color: theme.palette.secondary.main },
+    '& .Mui-checked + .MuiSwitch-track': { backgroundColor: '#8175A0' },
+  };
 
   return (
-    <Container style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box
-        sx={{
-          width: '100%',
-          py: 2,
-          pl: '4px',
-        }}
-      >
-        <Stack direction="row" spacing={1}>
+    <Drawer open={open} onClose={onClose}>
+      <Box width="80vw" padding="48px 32px">
+        <Typography variant="h3" marginBottom="24px">
+          Song Controls
+        </Typography>
+        <Stack direction="column" spacing={2} alignItems="flex-start">
           {/* split columns settings */}
           <Stack
             direction="row"
@@ -209,64 +203,10 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
               />
             </FormGroup>
           </Box>
-
-          {/* add to setlist button */}
-          {userView ? null : (
-            <Button
-              variant="outlined"
-              sx={{
-                borderWidth: '1px',
-                borderColor: '#332D41',
-                padding: '10px 25px',
-                borderRadius: '40px',
-                color: 'secondary.main',
-                textTransform: 'none',
-              }}
-              startIcon={<PlaylistAdd />}
-            >
-              <Typography variant="subtitle1">Add to Setlist</Typography>
-            </Button>
-          )}
-
-          {/* share button */}
-          {userView ? null : (
-            <Box
-              alignItems="center"
-              justifyContent="center"
-              border="1px solid #332D41"
-              sx={{ borderRadius: '100px', p: 1 }}
-            >
-              <IconButton>
-                <Share aria-label="share" sx={{ color: 'secondary.main' }} />
-              </IconButton>
-            </Box>
-          )}
         </Stack>
       </Box>
-      {/* render header */}
-      {userHeader ? (
-        <Box sx={{ width: '100%', padding: '12px 12px 12px 0' }}>
-          <Typography variant="h2">{song?.title}</Typography>
-          <Typography
-            variant="subtitle2"
-            style={{ color: theme.palette.secondary.main, margin: '8px 0' }}
-          >
-            {song?.artist}
-          </Typography>
-          <Divider style={{ borderColor: theme.palette.secondary.dark }} />
-        </Box>
-      ) : null}
-      {/* render lyrics */}
-      <Box sx={{ width: '100%', height: '100%', display: 'flex', overflow: 'auto' }}>
-        <SongsLyrics
-          useFlat={useFlat}
-          chordStatus={chordStatus}
-          changeKey={count}
-          song={song}
-          split={split}
-        />
-      </Box>
-    </Container>
+    </Drawer>
   );
 };
-export default SongsButtonsCard;
+
+export default SetlistViewMobileDrawer;

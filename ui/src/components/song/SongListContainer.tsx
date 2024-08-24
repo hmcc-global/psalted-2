@@ -89,7 +89,14 @@ const SongListContainer: FC = (): ReactElement => {
     <>
       <Container
         fixed
-        sx={{ py: '1rem', px: '1.5rem', height: '100%', minWidth: '100%', overflow: 'auto' }}
+        sx={{
+          py: '1rem',
+          px: '1.5rem',
+          maxHeight: '100vh',
+          height: '100%',
+          minWidth: '100%',
+          overflow: 'hidden',
+        }}
       >
         <PageHeader
           title="Songs"
@@ -124,8 +131,8 @@ const SongListContainer: FC = (): ReactElement => {
         <Box display={{ base: 'block', md: 'none' }}></Box>
 
         {/* Desktop filter menu */}
-        <Stack direction="row" maxWidth="100%" width="100%" gap={'1%'}>
-          <Box flex="0 0 28%" display={isDesktop ? 'flex' : 'none'}>
+        <Stack direction="row" maxWidth="100%" height="90vh" width="100%" gap={'1%'}>
+          <Box display={isDesktop ? 'flex' : 'none'}>
             <SongSearch
               filterData={filterData}
               setFilterData={setFilterData}
@@ -137,14 +144,14 @@ const SongListContainer: FC = (): ReactElement => {
           </Box>
 
           {/* Song cards search results */}
-          <Box flex="0 0 71%" display="flex">
+          <Box display="flex" height="100%">
             <Container
               sx={{
                 py: '1em',
                 background: '#000',
                 borderRadius: '16px',
                 width: '100%',
-                overflow: 'auto',
+                height: '100%',
               }}
             >
               <Stack
@@ -152,6 +159,7 @@ const SongListContainer: FC = (): ReactElement => {
                 alignItems="center"
                 justifyContent={'space-between'}
                 pb={'1em'}
+                height="3%"
                 spacing="space-between"
                 maxWidth="100%"
               >
@@ -160,7 +168,7 @@ const SongListContainer: FC = (): ReactElement => {
                 </Typography>
                 <ButtonGroup variant="outlined">{/* Button group code */}</ButtonGroup>
               </Stack>
-              <Stack direction="column" spacing={3} height="100%" maxWidth="100%">
+              <Stack direction="column" spacing={3} height="97%" overflow="auto" maxWidth="100%">
                 {songResults.length > 0 ? (
                   songResults.map((song, i) => {
                     return (

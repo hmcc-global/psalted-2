@@ -16,6 +16,7 @@ const PageHeader = (props: PageHeaderProps) => {
         alignItems: 'center',
         width: '100%',
         mb: '1rem',
+        height: '6vh',
       }}
     >
       <Box

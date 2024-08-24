@@ -2,9 +2,11 @@ import { Box, Stack, styled } from '@mui/material';
 
 export const HeaderSetlistView = styled(Box)({
   borderRadius: '16px',
-  padding: '24px',
-  margin: '24px',
+  padding: '24px 16px',
+  margin: '24px 0',
   display: 'flex',
+  gap: '16px',
+  flexDirection: 'column',
   justifyContent: 'space-between',
   alignItems: 'center',
   background:
@@ -14,14 +16,19 @@ export const HeaderSetlistView = styled(Box)({
 export const SongSelectTable = styled(Stack)(({ theme }) => ({
   border: `1px solid ${theme.palette.secondary.dark}`,
   borderRadius: '16px',
+  '& div:first-child': {
+    borderRadius: '16px 16px 0px 0px',
+  },
   '& div:last-child': {
     borderBottom: 'none',
+    borderRadius: '0px 0px 16px 16px',
   },
 }));
 
-export const SongSelectRow = styled(Box)(({ theme }) => ({
+export const SongSelectRow = styled(Box)<{ selected?: boolean }>(({ theme, selected }) => ({
   padding: '16px 24px',
   borderBottom: `1px solid ${theme.palette.secondary.dark}`,
+  backgroundColor: selected ? theme.palette.primary.main : '',
 }));
 
 export const SetlistViewFooter = styled(Box)(({ theme }) => ({
@@ -29,6 +36,7 @@ export const SetlistViewFooter = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   background: theme.palette.background.paper,
   width: '100%',
+  height: '10vh',
+  maxHeight: '64px',
   padding: '16px',
-  marginTop: '16px',
 }));

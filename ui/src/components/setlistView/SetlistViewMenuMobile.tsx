@@ -17,7 +17,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
 };
-const SetlistViewMenu = (props: Props) => {
+const SetlistViewMenuMobile = (props: Props) => {
   const { onClose } = props;
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -71,4 +71,4 @@ const SetlistViewMenu = (props: Props) => {
   );
 };
 
-export default SetlistViewMenu;
+export default SetlistViewMenuMobile;

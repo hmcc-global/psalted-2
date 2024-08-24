@@ -17,7 +17,7 @@ const PRIMARY_DARKEST = '#141218';
 const SECONDARY_MAIN = '#D0BCFE';
 const SECONDARY_LIGHT = '#EADDFF'; // grey
 const SECONDARY_LIGHTER = '#4A4458'; // purple grey
-const SECONDARY_DARK = '#49454F'; // dark grey
+const SECONDARY_DARK = '#332D41'; // dark grey
 
 const WARNING_MAIN = '#EFB8C8';
 

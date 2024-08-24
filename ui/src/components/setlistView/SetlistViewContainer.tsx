@@ -46,7 +46,9 @@ const SetlistViewContainer: FC = (): ReactElement => {
       style={{
         maxWidth: '100vw',
         width: '100%',
+        height: '100%',
         padding: '0',
+        overflow: 'hidden',
       }}
     >
       <Box
@@ -60,29 +62,28 @@ const SetlistViewContainer: FC = (): ReactElement => {
           <Container
             maxWidth="xl"
             style={{
-              height: '100vh',
-              overflow: 'hidden',
+              height: '90vh',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            {/* Header */}
-            <HeaderSetlistView>
-              <Box />
-              <Typography variant="h3">{setlist.name}</Typography>
-              <Button onClick={handleOpenMenu} color="secondary">
-                <MoreVertIcon />
-              </Button>
-              <SetlistViewMenu anchorEl={menuAnchor} open={openMenu} onClose={handleCloseMenu} />
-            </HeaderSetlistView>
             {/* Setlist body */}
-            <Grid container height="85%">
+            <Grid container height="100%">
               {/* Song choice */}
-              <Grid item xs={3}>
+              <Grid item xs={4}>
+                {/* Header */}
+                <HeaderSetlistView>
+                  <Typography variant="h3">{setlist.name}</Typography>
+                  <SetlistViewMenu />
+                </HeaderSetlistView>
                 <SongSelectTable>
                   {songs.map((song) => {
                     return (
-                      <SongSelectRow onClick={() => handleSelectSong(song)} key={song._id}>
+                      <SongSelectRow
+                        selected={song._id === selectedSong?._id}
+                        onClick={() => handleSelectSong(song)}
+                        key={song._id}
+                      >
                         {song.title}
                       </SongSelectRow>
                     );
@@ -90,7 +91,7 @@ const SetlistViewContainer: FC = (): ReactElement => {
                 </SongSelectTable>
               </Grid>
               {/* Song lyrics */}
-              <Grid item xs={9} height="100%">
+              <Grid item xs={8} height="100%" overflow="auto" marginTop="8px">
                 <Stack height="100%">
                   <SongsButtonsCard song={selectedSong} userView={true} userHeader={true} />
                 </Stack>

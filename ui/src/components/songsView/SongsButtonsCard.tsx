@@ -22,7 +22,6 @@ import SongsLyrics from './SongsLyrics';
 import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import PlaylistAdd from '@mui/icons-material/PlaylistAdd';
 import { Share } from '@mui/icons-material';
-import SongsInfoCard from './SongsInfoCard';
 
 type SongsButtonCardProps = {
   song: SongViewSchema | undefined;
@@ -32,21 +31,24 @@ type SongsButtonCardProps = {
 
 const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsButtonCardProps) => {
   const [chordStatus, setChordStatus] = useState(false);
+  const [count, setCount] = useState(0);
   const [useFlat, setUseFlat] = useState(false);
-  const [count, setCount] = useState(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
   const [split, setSplit] = useState(1);
   const theme = useTheme();
 
   const isDesktop = useMediaQuery('(min-width:768px)');
   const navigate = useNavigate();
   const buttonClass = {
-    display: 'flex',
+    display: chordStatus ? 'flex' : 'none',
     justifyContent: 'center',
-    background: '#141218',
-    padding: '1px 12px',
-    borderRadius: '4px',
+    background: theme.palette.secondary.dark,
+    padding: '12px 16px',
+    borderRadius: '30px',
   };
-
+  const switchStyle = {
+    '& .Mui-checked': { color: theme.palette.secondary.main },
+    '& .Mui-checked + .MuiSwitch-track': { backgroundColor: '#8175A0' },
+  };
   const handleChange = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     return (event: React.ChangeEvent<{}>, value: boolean) => {
       setter(value);
@@ -69,7 +71,12 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
   };
 
   useEffect(() => {
-    setCount(sharpMusicKeysOptions.indexOf(song?.originalKey ?? 'C'));
+    setUseFlat(!!(song?.originalKey && song.originalKey.length > 1 && song.originalKey[1] === 'b'));
+    setCount(
+      useFlat && song
+        ? flatMusicKeysOptions.indexOf(song.originalKey)
+        : sharpMusicKeysOptions.indexOf(song?.originalKey || 'C')
+    );
   }, [song]);
 
   return (
@@ -82,76 +89,13 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
         }}
       >
         <Stack direction="row" spacing={1}>
-          {/* key settings */}
-          <Stack
-            direction="row"
-            spacing={{ sm: 1, md: 1.5 }}
-            alignItems={'center'}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
-          >
-            <Box padding="6px 6px" sx={{ width: '40px', height: '40px' }}>
-              <Typography color="secondary.main">Key</Typography>
-            </Box>
-
-            {/* key - down arrow */}
-            <Box bgcolor="primary.main" sx={{ borderRadius: '4px' }}>
-              <IconButton aria-label="down" onClick={handleDecrement}>
-                <KeyboardArrowDownIcon sx={{ color: 'primary.lightest' }} />
-              </IconButton>
-            </Box>
-
-            <Chip
-              label={useFlat ? flatMusicKeysOptions[count] : sharpMusicKeysOptions[count]}
-              sx={{ background: '#322F35' }}
-            />
-
-            {/* key - up arrow */}
-            <Box bgcolor="primary.main" sx={{ borderRadius: '4px' }}>
-              <IconButton aria-label="up" onClick={handleIncrement}>
-                <KeyboardArrowUpIcon sx={{ color: 'primary.lightest' }} />
-              </IconButton>
-            </Box>
-          </Stack>
-
-          {/* chords toggle */}
-          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
-            <FormGroup style={{ justifyContent: 'center' }}>
-              <FormControlLabel
-                labelPlacement="start"
-                sx={{ color: 'secondary.main' }}
-                control={
-                  <Switch
-                    checked={chordStatus}
-                    onChange={handleChange(setChordStatus)}
-                    name="chords"
-                  />
-                }
-                label="Chords"
-              />
-            </FormGroup>
-          </Box>
-
-          {/* flat toggle */}
-          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
-            <FormGroup style={{ justifyContent: 'center' }}>
-              <FormControlLabel
-                labelPlacement="start"
-                sx={{ color: 'secondary.main' }}
-                control={
-                  <Switch checked={useFlat} onChange={handleChange(setUseFlat)} name="flat" />
-                }
-                label="Flat"
-              />
-            </FormGroup>
-          </Box>
-
           {/* split columns settings */}
           <Stack
             direction="row"
             spacing={2}
-            display={isDesktop ? 'flex' : 'none'}
+            display={isDesktop ? 'flex !important' : 'none !important'}
             alignItems={'center'}
-            sx={{ background: '#141218', p: 1, borderRadius: '4px' }}
+            style={buttonClass}
           >
             <Box>
               <Typography color="secondary.main">Split</Typography>
@@ -186,6 +130,85 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
               </Stack>
             </Box>
           </Stack>
+
+          {/* chords toggle */}
+          <Box
+            fontSize={{ sm: '16px', md: '26px' }}
+            style={buttonClass}
+            sx={{ display: 'flex !important' }}
+          >
+            <FormGroup style={{ justifyContent: 'center' }}>
+              <FormControlLabel
+                labelPlacement="start"
+                sx={{ color: 'secondary.main' }}
+                control={
+                  <Switch
+                    checked={chordStatus}
+                    onChange={handleChange(setChordStatus)}
+                    name="chords"
+                    sx={switchStyle}
+                  />
+                }
+                label="Chords"
+              />
+            </FormGroup>
+          </Box>
+
+          {/* key settings */}
+          <Stack
+            direction="row"
+            spacing={{ sm: 1, md: 1.5 }}
+            alignItems={'center'}
+            style={buttonClass}
+          >
+            <Box padding="6px 6px" sx={{ width: '40px', height: '40px' }}>
+              <Typography color="secondary.main">Key</Typography>
+            </Box>
+
+            {/* key - down arrow */}
+            <Box bgcolor="primary.dark" sx={{ borderRadius: '4px' }}>
+              <IconButton aria-label="down" onClick={handleDecrement}>
+                <KeyboardArrowDownIcon sx={{ color: 'primary.lightest' }} />
+              </IconButton>
+            </Box>
+
+            <Chip
+              label={
+                useFlat
+                  ? flatMusicKeysOptions[count]
+                    ? flatMusicKeysOptions[count]
+                    : sharpMusicKeysOptions[count]
+                  : sharpMusicKeysOptions[count]
+              }
+              sx={{ background: '#49454F' }}
+            />
+
+            {/* key - up arrow */}
+            <Box bgcolor="primary.dark" sx={{ borderRadius: '4px' }}>
+              <IconButton aria-label="up" onClick={handleIncrement}>
+                <KeyboardArrowUpIcon sx={{ color: 'primary.lightest' }} />
+              </IconButton>
+            </Box>
+          </Stack>
+
+          {/* flat toggle */}
+          <Box fontSize={{ sm: '16px', md: '26px' }} style={buttonClass}>
+            <FormGroup style={{ justifyContent: 'center' }}>
+              <FormControlLabel
+                labelPlacement="start"
+                sx={{ color: 'secondary.main' }}
+                control={
+                  <Switch
+                    checked={useFlat}
+                    onChange={handleChange(setUseFlat)}
+                    sx={switchStyle}
+                    name="flat"
+                  />
+                }
+                label="Flat"
+              />
+            </FormGroup>
+          </Box>
 
           {/* add to setlist button */}
           {userView ? null : (
@@ -234,7 +257,7 @@ const SongsButtonsCard = ({ song, userView = false, userHeader = false }: SongsB
         </Box>
       ) : null}
       {/* render lyrics */}
-      <Box sx={{ width: '100%', display: 'flex', overflow: 'auto' }}>
+      <Box sx={{ width: '100%', height: '100%', display: 'flex', overflow: 'auto' }}>
         <SongsLyrics
           useFlat={useFlat}
           chordStatus={chordStatus}

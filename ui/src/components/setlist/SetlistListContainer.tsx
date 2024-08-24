@@ -24,6 +24,7 @@ import { FC, ReactElement, useState, useEffect, useCallback, Fragment, MouseEven
 import { useNavigate } from 'react-router-dom';
 import SetlistFolderDrawer from './SetlistFolderDrawer';
 import SetlistViewContainer from './adminView/SetlistViewContainer';
+import PageHeader from '../navigation/PageHeader';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -107,8 +108,45 @@ const SetlistListContainer: FC = (): ReactElement => {
   }, [getSetlistsAndFolders]);
 
   return (
-    <Container style={{ paddingTop: '5em', width: '100%', height: '100%' }}>
+    <Container
+      sx={{
+        py: '1rem',
+        px: '1.5rem',
+        width: '100%',
+        maxWidth: '100vw !important',
+        height: '100%',
+        margin: '0',
+      }}
+    >
       {/* Toolbar at the top */}
+      <PageHeader
+        title="Setlists"
+        icon={<QueueMusic />}
+        actionButtons={
+          <Button
+            variant="outlined"
+            sx={{
+              border: 0,
+              padding: '10px 25px',
+              borderRadius: '40px',
+              backgroundColor: '#D0BCFF',
+              color: '#381E72',
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: '#D0BCFF',
+                opacity: '0.95',
+              },
+              transition: 'all 0.1s ease-in-out',
+            }}
+            endIcon={<KeyboardArrowDown />}
+            onClick={handleCreateClick}
+          >
+            <Typography variant="subtitle1" fontWeight={700}>
+              New Song
+            </Typography>
+          </Button>
+        }
+      />
       <Stack
         direction="row"
         display="flex"
@@ -116,38 +154,6 @@ const SetlistListContainer: FC = (): ReactElement => {
         pb="10px"
         pl={{ base: '0', md: '15px' }}
       >
-        {/* Title */}
-        <Typography variant="h1" color="white" sx={{ display: 'flex', alignItems: 'center' }}>
-          <QueueMusic
-            sx={{
-              color: 'primary.light',
-              backgroundColor: 'primary.dark',
-              borderRadius: '50%',
-              width: '2em',
-              height: '2em',
-              padding: '0.5em',
-              mr: 3,
-            }}
-          />
-          Setlists
-        </Typography>
-
-        {/* Add new setlist button */}
-        <Button
-          variant="outlined"
-          sx={{
-            borderWidth: '2px',
-            py: '10px',
-            borderRadius: '40px',
-            backgroundColor: 'secondary.main',
-            color: '#primary.main',
-            textTransform: 'none',
-          }}
-          endIcon={<KeyboardArrowDown />}
-          onClick={handleCreateClick}
-        >
-          Create
-        </Button>
         <Menu
           anchorEl={createAnchorEl}
           open={openCreate}
@@ -161,8 +167,22 @@ const SetlistListContainer: FC = (): ReactElement => {
             horizontal: 'right',
           }}
         >
-          <MenuItem onClick={() => navigate('/setlist/add')}>Create Setlist</MenuItem>
-          <MenuItem onClick={() => toggleFolderDrawer(true)}>Create Folder</MenuItem>
+          <MenuItem
+            onClick={() => {
+              navigate('/setlist/add');
+              handleCreateClose();
+            }}
+          >
+            Create Setlist
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              toggleFolderDrawer(true);
+              handleCreateClose();
+            }}
+          >
+            Create Folder
+          </MenuItem>
         </Menu>
       </Stack>
 

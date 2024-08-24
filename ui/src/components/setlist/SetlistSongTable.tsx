@@ -196,7 +196,7 @@ const SetlistSongsTable: React.FC<SetlistSongsTableProps> = ({ songList, setSong
                 #
               </TableCell>
               <TableCell
-                width="55%"
+                width="75%"
                 sx={{
                   color: '#938F99',
                 }}
@@ -204,14 +204,14 @@ const SetlistSongsTable: React.FC<SetlistSongsTableProps> = ({ songList, setSong
                 Song Title
               </TableCell>
               <TableCell
-                width="15%"
+                width="10%"
                 sx={{
                   color: '#938F99',
                 }}
               >
                 Key
               </TableCell>
-              <TableCell width="10%" />
+              <TableCell width="5%" />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -226,7 +226,7 @@ const SetlistSongsTable: React.FC<SetlistSongsTableProps> = ({ songList, setSong
                   >
                     {i + 1}
                   </TableCell>
-                  <TableCell width="55%">
+                  <TableCell width="75%">
                     <Typography variant="h3" fontWeight={600}>
                       {song.title}
                     </Typography>
@@ -234,7 +234,7 @@ const SetlistSongsTable: React.FC<SetlistSongsTableProps> = ({ songList, setSong
                       {song.artist}
                     </Typography>
                   </TableCell>
-                  <TableCell width="15%">
+                  <TableCell width="10%">
                     <Box
                       style={{
                         background: '#4F378B',
@@ -256,7 +256,7 @@ const SetlistSongsTable: React.FC<SetlistSongsTableProps> = ({ songList, setSong
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell width="10%">
+                  <TableCell width="5%">
                     <IconButton
                       onClick={(event) => handleMenuOpen(event, song._id)}
                       aria-controls={`song-menu-${song._id}`}

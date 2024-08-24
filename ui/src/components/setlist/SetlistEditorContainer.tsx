@@ -100,7 +100,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = ({ actionOnEditor }) => {
       const payload = await axios.post('/api/setlists/create', {
         name: data.name,
         date: date,
-        songs: addedSongs,
+        songs: addedSongList,
       });
 
       if (payload.status === 200) {

@@ -107,7 +107,7 @@ export const routes: Array<Route> = [
   {
     key: 'setlist-route',
     title: 'Setlist',
-    path: '/setlist',
+    path: '/setlist/:id?',
     enabled: true,
     component: SetlistListContainer,
     permissions: ['user'],

@@ -24,7 +24,7 @@ import { flatMusicKeysOptions, sharpMusicKeysOptions } from '../../constants';
 import TuneIcon from '@mui/icons-material/Tune';
 import SetlistViewMobileDrawer from './SetlistViewMobileDrawer';
 
-const SetlistViewContainerMobile: FC = (): ReactElement => {
+const SetlistViewContainerMobile = ({ preview }: { preview?: boolean }): ReactElement => {
   const setlistId = window.location.pathname.split('/').reverse()[0];
   const theme = useTheme();
   const setlist = useSetlists(setlistId) as Setlist;
@@ -178,9 +178,11 @@ const SetlistViewContainerMobile: FC = (): ReactElement => {
                 </Box>
               </Stack>
             </Box>
-            <SetlistViewFooter style={{ width: '100vw', margin: '0 0 -16px -16px' }}>
-              <Typography>Created by HMCC T3CH</Typography>
-            </SetlistViewFooter>
+            {preview ? null : (
+              <SetlistViewFooter style={{ width: '100vw', margin: '0 0 -16px -16px' }}>
+                <Typography>Created by HMCC T3CH</Typography>
+              </SetlistViewFooter>
+            )}
           </Container>
         ) : (
           <Skeleton>loading ...</Skeleton>

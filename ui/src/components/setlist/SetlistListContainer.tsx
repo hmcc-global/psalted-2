@@ -166,9 +166,9 @@ const SetlistListContainer: FC = (): ReactElement => {
         </Menu>
       </Stack>
 
-      <Stack direction="row">
+      <Stack direction="row" width="100%">
         {/* list out all existing setlists */}
-        <Box width={'35%'}>
+        <Box width={'30%'}>
           <Tabs
             selectionFollowsFocus
             variant="fullWidth"
@@ -336,7 +336,7 @@ const SetlistListContainer: FC = (): ReactElement => {
         <Divider orientation="vertical" variant="fullWidth" sx={{ borderColor: '#D9D9D980' }} />
 
         {/* display setlist details & preview */}
-        <Box>
+        <Box width="70%">
           <SetlistViewContainer />
         </Box>
       </Stack>

@@ -275,9 +275,9 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = () => {
             }
           />
 
-          <Stack direction="row" spacing={10} my={'24px'} width={'100%'}>
+          <Stack direction="row" spacing={'24px'} my={'24px'} width={'100%'}>
             {/* setlist details and info */}
-            <Box display="flex" justifyContent="center" width={'40vw'}>
+            <Box display="flex" justifyContent="center" width={'42.5vw'}>
               <Stack direction="column" spacing={2} width={'100%'}>
                 <HeaderWithIcon
                   Icon={Info}
@@ -348,7 +348,7 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = () => {
             </Box>
 
             {/* search for songs to add */}
-            <Box display="flex" justifyContent="center" width={'40vw'}>
+            <Box display="flex" justifyContent="center" width={'42.5vw'}>
               <Stack direction="column" spacing={2} width={'100%'}>
                 {/* header */}
                 <HeaderWithIcon
@@ -388,7 +388,6 @@ const SetlistEditorContainer: FC<SetlistEditorProps> = () => {
                     }}
                   />
                 </Stack>
-
                 {/* search results */}
                 {songResults.length > 0 ? (
                   songResults.map((song, i) => (

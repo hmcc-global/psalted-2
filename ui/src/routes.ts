@@ -85,7 +85,7 @@ export const routes: Array<Route> = [
     path: '/song/add',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['user'],
+    permissions: ['admin'],
   },
   {
     key: 'song-edit-route',
@@ -93,7 +93,7 @@ export const routes: Array<Route> = [
     path: '/song/edit/:id',
     enabled: true,
     component: SongEditorContainer,
-    permissions: ['user'],
+    permissions: ['admin'],
   },
   {
     key: 'songsView-route',

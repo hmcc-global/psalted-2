@@ -45,6 +45,7 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   const noUser = permissions.includes('noUser');
   const isPublic = permissions.includes('public');
   const isRequireUser = permissions.includes('user');
+  const isAdmin = permissions.includes('admin');
   const access = isPublic;
   // TODO: When accessType is implemented, uncomment this
   //   const access = isPublic || permissions.some(
@@ -69,6 +70,14 @@ const PrivateRouteWrapper = ({ children, permissions }: PrivateRouteProps) => {
   // If the route is accessible (public or matches user's access type)
   else if (access || isRequireUser) {
     // If there is no token in the redux store
+    if (noTokenExists) {
+      // Navigate to the login page
+      return <Navigate to="/login" />;
+    } else {
+      return <PageWithNavBar children={children} />;
+    }
+  } else if (isAdmin && user?.accessType === 'admin') {
+    // TODO: cleanup and refactor logic
     if (noTokenExists) {
       // Navigate to the login page
       return <Navigate to="/login" />;

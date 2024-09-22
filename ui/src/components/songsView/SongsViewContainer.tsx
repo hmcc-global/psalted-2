@@ -6,9 +6,11 @@ import axios, { AxiosResponse } from 'axios';
 import SongsTitleCard from './SongsTitleCard';
 import SongsButtonCard from './SongsButtonsCard';
 import SongsInfoCard from './SongsInfoCard';
+import { useUser } from '../../helpers/customHooks';
 
 const SongsViewContainer: FC = (): ReactElement => {
   const navigate = useNavigate();
+  const { user } = useUser();
 
   const id: string = window.location.pathname.split('/')[2];
   const [song, setSong] = useState<SongViewSchema>();
@@ -36,6 +38,7 @@ const SongsViewContainer: FC = (): ReactElement => {
       <Container style={{ paddingTop: '5em', width: '100%' }}>
         <Button
           variant="outlined"
+          disabled={user?.accessType !== 'admin'}
           sx={{
             borderWidth: '2px',
             padding: '10px 25px',

@@ -17,6 +17,7 @@ import { Add, MusicNote } from '@mui/icons-material';
 import PageHeader from '../navigation/PageHeader';
 import { getFirstLineLyrics } from '../../helpers/song';
 import { useSongs } from '../../helpers/customHooks';
+import axios from 'axios';
 
 const SongListContainer: FC = (): ReactElement => {
   const [songResults, setSongResults] = useState<SongSchema[]>([]);
@@ -35,37 +36,50 @@ const SongListContainer: FC = (): ReactElement => {
 
   const getSongResults = useCallback(async () => {
     if (filterData) {
-      // filter the song based on data
-      const filteredSong = allSongs.filter(
-        (song) =>
-          ((filterData.search
-            ? song.artist && song.artist.toLowerCase().includes(filterData.search.toLowerCase())
-            : true) ||
-            (filterData.search
-              ? song.title && song.title.toLowerCase().includes(filterData.search.toLowerCase())
-              : true) ||
-            (filterData.search
-              ? song.themes &&
-                song.themes.map((t) => t.toLowerCase()).includes(filterData.search.toLowerCase())
-              : true)) &&
-          (filterData.timeSignature
-            ? filterData.timeSignature.every((time) => song.timeSignature.includes(time))
-            : true) &&
-          (filterData.themes && filterData.themes.length > 0
-            ? filterData.themes.some((theme) => song.themes?.includes(theme))
-            : true) &&
-          (filterData.tempo && filterData.tempo.length > 0
-            ? filterData.tempo.some((tempo) =>
-                song.tempo.map((t) => t.toLowerCase()).includes(tempo.toLowerCase())
-              )
-            : true)
-      );
-      setSongResults(filteredSong);
-    } else setSongResults(allSongs);
+      console.log(filterData);
+      try {
+        const payload = await axios.get('/api/songs/search', {
+          params: {
+            keyword: filterData.search,
+            themes: filterData.themes,
+            tempo: filterData.tempo,
+          },
+        });
+        console.log(payload.data);
+        setSongResults(payload.data);
+      } catch (error: any) {
+        if (error?.response) {
+          if (error.response.status === 404) {
+            console.log('No songs found');
+            setSongResults([]);
+          } else if (error.response.status === 500 || error.response.status === 401) {
+            // Handle 500 or 401 errors as needed
+          }
+        } else {
+          console.log('An unexpected error occurred:', error);
+        }
+      }
+    } else {
+      setSongResults(allSongs);
+    }
   }, [filterData]);
 
   useEffect(() => {
-    getSongResults();
+    const shouldQuery =
+      filterData &&
+      (filterData.search?.trim() ||
+        (filterData.themes && filterData.themes.length > 0) ||
+        filterData.tempo);
+    if (shouldQuery) {
+      const timer = setTimeout(() => {
+        getSongResults();
+      }, 1000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+    return;
   }, [filterData]);
 
   useEffect(() => {

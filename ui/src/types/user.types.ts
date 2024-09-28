@@ -6,6 +6,7 @@ export type UserEditorFields = {
   password: string;
   currentPassword: string;
   newPassword: string;
+  accessType?: string;
   _id: string;
 };
 

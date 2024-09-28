@@ -16,10 +16,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Add, MusicNote } from '@mui/icons-material';
 import PageHeader from '../navigation/PageHeader';
 import { getFirstLineLyrics } from '../../helpers/song';
-import { useSongs } from '../../helpers/customHooks';
 import axios from 'axios';
+import { useSongs, useUser } from '../../helpers/customHooks';
 
 const SongListContainer: FC = (): ReactElement => {
+  const { user } = useUser();
   const [songResults, setSongResults] = useState<SongSchema[]>([]);
   const [filterData, setFilterData] = useState<SongSearchFilter>();
   const [search, setSearch] = useState('');
@@ -118,6 +119,7 @@ const SongListContainer: FC = (): ReactElement => {
           actionButtons={
             <Button
               variant="outlined"
+              disabled={user?.accessType !== 'admin'}
               sx={{
                 border: 0,
                 padding: '10px 25px',

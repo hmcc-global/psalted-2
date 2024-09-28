@@ -62,6 +62,35 @@ const getSong: RequestHandler = async (req: Request, res: Response): Promise<voi
     }
   }
 };
+const searchSongs: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  const { keyword, tempo, themes } = req.query;
+  const tempoArray = Array.isArray(tempo) ? tempo : [tempo].filter(Boolean);
+  const themesArray = Array.isArray(themes) ? themes : [themes].filter(Boolean);
+  const fixedLimit = 20;
+  try {
+    const query: any = {
+      isDeleted: false,
+    };
+    if (keyword) {
+      query.title = { $regex: keyword, $options: 'i' };
+    }
+    if (tempoArray.length > 0) {
+      query.tempo = { $in: tempoArray };
+    }
+    if (themesArray.length > 0) {
+      query.themes = { $in: themesArray };
+    }
+    const data: SongDocument[] = await Song.find(query).limit(fixedLimit).exec();
+
+    if (data.length > 0) {
+      sendResponse(res, 200, data);
+    } else {
+      sendResponse(res, 404, 'No songs found matching the criteria');
+    }
+  } catch (error: any) {
+    sendResponse(res, 500, error?.message);
+  }
+};
 
 const getSongView: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   const { ...filter } = req.body;
@@ -124,4 +153,4 @@ const deleteSong: RequestHandler = async (req: Request, res: Response): Promise<
   }
 };
 
-export { createSong, getSong, getSongView, updateSong, deleteSong };
+export { createSong, getSong, getSongView, updateSong, deleteSong, searchSongs };

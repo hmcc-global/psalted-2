@@ -27,29 +27,60 @@ const SongListContainer: FC = (): ReactElement => {
   const [open, setOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const navigate = useNavigate();
   const location = useLocation();
-
   const handleClose = () => setOpen(false);
-
   const allSongs = useSongs() as SongSchema[];
+
+  const [loading, setLoading] = useState(false);
+
+  const handleScroll = () => {
+    const searchDisplayBox = document.getElementById('search-display');
+    if (searchDisplayBox) {
+      const { scrollTop, scrollHeight, clientHeight } = searchDisplayBox;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+      if (!loading && isAtBottom && page < totalPages) {
+        setPage((page) => page + 1);
+        searchDisplayBox.scrollTop = scrollTop - 30;
+      }
+    }
+  };
+
+  useEffect(() => {
+    const searchDisplayBox = document.getElementById('search-display');
+    if (searchDisplayBox) {
+      searchDisplayBox.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (searchDisplayBox) {
+        searchDisplayBox.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [loading, page, totalPages]);
 
   const getSongResults = useCallback(async () => {
     if (filterData) {
-      console.log(filterData);
+      setLoading(true);
       try {
         const payload = await axios.get('/api/songs/search', {
           params: {
             keyword: filterData.search,
             themes: filterData.themes,
             tempo: filterData.tempo,
+            page: page,
+            limit: 20,
           },
         });
-        console.log(payload.data);
-        setSongResults(payload.data);
+        setSongResults((songResults) => [...songResults, ...payload.data.data]);
+        setTotalPages(payload.data.totalPages);
+        setLoading(false);
       } catch (error: any) {
         if (error?.response) {
+          setLoading(false);
           if (error.response.status === 404) {
             console.log('No songs found');
             setSongResults([]);
@@ -63,9 +94,12 @@ const SongListContainer: FC = (): ReactElement => {
     } else {
       setSongResults(allSongs);
     }
-  }, [filterData]);
+  }, [filterData, page]);
 
   useEffect(() => {
+    setSongResults([]);
+    setPage(1);
+
     const shouldQuery =
       filterData &&
       (filterData.search?.trim() ||
@@ -82,6 +116,12 @@ const SongListContainer: FC = (): ReactElement => {
     }
     return;
   }, [filterData]);
+
+  useEffect(() => {
+    if (page >= 2) {
+      getSongResults();
+    }
+  }, [page]);
 
   useEffect(() => {
     if (location.search) {
@@ -142,11 +182,7 @@ const SongListContainer: FC = (): ReactElement => {
             </Button>
           }
         />
-
-        {/* TODO: Mobile Search bar and filters */}
         <Box display={{ base: 'block', md: 'none' }}></Box>
-
-        {/* Desktop filter menu */}
         <Stack direction="row" maxWidth="100%" height="90vh" width="100%" gap={'1%'}>
           <Box display={isDesktop ? 'flex' : 'none'}>
             <SongSearch
@@ -184,7 +220,14 @@ const SongListContainer: FC = (): ReactElement => {
                 </Typography>
                 <ButtonGroup variant="outlined">{/* Button group code */}</ButtonGroup>
               </Stack>
-              <Stack direction="column" spacing={3} height="97%" overflow="auto" maxWidth="100%">
+              <Stack
+                direction="column"
+                spacing={3}
+                height="97%"
+                overflow="auto"
+                maxWidth="100%"
+                id="search-display"
+              >
                 {songResults.length > 0 ? (
                   songResults.map((song, i) => {
                     return (
@@ -199,7 +242,6 @@ const SongListContainer: FC = (): ReactElement => {
                     );
                   })
                 ) : (
-                  // Error message when no songs are found
                   <Stack height="80%" display="flex" justifyContent="center" alignItems="center">
                     <Typography variant="h2" color="primary.main">
                       Couldn't find "{filterData?.search}"
@@ -213,7 +255,6 @@ const SongListContainer: FC = (): ReactElement => {
         </Stack>
       </Container>
 
-      {/* Mobile search filters modal */}
       <Modal
         open={open}
         onClose={handleClose}
